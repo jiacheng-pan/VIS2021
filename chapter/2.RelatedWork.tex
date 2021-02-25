@@ -1,0 +1,108 @@
+\section{Related Work}\label{sec:relatedwork}
+\replaced{We review two related areas: graph visualization techniques and interaction techniques.}
+{Node-link diagram is the most popular approach in graph drawing~\cite{DBLP:conf/dac/FiskI65}. Various solutions have been proposed for node placement.
+Below we only elaborate a few of them. For a comprehensive survey, please refer to~\cite{DBLP:journals/ivs/CheongS20, DBLP:journals/csur/DiazPS02, DBLP:journals/ivs/GibsonFV13, DBLP:journals/tvcg/HermanMM00}.}
+
+\subsection{Graph Visualization}
+\replaced{
+Two-dimensional (2D) graph drawing methods have been broadly reported in textbooks and surveys~\cite{DBLP:reference/crc/2013gd, DBLP:journals/ivs/CheongS20, DBLP:journals/ivs/GibsonFV13}.
+Force-directed and related drawing methods are classified into three categories~\cite{DBLP:journals/ivs/GibsonFV13}:
+force-directed methods,
+%~\cite{eades1984heuristic, DBLP:journals/spe/FruchtermanR91, DBLP:conf/gd/GansnerKN04, jacomy2014forceatlas2, DBLP:journals/ipl/KamadaK89, journals/tog/DavidsonH96, DBLP:journals/swevo/KudelkaKRHS15}, 
+dimension-reduction methods,
+%~\cite{DBLP:journals/ipl/BonabeauH98, DBLP:conf/gd/BrandesP06, DBLP:journals/cgf/KruigerRMKKT17}, 
+and multi-level methods.
+%~\cite{gansner2011multilevel, hachul2004drawing}. 
+Force-directed methods simulate physical forces on nodes and edges to layout graphs; many extensions exist, e.g.,
+spring-embedded methods~\cite{eades1984heuristic, DBLP:journals/spe/FruchtermanR91, jacomy2014forceatlas2},
+energy-based methods~\cite{DBLP:conf/gd/GansnerKN04, DBLP:journals/ipl/KamadaK89},
+and probabilistic methods~\cite{journals/tog/DavidsonH96, DBLP:journals/swevo/KudelkaKRHS15}. Dimensionality-reduction methods aim to embed high-dimensional information (e.g., the shortest path length between two nodes) into a 2D space,
+using methods such as multidimensional scaling~\cite{DBLP:conf/gd/BrandesP06}, 
+self-organizing maps~\cite{DBLP:journals/ipl/BonabeauH98}, and t-SNE~\cite{DBLP:journals/cgf/KruigerRMKKT17}.
+Multi-level methods focus on accelerating graph drawing using two main phases: coarsening (simplify a graph into several coarser graphs) and refinement (successively compute fine layouts from simple coarser graphs)~\cite{gansner2011multilevel, hachul2004drawing}.
+Besides these generic layout algorithms for node-link diagrams, other methods aim to solve specific drawing problems.
+For example, orthogonal layouts proposed in~\cite{DBLP:journals/tvcg/CoheLBEL16, DBLP:journals/tvcg/KiefferDMW16} improve readability of node-link diagrams of power-grids, software, and financial markets.
+}{
+Automatic graph drawing methods have been studied since 1967~\cite{DBLP:conf/dac/FiskI65}. These methods can be roughly classified into three categories: spring model, energy model and projection model.
+The first force-directed algorithm~\cite{eades1984heuristic} based on spring model simulates physical forces on nodes and edges.
+Date from then, the spring model is improved into the spring-electrical model in various ways~\cite{DBLP:conf/gd/DwyerMW06, eades2004navigating, frick1994fast, DBLP:conf/gd/GajerGK00, hu2005efficient}. The multi-level method is used widely to accelerate spring-electrical methods~\cite{gajer2000grip, gansner2011multilevel, hachul2004drawing}. 
+The energy model-based methods formulate the layout problem as an optimization problem. 
+The graph distance approximation~\cite{DBLP:journals/ipl/KamadaK89} and the incremental arrangement technique~\cite{DBLP:journals/tochi/Cohen97} can be leveraged to speed up the optimization process.
+Then, stress majorization is employed in graph layout problem~\cite{DBLP:conf/gd/GansnerKN04}. 
+Many constrained layout algorithms use stress majorization to formulate constraint problem~\cite{DBLP:journals/tvcg/KiefferDMW16, DBLP:journals/tvcg/WangWSZLFSDC18}.
+The projection model-based methods usually embed nodes into a high-dimensional space. Then they use projection methods to project the high-dimensional vectors into low-dimensional space, i.e., 2-dimensional space. The first layout algorithm based on high-dimensional embedding (HDE) is proposed in 2004~\cite{DBLP:journals/jgaa/HarelK04}. 
+Instead of using high-dimensional distance, some methods adopt graph distance in projection procedure~\cite{DBLP:journals/cgf/KruigerRMKKT17, DBLP:journals/corr/LuYC16}.}
+
+\deleted{
+\textbf{Constrained Layout}:
+Constrained graph layout introduces rules for node placement, which is often employed to improve force-directed layouts. 
+For example, PrEd is an iterative constrained drawing algorithm to reduce new edge crossings~\cite{DBLP:conf/gd/Bertault99}.
+The algorithm can be further improved in both running time and drawing quality \cite{DBLP:journals/cgf/SimonettoAAB11}.
+Constrained graph layout can also be applied to preserve the topology of force-directed layouts~\cite{DBLP:conf/gd/DwyerMW08}.
+Energy minimization and stress majorization are also popular in constrained graph layout. Dig-CoLa~\cite{DBLP:conf/infovis/DwyerK05} automatically detects and places the parts of the graph that contain hierarchical information by stress majorization. 
+Based on an authoring tool supporting constrained layout~\cite{DBLP:conf/gd/DwyerMW08a}, graph exploration and layout techniques have been proposed~\cite{DBLP:journals/tvcg/DwyerMSSWW08, DBLP:conf/gd/DwyerMW08}. {Cola.js}~\cite{dwyer2017cola} extends the authoring tool into a JavaScript library. SetCoLa~\cite{DBLP:journals/cgf/HoffswellBH18} further presents a domain-specific language with eight sets of predefined constraints. 
+In terms of stress majorization, edge length is the most popular target to be optimized~\cite{DBLP:journals/tvcg/WangWSZLFSDC18, yuan2012intelligent}.
+}
+
+\replaced{
+Unlike prior studies on layout algorithms,
+our work focuses on interactive fine-tuning by capturing users' layout preferences 
+% and intent
+through interaction. Our algorithms can potentially support personalized and fine-tuned layout of these current state-of-the-art graph visualizations.
+}{
+Although previous work has introduced rules to constrain automatic layouts, there are few approaches for interactive layout fine-tuning. Our work refines the graph layout by capturing the user's preference and intention through interactions.
+}
+
+\subsection{Interaction Techniques}
+\deleted{Effective interactions are critical to graph analysis when the graph data is too complex or large to be visualized.}
+We categorize interaction techniques into three levels: data-level, view-level, and 
+encoding-level.
+
+\textbf{Data-level interactions} focus on selecting the data for display.
+%JC. I deleted this - try to avoid large graphs. Your technique is good for smaller graphs too. Also, a reviewer did not like the term *large*. say many nodes and edges instead.
+%In large graphs, 
+%The analyst can reduce the size of the displayed data by attribute filtering or structure editing and querying.
+The user can interact with the graphs to see similar structures.
+A system developed in~\cite{von2009system} uses user-defined subgraph or motifs to reveal selected structures but these motifs were predefined and could not be modified by the users. 
+Several systems~\cite{garbarino2016EGAS, wu2017graph, zhu2015pathrings} use PathRings to define motifs in biological pathways, but they do not find similar structures.
+\added{
+Novel machine learning solutions utilized in~\cite{DBLP:journals/tvcg/KwonCM18} measure the similarity between two graphs, but it is not feasible because it does not locate substructures.}
+A structure-based recommendation approach~\cite{DBLP:journals/tvcg/ChenGHPNXZ19} detects similar substructures in a graph from user input and lets users subsequently interact with the detected structures.
+\added{We adopt this approach to measure similarity, thus reducing user input; we subsequently introduce a new algorithm to further reduce users' repetitive and effortful node editing through a substructure transformation algorithm. 
+}
+% JC: not so relevant??
+\deleted{An alternative way of analyzing large-graph data is aggregation; the vertices of interest are recursively detected and merged according to the user-defined node attributes~\cite{wattenberg2006visual} or topological properties~\cite{archambault2007topolayout}
+To support interactive graph visualization at different levels of detail, nodes and edges are aggregated in different levels using the kernel density estimation technique \cite{zinsmaier2012interactive,lampe2011interactive}.
+Likewise, a hierarchical graph structure can give an overview of graph structure first and show more detail upon user interaction~\cite{elmqvist2009hierarchical}.}
+
+
+\textbf{View-level interactions} mostly support graph navigation.
+%JC: not directly relevant. Remove?
+\deleted{Panning and zooming support multi-level explorations by navigating along edges of a selected node.}
+Topology information can be exploited in browsing a large graph~\cite{moscovich2009topology}.
+%JC: not directly relevant. Remove?
+\deleted{Focus+context interactions are widely used to provide a detailed view of a subgraph while preserving an overview of the entire graph.}
+Fisheyes enlarge the display space for items of user interest to improve readability.
+For example,  
+SchemeLens~\cite{DBLP:journals/tvcg/CoheLBEL16} reveals orthogonally laid-out diagrams.
+And the structure-aware fisheye proposed in~\cite{DBLP:journals/tvcg/WangWZSFSCD19} reduces spatial and temporal distortions.
+\added{Compared to these
+% interactive
+solutions, our method supports the user's defined input to customize layout.}
+
+
+\textbf{Encoding-level interactions} seek to manipulate the visual representation and layout of graph data. 
+%JC. 
+%such as visual representation and layout.
+An appropriate layout can benefit analysis tasks~\cite{jusufi2013multivariate, major2018graphicle}. However, generating visually pleasing and
+useful layouts for large graphs is still challenging.\deleted{, especially for large-scale graphs.
+Graphs can be visualized by leveraging node-link diagrams~\cite{DBLP:journals/tvcg/ColVPDSN18} and adjacency matrices \cite{DBLP:journals/tvcg/HenryF06}.}
+NodeTrix~\cite{henry2007nodetrix} combines two schemes to show inter-community relationships using a node-link diagram and intra-community relationships using the matrix representation. 
+In many situations, analysts fine-tune the node positions.
+An authoring tool proposed in~\cite{DBLP:conf/gd/DwyerMW08a} introduces continuous layout in response to user input.
+A method that could integrate multiple graph layouts preserved topological structures in graphs by controlling the Euclidean distance between nodes of subgraphs \cite{yuan2012intelligent}.
+Some constraint-based layout editing methods\replaced{~\cite{DBLP:conf/uist/RyallMS97, DBLP:journals/bmcbi/SchreiberDMW09, DBLP:journals/tvcg/WangWSZLFSDC18}}{~\cite{DBLP:journals/tvcg/WangWSZLFSDC18}} allow the user to edit and explore a layout with selected constraint rules. \added[id=pan]{However, these methods aim to draw a constraint-based layout, and could not edit a layout freely on nodes to reach a fine-tuned layout and incorporate users' preferences.
+}
+
+% JC: remove? I think you have stated this above. 
+\deleted{However, it is still too time-consuming to fine-tune graph layout by dragging nodes of a large graph. Our approach addresses this problem using exemplar-based scheme.}

@@ -1,0 +1,65 @@
+\section{Discussion \added[id=pan]{and Limitations}} \label{sec:discussion}
+\replaced{In terms of the performance of modification transfer, our algorithm outperforms the baseline method (manual node dragging), as demonstrated in Section~\ref{sec:userstudy}. It reduces or eliminates the laborious interactions. And in terms of layout editing, our modification transfer algorithm may be more flexible than rule-based layout approaches~\cite{DBLP:journals/cgf/HoffswellBH18, DBLP:journals/tvcg/KiefferDMW16, DBLP:journals/tvcg/WangWSZLFSDC18}. Rather than pre-defining a set of rules or metrics, our algorithm supports arbitrary modifications on the exemplar.
+}{
+Our approach supports tuning multiple substructures by following a single exemplar.
+It offers several advantages over existing methods. First, our approach has a broader scope than rule-based layout approaches. Rather than pre-defining a set of rules or metrics, our approach supports arbitrary modifications on the exemplar.
+Second, our approach reduces or eliminates the programming workload or laborious interactions by transferring modifications automatically. Modifications made on the exemplar can be regarded as user preferences. Similar substructures can be modified by transferring the exemplar's modifications. 
+% \added{
+% \textcolor{myred}{The implications has to be actually evaluated to make our claims above, we could conduct experiments to compare our approach to several other layout-editing techniques~\cite{DBLP:conf/uist/RyallMS97, DBLP:journals/bmcbi/SchreiberDMW09, DBLP:journals/tvcg/WangWSZLFSDC18} regarding readability, accuracy, and efficiency in the future.
+}
+
+\textbf{Usability.} 
+\replaced[id=pan]{Our visualization interface is implemented with a set of fundamental interactions, such as lasso, drag, pan, and zoom. The user can easily explore the entire graph and specify substructures. Compared to box selection, lasso interaction enables the user to more freely specify a substructure with a closed path. However, for complex graphs, layout algorithms can lead to visual clutter. It is hard for the user to specify structures in a virtual plane, so that selection interactions such as filter and query will be suitable for complex cases.}{We believe our approach can reach high usability because it is implemented with a set of fundamental interactions such as Lasso, drag, pan, and zoom. However, there are some limitations. One limitation is that our approach requires the exemplar and the target to be adequately similar, which is not easy to be found. It decreases the usability. Although our approach enables substructure retrieval, its performance depends on the node embedding technique. Several embedding techniques are supported in our approach including: REGAL~\cite{DBLP:conf/cikm/HeimannSSK18}, Feature-based kernel~\cite{DBLP:journals/tvcg/ChenGHPNXZ19}, Graphlet kernel~\cite{DBLP:journals/cn/MarcusS12}, Node2vec~\cite{DBLP:conf/kdd/GroverL16}, Struct2vec~\cite{10.1145/3097983.3098061}, GraphWave~\cite{DBLP:conf/kdd/DonnatZHL18}. GraphWave has proven to be an appropriate technique in substructures retrieving~\cite{DBLP:journals/tvcg/ChenGHPNXZ19}, but it does not work well all the time because it only suggests fuzzy results. In the future, we will improve the retrieval quality to improve usability.
+The user study suggests that manually manipulate a layout by dragging nodes can be laborious. Although our approach reduces the user's repetitive fine-tuning interactions, the user still has to modify an exemplar for demonstration. In the future, we plan to improve the user's performance on fine-tuning exemplars.
+}
+
+\textbf{Scalability.} Our cases show that our approach can handle fine-tuning on large-scale networks. Our interface with a WebGL rendering engine supports visualizing large-scale graphs with rich user interactions.
+\added[id=pan]{Three aspects influence the scalability:}
+\begin{compactenum}[\bfseries 1)]
+\item \added[id=pan]{\textbf{The substructure retrieval algorithm} has a computational complexity of $O(|V^s| \times N)$, where $N$ denotes the node number of the underlying graph~\cite{DBLP:journals/tvcg/ChenGHPNXZ19}.
+However, heuristic user-adjustments of the parameter $k$ (see Section~\ref{sec:retrieval}) may reduce scalability.}
+% Regardless of the pre-computation of node embeddings and heuristic parameter searching, scalability can be good.
+
+\item \added[id=pan]{\textbf{Modification transfer} consists of three parts: graph matching, correspondence filtering, and two rounds of layout simulation. The time complexity of FGMU~\cite{zhou2012factorized} for matching $S=(V^s, E^s)$ and $T=(V^t, E^t)$ is $O(k \times \max(|V^t|^3, |V^s|^3) + |E^t| |E^s|^2))$, where $k$ is the number of iteration 
+for FGMU. The average time complexity of correspondence filtering is $O(\min(|V^t|, |V^s|) \times |E^t| |E^s| / (|V^t| |V^s|) )$. The first round of layout simulation involves several iterations. The number of iterations depends on the number of markers. More markers can lead to less iterations. For each iteration, the deforming step employs a procedure similar to the stress-majorization layout~\cite{DBLP:conf/gd/GansnerKN04}, whose time complexity is the same as the stress majorization. The time complexity of the matching step is dominated by the Hungarian algorithm, whose complexity is $O(m^3)$, where $m$ is the number of nodes selected for matching. The second round of layout simulation runs one time because no more correspondences are built.}
+
+\item \added[id=pan]{\textbf{The global optimization} runs as fast as the stress-majorization layout, which is sensitive to the number of nodes in the surroundings to be optimized.}
+\end{compactenum}
+
+% \added[id=pan]{}
+
+\deleted{
+Our cases show that our approach can handle fine-tuning on large scale networks. Our interface with a WebGL rendering engine is amenable for visualizing large-scaled graphs with rich user interactions. As only the surroundings of modified substructures are deformed, the computational cost of the global layout optimization is reduced. However, building correspondences can be computationally expensive. In the future, we will eliminate our approach's dependency on markers. As such, the computational cost can be decreased. Besides, we plan to accelerate our approach by implementing a GPU-based version.
+}
+
+\textbf{Robustness.} Case studies and user study indicate that our approach can handle different kinds of datasets and layouts. Our approach is not sensitive to the original layout, because we layout the exemplar and targets with the same force-directed algorithm before building correspondences.
+Although the user study suggests that our \replaced[id=pan]{fully automatic method}{approach} works efficiently, we found that participants still performed a few interactions based on results generated by our approach. The reason may be that our approach generates similar layouts as the exemplar, not the same layouts; participants must check whether generated results can be improved.
+
+\textbf{Limitations and future work.}
+\added[id=pan]{This work has several limitations. 
+%One is that our approach requires exemplar and target to be adequately similar, which is not easily found by the user. This issue decreases usability. Although our approach enables substructure retrieval by using the technique proposed by Chen et al.~\cite{DBLP:journals/tvcg/ChenGHPNXZ19}, its performance depends on the node embedding technique.
+%GraphWave~\cite{DBLP:conf/kdd/DonnatZHL18} utilized in this paper embeds a node's contextual information.
+%Thus, the retrieval algorithm detects contextually similar substructures rather than topologically similar. This can work well when the exemplar has few edges linked to the rest of the whole graph, such that the embeddings capture mainly the exemplar's information rather than the context. 
+% We plan to improve this by designing a new similar-substructure detection algorithm that can eliminate contextual information.
+First, the usability of the marker specification %is another limitation.
+can be improved.
+We plan to allow the user to interactively select markers from correspondences built by graph-matching algorithms. 
+An algorithm that can rate the correctness of correspondences can improve its usability.
+Second, we could also conduct a thorough user evaluation of readability.
+We designed our method to transfer modifications among structures, and thus the readability of substructure layouts generated by our approach depends largely on the exemplar's modifications. 
+Third, the substructure retrieval algorithm detects potentially similar structures using node embeddings. Its accuracy depends on the embedding technique.
+% We will integrate readability improvement techniques~\cite{DBLP:conf/gd/Bertault99, DBLP:journals/cgf/SimonettoAAB11, DBLP:journals/tvcg/WangWSZLFSDC18} to modify the exemplar's layout and measure the readability be several readability measurements~\cite{DBLP:journals/tvcg/MarriottPWG12, DBLP:conf/apvis/NguyenHE17, DBLP:journals/tvcg/WuCASQC17}.
+}
+
+\added[id=pan]{
+In the future, we plan
+to perform both lab-based control studies as well as insight-based studies in real-world settings on our prototype system to measure readability~\cite{DBLP:journals/tvcg/MarriottPWG12, DBLP:conf/apvis/NguyenHE17, DBLP:journals/tvcg/WuCASQC17},
+%tasks with real usage and purposeful qualitative questionnaires in the user evaluation to study how users would like to use our techniques, and evaluate the usability of our prototype system with more tasks.  
+%We also expect to explore more readability measurements~\cite{DBLP:journals/tvcg/MarriottPWG12, DBLP:conf/apvis/NguyenHE17, DBLP:journals/tvcg/WuCASQC17} 
+to characterise the goals and effects, 
+%of the layout changes, in terms of 
+user perception, and insights.
+% Third, we could have also used more tasks \textcolor{myred}{with real usage and more purposeful qualitative questionnaires} in the user evaluation to explore more thoroughly how users would like to use our techniques. \textcolor{myred}{Readability measurements could also help us to characterise the goals of the layout changes in terms of improvements for user perception. We could have also evaluated the usability of our prototype system with more tasks.}
+}
+%JC: twist your language the other way around. Do not say, we did not do this and that, say we could do something.... so it sounds more positive.
+%Another consideration was that in the user study, the participants were doing the exact same task three times for each dataset, so that practice effects might influence their task completion performance. Thus, we counterbalanced the sequences of techniques for different participants and datasets. The order of datasets and techniques was randomized.}

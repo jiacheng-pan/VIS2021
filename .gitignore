@@ -1,0 +1,10 @@
+*.pdf
+__latexindent_temp.tex
+template.log
+template.out
+template.aux
+*/*.pdf
+template.bbl
+template.blg
+*/*.psd
+picture/interface.psd

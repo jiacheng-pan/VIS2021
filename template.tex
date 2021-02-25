@@ -1,0 +1,127 @@
+% \documentclass[journal]{vgtc}                % final (journal style)
+\documentclass[review,journal]{vgtc}         % review (journal style)
+%\documentclass[widereview]{vgtc}             % wide-spaced review
+%\documentclass[preprint,journal]{vgtc}       % preprint (journal style)
+
+\ifpdf%                                % if we use pdflatex
+  \pdfoutput=1\relax                   % create PDFs from pdfLaTeX
+  \pdfcompresslevel=9                  % PDF Compression
+  \pdfoptionpdfminorversion=7          % create PDF 1.7
+  \ExecuteOptions{pdftex}
+  \usepackage{graphicx}                % allow us to embed graphics files
+  \DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg} % for pdflatex we expect .pdf, .png, or .jpg files
+\else%                                 % else we use pure latex
+  \ExecuteOptions{dvips}
+  \usepackage{graphicx}                % allow us to embed graphics files
+  \DeclareGraphicsExtensions{.eps}     % for pure latex we expect eps files
+\fi%
+
+%% it is recomended to use ``\autoref{sec:bla}'' instead of ``Fig.~\ref{sec:bla}''
+\graphicspath{{figures/}{pictures/}{images/}{./}} % where to search for the images
+
+\usepackage{epstopdf}
+\usepackage{microtype}
+\PassOptionsToPackage{warn}{textcomp}
+\usepackage{textcomp}
+\usepackage{mathptmx}
+\usepackage{times}
+\renewcommand*\ttdefault{txtt}
+\usepackage{cite}
+\usepackage{tabu}
+\usepackage{booktabs}
+\usepackage{wrapfig}
+
+\usepackage{amssymb}
+\usepackage{paralist}
+\usepackage{xfrac}
+\usepackage{url}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{todonotes}
+\usepackage[shortlabels]{enumitem}
+% \usepackage[xcolor=dvipdf]{changes}
+\usepackage[xcolor=dvipdf, final]{changes}
+
+\definecolor{mygreen}{rgb}{0.17, 0.55, 0.05}
+\definecolor{myred}{rgb}{0.85, 0.17, 0.05}
+\definechangesauthor[name=JiachengPan, color=mygreen]{pan}
+\definechangesauthor[name=XiaodongZhao, color=red]{zhao}
+\definechangesauthor[name=Jian Chen, color=blue]{jc}
+\setdeletedmarkup{\color{gray}{\sout{#1}}}
+% \setdeletedmarkup{}
+% \sethighlightmarkup{\color{red}{#1}}
+\setaddedmarkup{\color{mygreen}{#1}}
+\setauthormarkup{}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+
+\onlineid{1069} % TODO
+
+\vgtccategory{Research} % TODO
+\vgtcpapertype{Algorithm/Technique} % TODO
+
+\title{Exemplar-based Layout Fine-tuning for Node-link Diagrams} % TODO
+\author{Jiacheng Pan, Wei Chen, Xiaodong Zhao, Shuyue Zhou, Wei Zeng, Minfeng Zhu, \\ Jian Chen, Siwei Fu, and Yingcai Wu} % TODO
+\authorfooter{ % TODO
+    \item Jiacheng Pan, Xiaodong Zhao, Shuyue Zhou, Minfeng Zhu, Yingcai Wu, and Wei Chen are with the State Key Lab of CAD\&CG, Zhejiang University, China. E-mail: \{panjiacheng, zhaoxiaodong, zhoushuyue, minfeng\_zhu, ycwu\}@zju.edu.cn, chenwei@cad.zju.edu.cn.
+    \\
+    Yingcai Wu is also with Zhejiang Lab, China.\\
+    Wei Chen and Yingcai Wu are the corresponding authors.
+    
+    \item Wei Zeng is with Shenzhen Institutes of Advanced Technology, Chinese Academy of Sciences, China. E-mail: wei.zeng@siat.ac.cn.
+    
+    \item Jian Chen is with Ohio State University, USA. E-mail: chen.8028@osu.edu.
+    
+    \item Siwei Fu is with Zhejiang Lab, China. E-mail: fusiwei339@gmail.com.
+}
+
+\shortauthortitle{Pan \MakeLowercase{\textit{et al.}}: Exemplar-based Layout Fine-tuning for Node-link Diagrams} % TODO
+
+\abstract{We design and evaluate a novel layout fine-tuning technique for node-link diagrams that facilitates exemplar-based adjustment of a group of substructures in batching mode. The key idea is to transfer user modifications on a local substructure to other substructures in the entire graph that are topologically similar to the exemplar. We first precompute a canonical representation for each substructure with node embedding techniques and then use it for on-the-fly substructure retrieval. We design and develop a light-weight interactive system to enable intuitive adjustment, modification transfer, and visual graph exploration. \replaced[id=pan]{\textcolor{black}{We also report some results of quantitative comparisons, three case studies, and a within-participant user study.}}{Experimental results and case studies demonstrate that our approach improves readability and performance over existing layout editing schemes.}} % TODO
+
+\keywords{Node-link diagram, graph layout, graph visualization, user interactions} % TODO
+
+%% ACM Computing Classification System (CCS). 
+%% See <http://www.acm.org/class/1998/> for details.
+%% The ``\CCScat'' command takes four arguments.
+
+\CCScatlist{ % not used in journal version
+ \CCScat{K.6.1}{Management of Computing and Information Systems}%
+{Project and People Management}{Life Cycle};
+ \CCScat{K.7.m}{The Computing Profession}{Miscellaneous}{Ethics}
+}
+
+\teaser{
+  \centering
+    \includegraphics[width=16cm]{picture/}
+    \caption{}% TODO
+    \label{fig:}
+}
+
+\vgtcinsertpkg
+
+\begin{document}
+
+\input{chapter/1.Introduction.tex}
+\input{chapter/2.RelatedWork.tex}
+\input{chapter/3.Approach.tex}
+\input{chapter/4.Algorithm.tex}
+\input{chapter/5.Experiments.tex}
+\input{chapter/6.Discussion.tex}
+\input{chapter/7.Conclusion.tex}
+
+%% if specified like this the section will be committed in review mode
+\acknowledgments{ % TODO
+We wish to thank all the anonymous reviewers for their thorough and constructive comments. We also thank the participants for their time and efforts. 
+This work is partially supported by National Natural Science Foundation of China (61772456, 61761136020), NSFC (61761136020), NSFC-Zhejiang Joint Fund for the Integration of Industrialization and Informatization (U1609217), and Zhejiang Provincial Natural Science Foundation (LR18F020001). J. Chen is partially supported by National Science Foundation NSF OAC-1945347, NSF DBI-1260795, NSF IIS-1302755, CNS-1531491, and NIST MSE-70NANB13H181. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of  the National Science Foundation of China (NSFC), National Institute of Standards and Technology (NIST) or the National Science Foundation (NSF).
+}
+
+\bibliographystyle{abbrv}
+%%use following if all content of bibtex file should be shown
+%\nocite{*}
+\bibliography{template}
+\end{document}
+
