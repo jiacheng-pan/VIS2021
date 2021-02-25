@@ -45,6 +45,8 @@
 % \usepackage[xcolor=dvipdf]{changes}
 \usepackage[xcolor=dvipdf, final]{changes}
 
+\usepackage{CJKutf8} %! FOR CHINESE
+
 \definecolor{mygreen}{rgb}{0.17, 0.55, 0.05}
 \definecolor{myred}{rgb}{0.85, 0.17, 0.05}
 \definechangesauthor[name=JiachengPan, color=mygreen]{pan}
@@ -66,10 +68,8 @@
 \title{Exemplar-based Layout Fine-tuning for Node-link Diagrams} % TODO
 \author{Jiacheng Pan, Wei Chen, Xiaodong Zhao, Shuyue Zhou, Wei Zeng, Minfeng Zhu, \\ Jian Chen, Siwei Fu, and Yingcai Wu} % TODO
 \authorfooter{ % TODO
-    \item Jiacheng Pan, Xiaodong Zhao, Shuyue Zhou, Minfeng Zhu, Yingcai Wu, and Wei Chen are with the State Key Lab of CAD\&CG, Zhejiang University, China. E-mail: \{panjiacheng, zhaoxiaodong, zhoushuyue, minfeng\_zhu, ycwu\}@zju.edu.cn, chenwei@cad.zju.edu.cn.
-    \\
-    Yingcai Wu is also with Zhejiang Lab, China.\\
-    Wei Chen and Yingcai Wu are the corresponding authors.
+    \item Jiacheng Pan, Xiaodong Zhao, and Wei Chen are with the State Key Lab of CAD\&CG, Zhejiang University, China. E-mail: \{panjiacheng, zhaoxiaodong\}@zju.edu.cn, chenwei@cad.zju.edu.cn.\\
+    Wei Chen is the corresponding author.
     
     \item Wei Zeng is with Shenzhen Institutes of Advanced Technology, Chinese Academy of Sciences, China. E-mail: wei.zeng@siat.ac.cn.
     
@@ -78,11 +78,11 @@
     \item Siwei Fu is with Zhejiang Lab, China. E-mail: fusiwei339@gmail.com.
 }
 
-\shortauthortitle{Pan \MakeLowercase{\textit{et al.}}: Exemplar-based Layout Fine-tuning for Node-link Diagrams} % TODO
+\shortauthortitle{Pan \MakeLowercase{\textit{et al.}}: } % TODO
 
-\abstract{We design and evaluate a novel layout fine-tuning technique for node-link diagrams that facilitates exemplar-based adjustment of a group of substructures in batching mode. The key idea is to transfer user modifications on a local substructure to other substructures in the entire graph that are topologically similar to the exemplar. We first precompute a canonical representation for each substructure with node embedding techniques and then use it for on-the-fly substructure retrieval. We design and develop a light-weight interactive system to enable intuitive adjustment, modification transfer, and visual graph exploration. \replaced[id=pan]{\textcolor{black}{We also report some results of quantitative comparisons, three case studies, and a within-participant user study.}}{Experimental results and case studies demonstrate that our approach improves readability and performance over existing layout editing schemes.}} % TODO
+\abstract{}
 
-\keywords{Node-link diagram, graph layout, graph visualization, user interactions} % TODO
+\keywords{Node-link diagram, graph visualization}
 
 %% ACM Computing Classification System (CCS). 
 %% See <http://www.acm.org/class/1998/> for details.
@@ -96,14 +96,15 @@
 
 \teaser{
   \centering
-    \includegraphics[width=16cm]{picture/}
-    \caption{}% TODO
-    \label{fig:}
+    % \includegraphics[width=16cm]{}
+    % \caption{}% TODO
+    % \label{fig:}
 }
 
 \vgtcinsertpkg
 
 \begin{document}
+\begin{CJK}{UTF8}{gbsn} %! FOR CHINESE
 
 \input{chapter/1.Introduction.tex}
 \input{chapter/2.RelatedWork.tex}
@@ -121,7 +122,8 @@ This work is partially supported by National Natural Science Foundation of China
 
 \bibliographystyle{abbrv}
 %%use following if all content of bibtex file should be shown
-%\nocite{*}
+\nocite{*}
 \bibliography{template}
+\end{CJK} %! FOR CHINESE
 \end{document}
 
