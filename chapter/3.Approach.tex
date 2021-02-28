@@ -1,1 +1,16 @@
 \section{Approach Workflow}
+% 我们的方法目的是帮助节点链接图的创作者自动生成辅助性语句，帮助节点链接图的目标观众理解节点链接图所要表达的内容。
+We present \ApproachName~to generate presentation-aided statements automatically for node-link diagrams creators. The generated statements are aimed to facilitate the comprehension of the created node-link diagrams for target audiences.
+% 为了生成能够帮助观众理解的语句，我们需要通过分析节点链接图的构建过程，来寻找观众会对节点链接图产生疑惑的原因。
+To generate such presentation-aided statements, we need to decompose the creation process of node-link diagrams to explore the reasons of the audiences' confusion.
+% 一个节点链接图的创作过程普遍会有以下X个步骤（其中第2步和第3步的顺序可以调换）[这里需要引一些文献]
+% 1. 数据预处理；一般而言，真实世界收集到的源数据常常是表格型的多属性数据，而输入到节点链接图创作的图数据，往往是在源数据的基础上进行预处理，通过在源数据上定义实体之间的关系（链接），最终获得输入到节点链接图的图数据（包含节点和链接）
+% 2. 计算图布局；节点链接图需要解决的一个关键问题是如何在二维空间中放置节点。链接则往往被绘制为节点之间的连接线，其位置往往由其两个端点决定而无需计算。基于布局算法产生的节点位置，节点链接图才能进行绘制。
+% 3. 设计可视编码；创作者还会把他想表达的数据特征编码到节点链接图上，比如利用节点的颜色来编码节点的类别等。
+% 虽然在很多工作中，还支持交互式的修改图布局。但这并不在本文的讨论中，本文只讨论为静态的节点链接图生成辅助性语句。
+The creation of node-link diagrams commonly includes the following steps~\cite{DBLP:journals/cgf/SpritzerBDFF15, tvcg/RomatAP21}:
+\begin{compactenum}[\textbf{Step} 1.]
+    \item Data wrangling. 
+    \item Layout computing.
+    \item Visual encoding.
+\end{compactenum}
