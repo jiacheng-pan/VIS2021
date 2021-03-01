@@ -2,15 +2,25 @@
 % 我们的方法目的是帮助节点链接图的创作者自动生成辅助性语句，帮助节点链接图的目标观众理解节点链接图所要表达的内容。
 We present \ApproachName~to generate presentation-aided statements automatically for node-link diagrams creators. The generated statements are aimed to facilitate the comprehension of the created node-link diagrams for target audiences.
 % 为了生成能够帮助观众理解的语句，我们需要通过分析节点链接图的构建过程，来寻找观众会对节点链接图产生疑惑的原因。
-To generate such presentation-aided statements, we need to decompose the creation process of node-link diagrams to explore the reasons of the audiences' confusion.
+To generate such presentation-aided statements, we need to decompose the creation process of node-link diagrams to explore the reasons for the audiences' confusion.
 % 一个节点链接图的创作过程普遍会有以下X个步骤（其中第2步和第3步的顺序可以调换）[这里需要引一些文献]
 % 1. 数据预处理；一般而言，真实世界收集到的源数据常常是表格型的多属性数据，而输入到节点链接图创作的图数据，往往是在源数据的基础上进行预处理，通过在源数据上定义实体之间的关系（链接），最终获得输入到节点链接图的图数据（包含节点和链接）
-% 2. 计算图布局；节点链接图需要解决的一个关键问题是如何在二维空间中放置节点。链接则往往被绘制为节点之间的连接线，其位置往往由其两个端点决定而无需计算。基于布局算法产生的节点位置，节点链接图才能进行绘制。
-% 3. 设计可视编码；创作者还会把他想表达的数据特征编码到节点链接图上，比如利用节点的颜色来编码节点的类别等。
-% 虽然在很多工作中，还支持交互式的修改图布局。但这并不在本文的讨论中，本文只讨论为静态的节点链接图生成辅助性语句。
-The creation of node-link diagrams commonly includes the following steps~\cite{DBLP:journals/cgf/SpritzerBDFF15, tvcg/RomatAP21}:
+% 2. 设计可视编码；创作者还会把他想表达的数据特征编码到节点链接图上，比如利用节点的颜色来编码节点的类别等。
+% 3. 计算图布局；节点链接图需要解决的一个关键问题是如何在二维空间中放置节点。链接则往往被绘制为节点之间的连接线，其位置往往由其两个端点决定。基于布局算法产生的节点位置，节点链接图才能进行绘制。
+The creation of node-link diagrams commonly includes the following steps (the order of step 2 and step 3 can be reversed)~\cite{DBLP:journals/cgf/SpritzerBDFF15, tvcg/RomatAP21}:
 \begin{compactenum}[\textbf{Step} 1.]
-    \item Data wrangling. 
-    \item Layout computing.
-    \item Visual encoding.
+    \item \textbf{Graph wrangling}. Original data collected from the real world are usually tabular, while the graph data input into node-link diagrams are often with specific and explicit nodes and links. They are usually wrangled from tabular data by defining relationships between entities~\cite{DBLP:journals/tvcg/SrinivasanPEB18, DBLP:conf/ieeevast/BigelowNML19}.
+    \item \textbf{Layout computing}. One key step of visualizing node-link diagrams is how to place nodes in a two-dimensional space. And links are placed according to two nodes each link connected.
+    \item \textbf{Visual encoding}. To present data features of the underlying graph data, creators will encode several attributes they want to express with different visual channels. For example, the fill color of one node can be used to encode the category of it.
 \end{compactenum}
+
+% 因为最终展示给用户的仅仅为节点链接图，很多过程信息被隐藏起来。我们通过分析节点链接图创建过程中被隐藏的信息，用文本的形式显式揭露这些用户未知的信息，达到帮助理解的目的。这些隐藏的信息被我们总结为以下四类：%? warning: 这个总结暂时没有背书，可能权威性不是很高，可能可以尝试做一些interview
+% 1. 链接的构建条件被隐藏。
+% 2. 节点链接图的编码方案被隐藏。
+% 3. 布局算法的具体实施方案被隐藏。
+% 4. 布局产生的visual clutter导致拓扑结构被隐藏。
+
+% 于是我们从这四个角度出发，提出了四个understanding，解决以上四种被隐藏的信息，分别是：understanding relationship, understanding visual encodings, understanding layout, understanding visual clutter. 我们的方法采用图数据和创作者的节点链接图创作代码作为输入，最后输出关于这四个understanding的辅助性解释文本。
+
+\subsection{Understanding Relationship}
+\subsection{Understanding Visual Encodings}
