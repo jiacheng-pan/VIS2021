@@ -9,7 +9,7 @@ To generate such presentation-aided statements, we need to decompose the creatio
 % 3. 计算图布局；节点链接图需要解决的一个关键问题是如何在二维空间中放置节点。链接则往往被绘制为节点之间的连接线，其位置往往由其两个端点决定。基于布局算法产生的节点位置，节点链接图才能进行绘制。
 The creation of node-link diagrams commonly includes the following steps (the order of step 2 and step 3 can be reversed)~\cite{DBLP:journals/cgf/SpritzerBDFF15, tvcg/RomatAP21}:
 \begin{compactenum}[\textbf{Step} 1.]
-    \item \textbf{Graph wrangling}. Original data collected from the real world are rarely conforms to graph data, while node-link diagrams often employ data with specific and explicit nodes and links as input. They are usually wrangled from tabular data by defining relationships between entities~\cite{DBLP:journals/tvcg/SrinivasanPEB18, DBLP:conf/ieeevast/BigelowNML19, DBLP:journals/ivs/HeerP14, DBLP:journals/ivs/LiuNS14}.
+    \item \textbf{Graph wrangling}. Original data collected from the real world rarely conform to graph data, while node-link diagrams often employ data with specific and explicit nodes and links as input. They are usually wrangled from tabular data by defining relationships between entities~\cite{DBLP:journals/tvcg/SrinivasanPEB18, DBLP:conf/ieeevast/BigelowNML19, DBLP:journals/ivs/HeerP14, DBLP:journals/ivs/LiuNS14}.
     \item \textbf{Layout computing}. One key step of visualizing node-link diagrams is how to place nodes in a two-dimensional space. And links are placed according to two nodes each link connected.
     \item \textbf{Visual encoding}. To present data features of the underlying graph data, creators will encode several attributes they want to express with different visual channels. For example, the fill color of one node can be used to encode the category of it.
 \end{compactenum}
@@ -51,7 +51,7 @@ If several statements about the creation process can be presented to aid the vis
 Our approach generate such description for it:
 \begin{lightgrayleftbar}\noindent
     Nodes are connected because there is an intersection between their ``actors'' attributes.
-    Each node consists of a circle and each link consists of a line.
+    Each node consists of a circle, and each link consists of a line.
     The ``fill'' (color) of the circle corresponds to the node's ``date\_published'' attributes and the ``r'' (radius) of the circle corresponds to ``budget'' attributes.
     The ``stroke-width'' of the line corresponds to the link's ``shared\_actors'' attributes.
     The layout is attribtue-based.
@@ -109,14 +109,15 @@ Three conditions are proposed by Graphiti:
 
 \begin{compactenum}[\textbf{Condition} 1.]
     \item Sharing the same value of a categorical attribute between two nodes, e.g., linking two movies with a same director.
-    \item Sharing the same common values or topics of a list or textual attribute between two nodes, e.g., linking two movies with one or more same actors. 
+    \item Sharing the same common values or topics of a list of textual attributes between two nodes, e.g., linking two movies with one or more same actors. 
     \item Sharing the same, significantly close, or values in the same bin between two nodes, e.g., linking two movies if they are published within one week.
 \end{compactenum}
 
 % 我们尝试从它们的反方向进行思考，也就是，当我们获取到了所有的链接的时候，推测这些链接是如何被构建的
 Those works infer the potential linking conditions before all links are constructed. 
 Whereas, our method runs in the opposite direction where all links have been constructed already.
-% ? 这里可能有多个条件的组合问题，有待进一步了解
+% 针对某一条链接，可能有不止一种构建条件，我们取所有链接的构建条件的交集作为整个graph的构建条件。
+We traverse all links and for each link, we detect its 
 
 \subsection{Understanding Visual Encodings}
 %! 首先说明目标是什么
