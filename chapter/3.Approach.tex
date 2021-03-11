@@ -94,7 +94,7 @@ We propose several methods to extract the uncommitted information and provide co
 % % 我们的方法采用图数据和创作者的节点链接图创作代码作为输入，最后输出关于这四个understanding的辅助性解释文本。
 % % Our approach employ the node-link formatted graph data (Figure~\ref{fig:IMDbDiagram}(b)) and the code creating the diagram as input, and outputs a template-based textual statements to solve the three-undestandings.
 
-\subsection{Data wrangling}
+\subsection{Data Wrangling}
 % 从表格型数据创建图数据时，最重要的就是建立节点之间的关系。
 % 观众从节点链接图中所能获知的信息仅仅是某两个节点之间存在联系，但却不了解联系的内在含义。
 % 一些论文已经对可能建立链接的情况进行了定义，
@@ -106,8 +106,8 @@ Graphiti~\cite{DBLP:journals/tvcg/SrinivasanPEB18} identifies potential linking 
 % 如果多个表合并成一个表，前两者总结的条件可以被Graphiti提出的规则所覆盖
 Because multiple tables can be merged into one data table with primary keys and foreign keys, Graphiti can cover the linking conditions identifying rules proposed by Ploceus and Orion. %? 这里mayby要用一张图解释一下
 We reorganize the conditions proposed by Graphiti:
-\begin{compactenum}[\textbf{Condition} 1.]
-    \item Two nodes share a same value of a same attribute, e.g., linking two movies with the same director.
+\begin{compactenum}[\textbf{Cond.} 1.]
+    \item Two nodes share a same value of a same attribute, e.g., linking two movies is published in the same year.
     \item Two nodes share at least one same common value of a same list attribute, e.g., linking two movies with one or more same actors.
     \item Two nodes share significantly close value of a same attribute where the significance is defined by the normalized difference.
     \item Two nodes share two values in the same bin of a same attribute where the bins are defined as quartiles.
@@ -122,18 +122,35 @@ We traverse all links to detect potential conditions for each link.
 The intersection of all links' conditions are regarded as the entire graph's linking condition.
 
 % 为了能够将这些condition填充到文本模板中，我们对condition的输出进行了formalize
-At last, we textualize the linking condition of the graph by filling templates. 
+At last, we formalize the condition as three aspects, and textualize the linking condition of the graph by filling templates. 
+{\color{text-hightlight}One condition can be defined as:}
+\begin{equation}
+    \text{linking condition} := ( type, attribute, value )
+\end{equation}
+Four templates corresponds to four conditions according the $type$:
 
-``Two nodes are connected if their attributes {\color{blue} [attribute]} are with a same value\{ ({\color{green}[value]})?\}.''
+\begin{compactenum}[\textbf{Cond.} 1.]
+    \item ``Two nodes are connected if their attributes $[{attribute}]$ are with a same value$\{: [{value}]?\}$''.
+    \item ``Two nodes are connected if their attributes $[{attribute}]$ share an intersection$\{: [{value}]?\}$''.
+    \item ``Two nodes are connected if their attributes $[{attribute}]$ are close, maybe with a difference less than $[{value}]$''.
+    \item ``Two nodes are connected if their attributes $[{attribute}]$ are within the same bin$\{: [{value}]?\}$''.
+\end{compactenum}
 
-``Two nodes are connected if their attributes {\color{blue} [attribute]} share an intersection\{ ({\color{green}[value]})?\}.''
+{\color{text-hightlight}Where $[{attribute}]$ is the name of the attribute, $[{value}]$ is the value of the attribute, and $\{?\}$ means the included part is optional. For example, for Condition 2, two movies are connected because they share same actors Alice and Bob. The condition is represented as: $(\text{``Condition 2''}, \text{``actors''}, [\text{``Alice''}, \text{``Bob''}])$. Its corresponding statement is: ``Two nodes are connected if their attributes ``actors'' share an intersection: [``Alice'', ``Bob'']''.}
 
-``Two nodes are connected if their attributes {\color{blue} [attribute]} are significantly close\{ to {\color{green}[value]})?\}.''
-
-``Two nodes are connected if their attributes {\color{blue} [attribute]} are significantly close\{ to {\color{green}[value]})?\}.''
-
-\subsection{Understanding Visual Encodings}
+\subsection{Visual Encoding}
 %! 首先说明目标是什么
+% 节点链接图，顾名思义，包含两部分：节点和链接。对其进行编码也主要聚焦于这两部分
+
+Node-link diagram basically consists of two pars: nodes and links, as its name implies.
+%! 讲一些背景，svg相关的；
+%! 讲以往工作是怎么做的？
+%! 节点链接图该怎么进行分析？
+%! 以往工作的不足
+
+
+
+
 % 为了能够向观众解释节点链接图的编码是什么，我们希望通过分析创作者使用的图数据，创作者编写的代码，得到他使用的编码方案。我们通过三个层次来叙述节点链接图的编码方案：
 % 1. 节点/链接的组成元素分别是什么？
 % 2. 视觉通道的决定性因素（属性）是什么？
@@ -169,7 +186,7 @@ At last, we textualize the linking condition of the graph by filling templates.
 %!  对嵌套结构（数组/对象）进行说明：没有关系，等详细说明映射方式的时候再决定；
 %! 2 过滤掉会对svg element的tagName和数量产生影响的属性，交换A节点和B节点的其余数据，观察哪些svg的视觉通道发生了变化；然后恢复数据；再交换A节点和C节点的其余数据，观察通道变化；取两次的交集的svg element，它们绑定的数据就是A节点；
 
-\subsection{Understanding Layout}
+\subsection{Layout}
 
 \subsection{Interview \& Iterative Design}
 
