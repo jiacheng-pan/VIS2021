@@ -15,15 +15,26 @@ Another category of methods focus on retrieve data from visualization results.
 % 不同类型的chart需要不同的还原算法，所以每种方法往往聚焦在一个类型的chart上
 Different types of charts require different retrieval algorithm.
 Thus each method most focuses on one type of charts.
-A Modified Probabilistic Hough Transform algorithm (MPHT) was developed to detect parallel lines clusters and it reconstrcts bar patterns from the clusters. It retrieves data from bar charts in raster images even hand-drawn images~\cite{DBLP:conf/icip/ZhouT00}. 
+The Modified Probabilistic Hough Transform algorithm~\cite{DBLP:conf/icip/ZhouT00} was developed to detect parallel lines clusters and it reconstrcts bar patterns from the clusters. It retrieves data from bar charts in raster images even hand-drawn images. 
 A system is developed to extract data from bar charts, pie charts, and line charts with different rules~\cite{DBLP:conf/doceng/HuangT07}. It also extracts textual information and text/graphics association to generate description for charts and their underlying data.
-
-% TODO  View: Visual Information Extraction Widget for improving chart images accessibility
+Similarly, the Visual Information Extraction Widget~\cite{DBLP:conf/icip/GaoZB12} first classifies raster images into pie charts, bar charts, and line charts by extracting geometric features from the raster images. Then it extracts information from both the graphical components and the textural components (e.g., captains, labels, etc.).
 
 % TODO  Access to multimodal articles for individuals with sight impairments
 
 % TODO  Getting computers to see information graphics so users do not have to
 
+% TODO iVoLVER: Interactive Visual Language for Visualization Extraction and Reconstruction
+
+% TODO datathief & WebPlotDigitizer
+
+% TODO ReVision: Automated Classification, Analysis and Redesign of Chart Images
+
+% TODO VISUALIZING FOR THE NON-VISUAL: ENABLING THE VISUALLY IMPAIRED TO USE VISUALIZATION
+
+% TODO Extracting and retargeting color mappints from bitmap images of visualizations
+
+% TODO  Automatic extraction of data from bar charts
+% TODO  Automated data extraction from scholarly line graphs.
 
 % ChartSense: Interactive Data Extraction from Chart Images: 先将图像进行分类，然后利用了一个mixed-initiative approach对图标蕴含的数据进行抽取。人首选指定检测范围和坐标轴等辅助信息，ChartSense算法检测其中包含的图形元素及其蕴含的数据，最后由人挑选检测正确的元素并修改其中错误的数据。
 % Scatteract: Automated Extraction of Data from Scatter Plots: employs deep learning techniques to identify data from scatter plots with linear scales. It is the first approach that fully aumatic extracts data from scatter plots.
