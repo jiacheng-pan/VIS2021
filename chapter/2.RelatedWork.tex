@@ -1,17 +1,42 @@
 \section{Related Work}\label{sec:relatedwork}
 \subsection{Node-link Diagrams}
 \subsection{Extracting Information From Visualization}
-% Reverse-Engineering Visualizations: Recovering Visual Encodings from Chart Images: 从 像素图 中识别文本信息（标题、坐标轴标签等），对文本进行分类和还原，并且用CNN网络来分类mark类型，通过文本和mark类型来恢复编码信息。
+% 抽取信息对于生成描述至关重要。
+Extracting information from visualization is crutial for generating descriptions.
+% 对可视化进行信息抽取的工作大概可以分成两类。
+% 第一类工作聚焦从可视化结果中抽取insight。
+% Chart-to-Text: Generating Natural Language Descriptions for Charts by Adapting the Transformer Model.
+% Contextifier: Automatic generation of annotated stock visualizations.
+% Automatic annotation synchronizing with textual description for visualization.
+% Describing Complex Charts in Natural Language: A Caption Generation System
+
+% 第二类工作聚焦于从各种可视化结果还原潜在数据。
+Another category of methods focus on retrieve data from visualization results.
+% 不同类型的chart需要不同的还原算法，所以每种方法往往聚焦在一个类型的chart上
+Different types of charts require different retrieval algorithm.
+Thus each method most focuses on one type of charts.
+A Modified Probabilistic Hough Transform algorithm (MPHT) was developed to detect parallel lines clusters and it reconstrcts bar patterns from the clusters. It retrieves data from bar charts in raster images even hand-drawn images~\cite{DBLP:conf/icip/ZhouT00}. 
+A system is developed to extract data from bar charts, pie charts, and line charts with different rules~\cite{DBLP:conf/doceng/HuangT07}. It also extracts textual information and text/graphics association to generate description for charts and their underlying data.
+
+% TODO  View: Visual Information Extraction Widget for improving chart images accessibility
+
+% TODO  Access to multimodal articles for individuals with sight impairments
+
+% TODO  Getting computers to see information graphics so users do not have to
+
 
 % ChartSense: Interactive Data Extraction from Chart Images: 先将图像进行分类，然后利用了一个mixed-initiative approach对图标蕴含的数据进行抽取。人首选指定检测范围和坐标轴等辅助信息，ChartSense算法检测其中包含的图形元素及其蕴含的数据，最后由人挑选检测正确的元素并修改其中错误的数据。
+% Scatteract: Automated Extraction of Data from Scatter Plots: employs deep learning techniques to identify data from scatter plots with linear scales. It is the first approach that fully aumatic extracts data from scatter plots.
+% 
+
+% 第三类工作聚焦于从可视化结果中还原可视编码
+% Reverse-Engineering Visualizations: Recovering Visual Encodings from Chart Images: 从 像素图 中识别文本信息（标题、坐标轴标签等），对文本进行分类和还原，并且用CNN网络来分类mark类型，通过文本和mark类型来恢复编码信息。
 
 % Deconstructing and restyling D3 visualizations: 使用了d3数据绑定的特性，直接从svg元素的__data__属性中读取其绑定的数据，然后用线性回归等方法检验元素的视觉属性和数据属性之间的映射关系来获取编码。
-
 % Converting basic D3 charts into reusable style templates 和 Searching the Visual Style and Structure of D3 Visualizations 对 Decons.. 进行了改进。前者围绕着图表中蕴含的label（数据点的label和坐标轴的label）进行了更加细致的分类；后者则为该方法增加了一些新的检测目标：比如对角度的检测，对非编码的视觉通道（background color, stroke-width等）的检测等。
 
-% Chart-to-Text: Generating Natural Language Descriptions for Charts by Adapting the Transformer Model.
-% Contextifier: Automatic generation of annotated stock visualizations.
-% Automatic annotation synchronizing with textual description for visualization.
+% Visualizing for the Non-Visual: Enabling the Visually Impaired to Use Visualization ：
 
-% Onboarding
-%  Visualization onboarding: Learning how to read and use visualizations.
+
+% 这些方法或是只适用于检测基础的可视化图表如bar chart/line chart/area chart等，或是只适用于对d3等具有数据绑定的svg进行编码提取。
+% 我们提出了对节点链接图进行信息提取的方法，该方法从多个角度出发，适用于通用的svg场景，而不需要数据绑定的前提。
