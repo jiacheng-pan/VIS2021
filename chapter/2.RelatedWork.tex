@@ -1,47 +1,58 @@
 \section{Related Work}\label{sec:relatedwork}
 \subsection{Node-link Diagrams}
-\subsection{Extracting Information From Visualization}
+\subsection{Visualization Interpretation}
 % 抽取信息对于生成描述至关重要。
-Extracting information from visualization is crutial for generating descriptions.
-% 对可视化进行信息抽取的工作大概可以分成两类。
-% 第一类工作聚焦从可视化结果中抽取insight。
-% Chart-to-Text: Generating Natural Language Descriptions for Charts by Adapting the Transformer Model.
-% Contextifier: Automatic generation of annotated stock visualizations.
+Extracting information from visualization is crutial for automatic interpretation and description.
+
+% 第1类工作聚焦于从各种可视化结果还原潜在数据。这些工作很多以ocr的方法读取图表中的文本信息，结合坐标轴等辅助的component，对基本图表中蕴含的数据进行还原。
+Numerous methods are proposed to interprete visualizations by retrieving data from raster images.
+They usually employ Optical Character Recongnition (OCR) to extract textual information from captains, labels, and axes.
+Data can be retrieved in combination of OCR techniques and graphics detection techniques~\cite{DBLP:conf/icip/ZhouT00, DBLP:conf/doceng/HuangT07}.
+% xxxx 对光栅图进行了分类，从而不需要控制输入的图片为某一个特定类型。
+The Visual Information Extraction Widget~\cite{DBLP:conf/icip/GaoZB12} provides a  classification algorithm before extracting information from raster images
+It classifies charts into pie charts, bar charts, and line charts by extracting geometric features.
+ChartSense~\cite{DBLP:conf/chi/JungKSHLKS17} improves such classification and data extraction with deep learning methods. More types of charts such as area charts, radar charts, etc. are supported with its mixed-initiative approach. 
+% 一些方法利用这些抽取结果，完成了更多的，更复杂的任务。
+Several works employ the extracted results to fulfill various tasks.
+iVolVER~\cite{DBLP:conf/chi/MendezNV16} supports transformation of the extarcted data. Based on such results, users can construct interactive animated visualizations with the system.
+ReVision~\cite{DBLP:conf/uist/SavvaKCFAH11} supports the data extraction from 10 types of charts (e.g., maps, Pareto charts, scatter plots, etc.). With such extracted data, it populate a gallery of alternative redesgined visualizations.
+% 还有一些工作将从基础图表中抽取的数据信息，转化为xml的格式，方便一些视觉残障的人读取可视化图表。
+Approaches which generate XML representation information (mainly the underlying data) from basic charts are proposed to assist individuals with sight impairments~\cite{DBLP:conf/ismis/ChesterE05, DBLP:journals/tiis/CarberrySMDWGCSOM12, DBLP:journals/cgf/ChoiJPCE19}. 
+
+% 使用这类工作能够进行的描述，只能围绕着underlying data。
+% 然而，我们的方法更加关注于生成描述创作过程的文本，向观众传达创作者创作节点链接图的目的，帮助创作者省去编写解释性描述的工作。
+%TODO
+
+
+% 第2类工作聚焦从可视化结果中抽取insight。相比于前面的工作，这类工作更加关心数据蕴含的以及可视化所表现的pattern。
+Another category of methods aim to generate insight descriptions.
+Compared to methods above, this category cares more about patterns implied in the visualization and its underlying data.
+
+% An automatic question answering pipeline~\cite{Answering Questions about Charts and Generating Visual Explanations} about bar charts and line charts is proposed to answering natural language questions. It extends Sempre~\cite{Compositional Semantic Parsing on Semi-Structured Tables, Macro Grammars and Holistic Triggering for Efficient Semantic Parsing} to answer questions about charts with Vega-Lite~\cite{} format and give visual explanations.
+
+% AutoCaption~\cite{DBLP:conf/apvis/LiuXHWY20} parses textual and visual components and generates a formatted infromation table. It then extracts a set of pre-defined features from the table and fills templates to generate descriptions such as trends, maximum values, clusters, and so on.
+
+% A Diagram Is Worth A Dozen Images
+
+% DVQA
+
+% Chart-to-Text: Generating Natural Language Descriptions for Charts by Adapting the Transformer Model. 使用了transformer模型为 line charts 和 bar charts 生成自然语言描述，其训练数据不仅包括chart本身，也包括了其underlying data。
+
+% Contextifier: Automatic generation of annotated stock visualizations. 为股票可视化中的走势行为匹配对应的新闻，使之变得可解释。
+
 % Automatic annotation synchronizing with textual description for visualization.
 % Describing Complex Charts in Natural Language: A Caption Generation System
-
-% 第二类工作聚焦于从各种可视化结果还原潜在数据。
-Another category of methods focus on retrieve data from visualization results.
-% 不同类型的chart需要不同的还原算法，所以每种方法往往聚焦在一个类型的chart上
-Different types of charts require different retrieval algorithm.
-Thus each method most focuses on one type of charts.
-The Modified Probabilistic Hough Transform algorithm~\cite{DBLP:conf/icip/ZhouT00} was developed to detect parallel lines clusters and it reconstrcts bar patterns from the clusters. It retrieves data from bar charts in raster images even hand-drawn images. 
-A system is developed to extract data from bar charts, pie charts, and line charts with different rules~\cite{DBLP:conf/doceng/HuangT07}. It also extracts textual information and text/graphics association to generate description for charts and their underlying data.
-Similarly, the Visual Information Extraction Widget~\cite{DBLP:conf/icip/GaoZB12} first classifies raster images into pie charts, bar charts, and line charts by extracting geometric features from the raster images. Then it extracts information from both the graphical components and the textural components (e.g., captains, labels, etc.).
-
-% TODO  Access to multimodal articles for individuals with sight impairments
-
-% TODO  Getting computers to see information graphics so users do not have to
-
-% TODO iVoLVER: Interactive Visual Language for Visualization Extraction and Reconstruction
-
-% TODO datathief & WebPlotDigitizer
-
-% TODO ReVision: Automated Classification, Analysis and Redesign of Chart Images
-
-% TODO VISUALIZING FOR THE NON-VISUAL: ENABLING THE VISUALLY IMPAIRED TO USE VISUALIZATION
-
-% TODO Extracting and retargeting color mappints from bitmap images of visualizations
-
-% TODO  Automatic extraction of data from bar charts
-% TODO  Automated data extraction from scholarly line graphs.
+% DVQA: Understanding Data Visualizations via Question Answering
 
 % ChartSense: Interactive Data Extraction from Chart Images: 先将图像进行分类，然后利用了一个mixed-initiative approach对图标蕴含的数据进行抽取。人首选指定检测范围和坐标轴等辅助信息，ChartSense算法检测其中包含的图形元素及其蕴含的数据，最后由人挑选检测正确的元素并修改其中错误的数据。
 % Scatteract: Automated Extraction of Data from Scatter Plots: employs deep learning techniques to identify data from scatter plots with linear scales. It is the first approach that fully aumatic extracts data from scatter plots.
-% 
+
+
 
 % 第三类工作聚焦于从可视化结果中还原可视编码
 % Reverse-Engineering Visualizations: Recovering Visual Encodings from Chart Images: 从 像素图 中识别文本信息（标题、坐标轴标签等），对文本进行分类和还原，并且用CNN网络来分类mark类型，通过文本和mark类型来恢复编码信息。
+
+% TODO Extracting and retargeting color mappints from bitmap images of visualizations
 
 % Deconstructing and restyling D3 visualizations: 使用了d3数据绑定的特性，直接从svg元素的__data__属性中读取其绑定的数据，然后用线性回归等方法检验元素的视觉属性和数据属性之间的映射关系来获取编码。
 % Converting basic D3 charts into reusable style templates 和 Searching the Visual Style and Structure of D3 Visualizations 对 Decons.. 进行了改进。前者围绕着图表中蕴含的label（数据点的label和坐标轴的label）进行了更加细致的分类；后者则为该方法增加了一些新的检测目标：比如对角度的检测，对非编码的视觉通道（background color, stroke-width等）的检测等。
