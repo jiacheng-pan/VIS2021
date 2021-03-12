@@ -1,8 +1,8 @@
 \section{Related Work}\label{sec:relatedwork}
 \subsection{Node-link Diagrams}
-\subsection{Visualization Interpretation}
+\subsection{Extracting Information from Visualization}
 % 抽取信息对于生成描述至关重要。
-Extracting information from visualization is crutial for automatic interpretation and description.
+To generate captions for visualizations, it is crutial to extracting information automatically.
 
 % 第1类工作聚焦于从各种可视化结果还原潜在数据。这些工作很多以ocr的方法读取图表中的文本信息，结合坐标轴等辅助的component，对基本图表中蕴含的数据进行还原。
 Numerous methods are proposed to interprete visualizations by retrieving data from raster images.
@@ -18,33 +18,41 @@ iVolVER~\cite{DBLP:conf/chi/MendezNV16} supports transformation of the extarcted
 ReVision~\cite{DBLP:conf/uist/SavvaKCFAH11} supports the data extraction from 10 types of charts (e.g., maps, Pareto charts, scatter plots, etc.). With such extracted data, it populate a gallery of alternative redesgined visualizations.
 % 还有一些工作将从基础图表中抽取的数据信息，转化为xml的格式，方便一些视觉残障的人读取可视化图表。
 Approaches which generate XML representation information (mainly the underlying data) from basic charts are proposed to assist individuals with sight impairments~\cite{DBLP:conf/ismis/ChesterE05, DBLP:journals/tiis/CarberrySMDWGCSOM12, DBLP:journals/cgf/ChoiJPCE19}. 
-
-% 使用这类工作能够进行的描述，只能围绕着underlying data。
-% 然而，我们的方法更加关注于生成描述创作过程的文本，向观众传达创作者创作节点链接图的目的，帮助创作者省去编写解释性描述的工作。
-%TODO
-
+% 使用这类工作能够进行的描述，只能围绕着underlying data，缺少对于可视化本身的关注。
+% 然而，我们的方法更加关注于生成标题性质的文本，向观众传达创作者创作节点链接图的目的，帮助创作者省去编写标题的工作。
+They mainly aim to obtain the underlying data from visualization results, and most focus on standard charts such as line charts, bar charts, and pie charts.
+However, visualization creators usually convey their ideas through visual encodings, layouts, and so on.
+Our approach aims to generate captions to show how visualizations are created.
 
 % 第2类工作聚焦从可视化结果中抽取insight。相比于前面的工作，这类工作更加关心数据蕴含的以及可视化所表现的pattern。
 Another category of methods aim to generate insight descriptions.
 Compared to methods above, this category cares more about patterns implied in the visualization and its underlying data.
 
-% An automatic question answering pipeline~\cite{Answering Questions about Charts and Generating Visual Explanations} about bar charts and line charts is proposed to answering natural language questions. It extends Sempre~\cite{Compositional Semantic Parsing on Semi-Structured Tables, Macro Grammars and Holistic Triggering for Efficient Semantic Parsing} to answer questions about charts with Vega-Lite~\cite{} format and give visual explanations.
+% 一些工作通过回答问题的方式来提取insight.
+Several approaches concern about extracting insight through answering questions about visualizations.~\cite{DBLP:conf/cvpr/KaflePCK18, DBLP:conf/chi/KimHA20, DBLP:conf/eccv/KembhaviSKSHF16}.
+Kembhavi et al.~\cite{DBLP:conf/eccv/KembhaviSKSHF16} provide a solution of the question answering problem. It aims to interprete the relationships among multiple scientific diagrams in one picture. It introduces Diagram Parse Graphs (DGP) to model the relationships and devises a DPG-based attention model for question answering.
+To support bar chart question answering, a dataset called DVQA~\cite{DBLP:conf/cvpr/KaflePCK18} is presented with more than 3 million image-question pairs about bar charts. An end-to-end neural network and a dynamic local dictionary are designed to indicate the ability of the dataset.
+More recently, an automatic question answering pipeline~\cite{DBLP:conf/chi/KimHA20} about bar charts and line charts is proposed to answering natural language questions. It extends Sempre~\cite{DBLP:conf/acl/PasupatL15, DBLP:conf/emnlp/ZhangPL17} to answer questions about charts with Vega-Lite~\cite{DBLP:journals/tvcg/SatyanarayanMWH17} format and give visual explanations.
 
-% AutoCaption~\cite{DBLP:conf/apvis/LiuXHWY20} parses textual and visual components and generates a formatted infromation table. It then extracts a set of pre-defined features from the table and fills templates to generate descriptions such as trends, maximum values, clusters, and so on.
+AutoCaption~\cite{DBLP:conf/apvis/LiuXHWY20} parses textual and visual components and generates a formatted infromation table. It then extracts a set of pre-defined features from the table and fills templates to generate descriptions such as trends, maximum values, clusters, and so on.
 
-% A Diagram Is Worth A Dozen Images
-
-% DVQA
+Several works employ the extracted insights to augment visualizations~\cite{DBLP:conf/ieeevast/Kandogan12, DBLP:journals/tvcg/BryanMW17, DBLP:journals/tvcg/SrinivasanDES19}.
+Kandongan~\cite{DBLP:conf/ieeevast/Kandogan12} introduced the concept of just-in-time descriptive analytics to help users understand data in point-based visualizations (e.g., scatter plots, line charts, etc.). 
+The fundamental is to identify clusters, outliers, and trends from visualizations and enrich visualizations with annotation.
+Srinivasan et al. presented Voder~\cite{DBLP:journals/tvcg/SrinivasanDES19}, a system to generate and order data facts (descriptions of data statistics) automatically. Data facts are generated based on a basic set of heuristics and are used as interactive widgets to improve user interpretion.
 
 % Chart-to-Text: Generating Natural Language Descriptions for Charts by Adapting the Transformer Model. 使用了transformer模型为 line charts 和 bar charts 生成自然语言描述，其训练数据不仅包括chart本身，也包括了其underlying data。
 
 % Contextifier: Automatic generation of annotated stock visualizations. 为股票可视化中的走势行为匹配对应的新闻，使之变得可解释。
 
-% Automatic annotation synchronizing with textual description for visualization.
-% Describing Complex Charts in Natural Language: A Caption Generation System
-% DVQA: Understanding Data Visualizations via Question Answering
+% TODO: Describing Complex Charts in Natural Language: A Caption Generation System
+% TODO: DataShot: Automatic Generation of Fact Sheets from Tabular Data
+% TODO: Foresight: Recommending Visual Insights 
+% TODO: Recognizing the Intended Message of Line Graphs
+% TODO: Interactive SIGHT: textual access to simple bar charts
+% TODO: NewsViews: an automated pipeline for creating custom geovisualizations for news
+% TODO: Graphical Overlays: Using Layered Elements to Aid Chart Reading
 
-% ChartSense: Interactive Data Extraction from Chart Images: 先将图像进行分类，然后利用了一个mixed-initiative approach对图标蕴含的数据进行抽取。人首选指定检测范围和坐标轴等辅助信息，ChartSense算法检测其中包含的图形元素及其蕴含的数据，最后由人挑选检测正确的元素并修改其中错误的数据。
 % Scatteract: Automated Extraction of Data from Scatter Plots: employs deep learning techniques to identify data from scatter plots with linear scales. It is the first approach that fully aumatic extracts data from scatter plots.
 
 
@@ -59,6 +67,9 @@ Compared to methods above, this category cares more about patterns implied in th
 
 % Visualizing for the Non-Visual: Enabling the Visually Impaired to Use Visualization ：
 
+
+
+% Automatic Annotation Synchronizing with Textual Description for Visualization %! 这篇文章的related work再看看
 
 % 这些方法或是只适用于检测基础的可视化图表如bar chart/line chart/area chart等，或是只适用于对d3等具有数据绑定的svg进行编码提取。
 % 我们提出了对节点链接图进行信息提取的方法，该方法从多个角度出发，适用于通用的svg场景，而不需要数据绑定的前提。
