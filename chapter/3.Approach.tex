@@ -123,7 +123,7 @@ The intersection of all links' conditions are regarded as the entire graph's lin
 
 % 为了能够将这些condition填充到文本模板中，我们对condition的输出进行了formalize
 At last, we formalize the condition as three aspects, and textualize the linking condition of the graph by filling templates. 
-{\color{text-hightlight}One condition can be defined as:}
+{\color{text-highlight}One condition can be defined as:}
 \begin{equation}
     \text{linking condition} := ( type, attribute, value )
 \end{equation}
@@ -136,7 +136,7 @@ Four templates corresponds to four conditions according the $type$:
     \item ``Two nodes are connected if their attributes $[{attribute}]$ are within the same bin$\{: [{value}]?\}$''.
 \end{compactenum}
 
-{\color{text-hightlight}Where $[{attribute}]$ is the name of the attribute, $[{value}]$ is the value of the attribute, and $\{?\}$ means the included part is optional. For example, for Condition 2, two movies are connected because they share same actors Alice and Bob. The condition is represented as: $(\text{``Condition 2''}, \text{``actors''}, [\text{``Alice''}, \text{``Bob''}])$. Its corresponding statement is: ``Two nodes are connected if their attributes ``actors'' share an intersection: [``Alice'', ``Bob'']''.}
+{\color{text-highlight}Where $[{attribute}]$ is the name of the attribute, $[{value}]$ is the value of the attribute, and $\{?\}$ means the included part is optional. For example, for Condition 2, two movies are connected because they share same actors Alice and Bob. The condition is represented as: $(\text{``Condition 2''}, \text{``actors''}, [\text{``Alice''}, \text{``Bob''}])$. Its corresponding statement is: ``Two nodes are connected if their attributes ``actors'' share an intersection: [``Alice'', ``Bob'']''.}
 
 \subsection{Visual Encoding}
 %! 首先说明目标是什么

@@ -1,75 +1,102 @@
 \section{Related Work}\label{sec:relatedwork}
-\subsection{Node-link Diagrams}
-\subsection{Extracting Information from Visualization}
-% 抽取信息对于生成描述至关重要。
-To generate captions for visualizations, it is crutial to extracting information automatically.
+%! related work 的目的，是给审稿人看你的文章到底做了什么，到底哪些工作是跟你类似的，需要在这里跟他们撇清关系。
+\subsection{Node-link Diagram}
+Node-link diagrams are widely used to reveal topology and relationships between entities.
+We aim to generate captions for node-link diagrams with visual encodings, which means the underlying graphs are attributed.
+Nobre et al.~\cite{DBLP:journals/cgf/NobreMSL19} surveyed numerous multiviriate graph visualization techniques.
+And Partl et al.~\cite{DBLP:conf/biovis/PartlKLKSS12} discuss four categories of multivariate node-link diagram layouts.
+Node-link diagrams can encode node attributes and link attributes within their related visual elements.
 
+% 对节点而言，最基础的编码可以将标签编码为文本，将节点的大小编码数值型属性，将节点的颜色编码类别型属性。
+% 更复杂的编码中，节点还被编码成一个嵌入的图表，
+For a node, attributes are basically encoded with its size, color, and shape.
+To encode diverse attributes, techniques usually embed complex constitution into one node~\cite{DBLP:conf/infovis/AuberCJM03}.
+For example, charts such as line charts, box plots, bar charts, and so on are usually used as nodes in the biology domain~\cite{gehlenborg2010visualization, DBLP:conf/iv/JusufiDK10}.
+Photos, icons, or customized glyphs are also often used to encode node attributes~\cite{DBLP:conf/chi/DunneS13}.
+Graph visualization tools such as Cytoscape~\cite{DBLP:journals/bioinformatics/FranzLHDSB16}, Gephi~\cite{DBLP:conf/icwsm/BastianHJ09}, NetV.js~\cite{HAN2021} can handle varying degrees attributes embedding in node-link diagrams.
+Positions of nodes are usually considered as the crutial part of node-link diagrams.
+Mostly, nodes positions are computed by topology-driven layout algorithms~\cite{DBLP:journals/spe/FruchtermanR91, DBLP:journals/cgf/KruigerRMKKT17, DBLP:journals/tvcg/GansnerHN13, DBLP:journals/tvcg/ZhuCHHLZ21} to show the graph distance.
+Attribute-driven layouts are also prefered in several cases.
+For example, spatial graphs contain geographic coordinates, so that the position of nodes will be used to encoded the longitude and latitude~\cite{DBLP:journals/tvcg/ElzenW14, DBLP:journals/tvcg/Guo09}.
+
+Visual channels of links such as width~\cite{Katz_2015}, color~\cite{DBLP:journals/tvcg/Guo09}, and dashes~\cite{DBLP:journals/bmcbi/JunkerKS06} can also be modified to support attributed links.
+For more complex cases, links can also incoporate multiple visual elements.
+Sch{\"{o}}ffel et al.~\cite{DBLP:conf/iv/SchoffelSE16} encoded the link with bar charts to visualize multiple link attributes.
+Abyss Explorer~\cite{DBLP:journals/tvcg/NielsenJBJ09} ``wiggles'' the edges and encode edge attributes with its length.
+Compared to nodes, links have less space for attributes encoding.
+
+% 这些工作为我们的工作提供了很多很优秀的案例，我们的工作将会围绕这些案例进行展开，为带有不同编码方案的节点链接图生成相关描述作为标题。
+These techniques provide numerous cases for our approach.
+We aim to generate relevant descriptions as captions for node-link diagrams with diverse encoding schemes.
+
+\subsection{Information Extraction of Visualization}
+% ! Data
 % 第1类工作聚焦于从各种可视化结果还原潜在数据。这些工作很多以ocr的方法读取图表中的文本信息，结合坐标轴等辅助的component，对基本图表中蕴含的数据进行还原。
 Numerous methods are proposed to interprete visualizations by retrieving data from raster images.
-They usually employ Optical Character Recongnition (OCR) to extract textual information from captains, labels, and axes.
-Data can be retrieved in combination of OCR techniques and graphics detection techniques~\cite{DBLP:conf/icip/ZhouT00, DBLP:conf/doceng/HuangT07}.
+Methods that deal with multi-types of charts usually provides a classification algorithm to classify charts in the beginning~\cite{DBLP:conf/icip/GaoZB12, DBLP:conf/chi/JungKSHLKS17, DBLP:conf/eccv/SiegelHLDF16, DBLP:journals/vlc/DaiWNZ18}.
+Then, Optical Character Recongnition (OCR) are employed to detect textual information from captains, labels, and axes~\cite{DBLP:conf/icip/ZhouT00, DBLP:conf/doceng/HuangT07, DBLP:conf/grec/HuangTL03}.
+Data can be retrieved in combination of OCR techniques and graphics detection techniques.
 % xxxx 对光栅图进行了分类，从而不需要控制输入的图片为某一个特定类型。
-The Visual Information Extraction Widget~\cite{DBLP:conf/icip/GaoZB12} provides a  classification algorithm before extracting information from raster images
-It classifies charts into pie charts, bar charts, and line charts by extracting geometric features.
-ChartSense~\cite{DBLP:conf/chi/JungKSHLKS17} improves such classification and data extraction with deep learning methods. More types of charts such as area charts, radar charts, etc. are supported with its mixed-initiative approach. 
+% ChartSense~\cite{DBLP:conf/chi/JungKSHLKS17}, FigureSeer~\cite{DBLP:conf/eccv/SiegelHLDF16}, and Chart decoder~\cite{DBLP:journals/vlc/DaiWNZ18} improve such classification and data extraction with deep learning methods. And more types of charts such as area charts, radar charts, etc. are supported in ChartSense and Chart decoder. 
 % 一些方法利用这些抽取结果，完成了更多的，更复杂的任务。
-Several works employ the extracted results to fulfill various tasks.
-iVolVER~\cite{DBLP:conf/chi/MendezNV16} supports transformation of the extarcted data. Based on such results, users can construct interactive animated visualizations with the system.
-ReVision~\cite{DBLP:conf/uist/SavvaKCFAH11} supports the data extraction from 10 types of charts (e.g., maps, Pareto charts, scatter plots, etc.). With such extracted data, it populate a gallery of alternative redesgined visualizations.
+These methods are extended to solve more kinds of charts~\cite{DBLP:conf/pkdd/ClicheRMY17, DBLP:conf/uist/SavvaKCFAH11} and fulfill more diverse tasks.
+iVolVER~\cite{DBLP:conf/chi/MendezNV16} supports transformation of the extarcted data to construct interactive animated visualizations.
+% Scatteract~\cite{DBLP:conf/pkdd/ClicheRMY17} employs deep learning techniques to identify data from scatter plots with linear scales.
+ReVision~\cite{DBLP:conf/uist/SavvaKCFAH11} populates a gallery of alternative redesgined visualizations.
+More recently, Chartem~\cite{DBLP:journals/tvcg/FuZCGWZHTZM21} extracts data and embeds it back into the chart to facilitate visualization spread.
+More related to graphs, Henkel et al.~\cite{DBLP:conf/vmv/HenkelKLG20} and Lee et al.~\cite{DBLP:conf/icdar/LeeYWH17} retrieved tree-structured data from treemaps and dendrograms.
 % 还有一些工作将从基础图表中抽取的数据信息，转化为xml的格式，方便一些视觉残障的人读取可视化图表。
-Approaches which generate XML representation information (mainly the underlying data) from basic charts are proposed to assist individuals with sight impairments~\cite{DBLP:conf/ismis/ChesterE05, DBLP:journals/tiis/CarberrySMDWGCSOM12, DBLP:journals/cgf/ChoiJPCE19}. 
-% 使用这类工作能够进行的描述，只能围绕着underlying data，缺少对于可视化本身的关注。
-% 然而，我们的方法更加关注于生成标题性质的文本，向观众传达创作者创作节点链接图的目的，帮助创作者省去编写标题的工作。
-They mainly aim to obtain the underlying data from visualization results, and most focus on standard charts such as line charts, bar charts, and pie charts.
-However, visualization creators usually convey their ideas through visual encodings, layouts, and so on.
-Our approach aims to generate captions to show how visualizations are created.
+Several other approaches are proposed to assist individuals with sight impairments~\cite{DBLP:conf/ismis/ChesterE05, DBLP:journals/tiis/CarberrySMDWGCSOM12, DBLP:journals/cgf/ChoiJPCE19}.
 
-% 第2类工作聚焦从可视化结果中抽取insight。相比于前面的工作，这类工作更加关心数据蕴含的以及可视化所表现的pattern。
-Another category of methods aim to generate insight descriptions.
-Compared to methods above, this category cares more about patterns implied in the visualization and its underlying data.
+% ! Insights
+Another type of methods are aimed to extract insights from visualizations~\cite{DBLP:conf/diagrams/WuCEC10, DBLP:journals/nrhm/DemirOSECMC10} and corresponding data~\cite{DBLP:conf/inlg/ObeidH20, DBLP:journals/ivs/CuiBYE19}.
+Insights are usually defined as a strong manifestation of the data or the visualization~\cite{DBLP:journals/pvldb/DemiralpHPP17}.
+They have different preferences according to their inputs.
+For example, inputs of Chart-to-Text~\cite{DBLP:conf/inlg/ObeidH20} mainly come from the corresponding data table. % and only one input, the chart type, comes from the visualization.
+In contrast, Wu et al.~\cite{DBLP:conf/diagrams/WuCEC10} and Demir et al.~\cite{DBLP:journals/nrhm/DemirOSECMC10} recomended the underlying intention of line charts and bar charts by detecting the most significant features.
+AutoCaption~\cite{DBLP:conf/apvis/LiuXHWY20} first parses textual and visual components to a formatted information table which incoporates the underlying data.
+Then it extracts a set of pre-defined features as insights from the table.
+Several works employ the extracted insights to augment visualizations by annotation~\cite{DBLP:conf/ieeevast/Kandogan12}, overlays~\cite{DBLP:journals/tvcg/KongA12}, widgets~\cite{DBLP:journals/tvcg/SrinivasanDES19}, and so on.
+% Kandongan~\cite{DBLP:conf/ieeevast/Kandogan12} introduced the concept of just-in-time descriptive analytics to help users understand data in point-based visualizations (e.g., scatter plots, line charts, etc.). 
+% The fundamental is to identify clusters, outliers, and trends from visualizations.
+% Srinivasan et al. presented Voder~\cite{DBLP:journals/tvcg/SrinivasanDES19}, a system to generate data facts (descriptions of data statistics) based on a basic set of heuristics.
+% Then the facts are used as interactive widgets to improve user interpretion.
+% Graphical Overlays~\cite{DBLP:journals/tvcg/KongA12} takes the insights to generate graphical overlays on charts to draw the viewer's attention.
 
-% 一些工作通过回答问题的方式来提取insight.
-Several approaches concern about extracting insight through answering questions about visualizations.~\cite{DBLP:conf/cvpr/KaflePCK18, DBLP:conf/chi/KimHA20, DBLP:conf/eccv/KembhaviSKSHF16}.
-Kembhavi et al.~\cite{DBLP:conf/eccv/KembhaviSKSHF16} provide a solution of the question answering problem. It aims to interprete the relationships among multiple scientific diagrams in one picture. It introduces Diagram Parse Graphs (DGP) to model the relationships and devises a DPG-based attention model for question answering.
-To support bar chart question answering, a dataset called DVQA~\cite{DBLP:conf/cvpr/KaflePCK18} is presented with more than 3 million image-question pairs about bar charts. An end-to-end neural network and a dynamic local dictionary are designed to indicate the ability of the dataset.
-More recently, an automatic question answering pipeline~\cite{DBLP:conf/chi/KimHA20} about bar charts and line charts is proposed to answering natural language questions. It extends Sempre~\cite{DBLP:conf/acl/PasupatL15, DBLP:conf/emnlp/ZhangPL17} to answer questions about charts with Vega-Lite~\cite{DBLP:journals/tvcg/SatyanarayanMWH17} format and give visual explanations.
+These two types of methods mainly aim to obtain the underlying data from visualization results or generate insights from the underlying data, 
+and mostly focus on standard charts such as line charts, bar charts, and pie charts.
+Our approach concerns more about the intent conveyed by creators through visual encodings, layouts, and so on.
+Thus, methods that extract visual encodings from visualizations are more related.%?
 
-AutoCaption~\cite{DBLP:conf/apvis/LiuXHWY20} parses textual and visual components and generates a formatted infromation table. It then extracts a set of pre-defined features from the table and fills templates to generate descriptions such as trends, maximum values, clusters, and so on.
-
-Several works employ the extracted insights to augment visualizations~\cite{DBLP:conf/ieeevast/Kandogan12, DBLP:journals/tvcg/BryanMW17, DBLP:journals/tvcg/SrinivasanDES19}.
-Kandongan~\cite{DBLP:conf/ieeevast/Kandogan12} introduced the concept of just-in-time descriptive analytics to help users understand data in point-based visualizations (e.g., scatter plots, line charts, etc.). 
-The fundamental is to identify clusters, outliers, and trends from visualizations and enrich visualizations with annotation.
-Srinivasan et al. presented Voder~\cite{DBLP:journals/tvcg/SrinivasanDES19}, a system to generate and order data facts (descriptions of data statistics) automatically. Data facts are generated based on a basic set of heuristics and are used as interactive widgets to improve user interpretion.
-
-% Chart-to-Text: Generating Natural Language Descriptions for Charts by Adapting the Transformer Model. 使用了transformer模型为 line charts 和 bar charts 生成自然语言描述，其训练数据不仅包括chart本身，也包括了其underlying data。
-
-% Contextifier: Automatic generation of annotated stock visualizations. 为股票可视化中的走势行为匹配对应的新闻，使之变得可解释。
-
-% TODO: Describing Complex Charts in Natural Language: A Caption Generation System
-% TODO: DataShot: Automatic Generation of Fact Sheets from Tabular Data
-% TODO: Foresight: Recommending Visual Insights 
-% TODO: Recognizing the Intended Message of Line Graphs
-% TODO: Interactive SIGHT: textual access to simple bar charts
-% TODO: NewsViews: an automated pipeline for creating custom geovisualizations for news
-% TODO: Graphical Overlays: Using Layered Elements to Aid Chart Reading
-
-% Scatteract: Automated Extraction of Data from Scatter Plots: employs deep learning techniques to identify data from scatter plots with linear scales. It is the first approach that fully aumatic extracts data from scatter plots.
-
-
-
-% 第三类工作聚焦于从可视化结果中还原可视编码
-% Reverse-Engineering Visualizations: Recovering Visual Encodings from Chart Images: 从 像素图 中识别文本信息（标题、坐标轴标签等），对文本进行分类和还原，并且用CNN网络来分类mark类型，通过文本和mark类型来恢复编码信息。
-
-% TODO Extracting and retargeting color mappints from bitmap images of visualizations
-
-% Deconstructing and restyling D3 visualizations: 使用了d3数据绑定的特性，直接从svg元素的__data__属性中读取其绑定的数据，然后用线性回归等方法检验元素的视觉属性和数据属性之间的映射关系来获取编码。
-% Converting basic D3 charts into reusable style templates 和 Searching the Visual Style and Structure of D3 Visualizations 对 Decons.. 进行了改进。前者围绕着图表中蕴含的label（数据点的label和坐标轴的label）进行了更加细致的分类；后者则为该方法增加了一些新的检测目标：比如对角度的检测，对非编码的视觉通道（background color, stroke-width等）的检测等。
-
-% Visualizing for the Non-Visual: Enabling the Visually Impaired to Use Visualization ：
-
-
-
-% Automatic Annotation Synchronizing with Textual Description for Visualization %! 这篇文章的related work再看看
+%! visual mapping
+Poco and Heer~\cite{DBLP:journals/cgf/PocoH17} proposed an reverse-engineering approach to recover visual encodings from area charts, bar charts, line charts, and scatter plots. However, they% only focused on detecting text information and marker types, but 
+did not infer visual channels such as color, shape, size, and so on.
+Then they complemented the lack of color mapping with continuous legends~\cite{DBLP:journals/tvcg/PocoMH18} and discrete legends~\cite{DBLP:conf/sibgrapi/MayhuaNHP18}.
+Both two works depend on OCR techniques to extract information from texts.
+Yuan et al.~\cite{DBLP:journals/corr/abs-2103-00741} presented a deep learning method to detect the color mappings such that textual-legends are no more required.
+These methods mostly extracts visual encodings from raster images, but with the emergence of D3~\cite{DBLP:journals/tvcg/BostockOH11}, web-based visualization is more popular now.
+Visual encodings extraction can be more diverse and accurate with the data binding feature of D3.
+Harper and Agrawala~\cite{DBLP:conf/uist/HarperA14} introduced a tool to deconstruct D3 visualizations by extracting the binded data, markers, and visual mappings. 
+They enhanced the tool to identify textual information and employed it to generate reusable style templates~\cite{DBLP:journals/tvcg/HarperA18} followed by Hoque and Agrawala~\cite{DBLP:journals/tvcg/HoqueA20}. % enhanced the tool again with more detection target such as angles, arcs, and so on. With the tool, they presented a search engine that can index D3 visualizations based on the extarcted information.
 
 % 这些方法或是只适用于检测基础的可视化图表如bar chart/line chart/area chart等，或是只适用于对d3等具有数据绑定的svg进行编码提取。
 % 我们提出了对节点链接图进行信息提取的方法，该方法从多个角度出发，适用于通用的svg场景，而不需要数据绑定的前提。
+Methods that extract visual mappings from raster images~\cite{DBLP:journals/cgf/PocoH17, DBLP:journals/tvcg/PocoMH18, DBLP:conf/sibgrapi/MayhuaNHP18, DBLP:journals/corr/abs-2103-00741} can be more capable to common cases, but they are mostly designed to basic charts or only can detect several pre-defined visual mapping types.
+Whereas, methods that deconstruct D3 visualizations~\cite{DBLP:conf/uist/HarperA14, DBLP:journals/tvcg/HarperA18, DBLP:journals/tvcg/HoqueA20} can be applicable to more kinds of visual mappings, but they require the data binding feature of D3 so that data can be retrieved for visual elements. We proposed a {\color{red} xxx } algorithm that extends the deconstruction method to extract visual encodings from SVG-formatted node-link diagrams without D3 data binding.
+
+\subsection{Automatic Description for Visualization}
+Automatic visualization description approaches are mainly generated from the extracted information. Mittal et al.~cite{DBLP:journals/coling/MittalMCR98} developed a caption generation system with natural language generation techniques to describe mappings between data and marks.
+Simmilarly, iGraph-Lite~\cite{DBLP:journals/tochi/FerresLST13} generates template-based descriptions of what the chart looks like.
+Based on extracted insights, Chart-to-Text~\cite{DBLP:conf/inlg/ObeidH20} generates natural language descriptions for line charts and bar charts using the transformer model~\cite{DBLP:conf/nips/VaswaniSPUJGKP17}. 
+Similarly, AutoCaption~\cite{DBLP:conf/apvis/LiuXHWY20} fills the extracted insights into templates to generate captions about trends, maximum values, clusters, and so on. 
+
+% 一些工作通过回答问题的方式来提取insight.
+Several approaches generate descriptions by answering questions about visualizations.~\cite{DBLP:conf/cvpr/KaflePCK18, DBLP:conf/chi/KimHA20, DBLP:conf/eccv/KembhaviSKSHF16}.
+Kembhavi et al.~\cite{DBLP:conf/eccv/KembhaviSKSHF16} provide a solution of the question answering problem. 
+It aims to interprete the relationships among multiple scientific diagrams in one picture. 
+% It introduces Diagram Parse Graphs (DGP) to model the relationships and devises a DPG-based attention model for question answering.
+To support bar chart question answering, a dataset called DVQA~\cite{DBLP:conf/cvpr/KaflePCK18} is presented with more than 3 million image-question pairs about bar charts. 
+An end-to-end neural network and a dynamic local dictionary are designed to indicate the ability of the dataset.
+More recently, an automatic question answering pipeline~\cite{DBLP:conf/chi/KimHA20} about bar charts and line charts is proposed to answering natural language questions. It extends Sempre~\cite{DBLP:conf/acl/PasupatL15, DBLP:conf/emnlp/ZhangPL17} to answer questions about charts with Vega-Lite~\cite{DBLP:journals/tvcg/SatyanarayanMWH17} format and give visual explanations.
+
+None of these approaches is designed to generate descriptions for node-link diagrams. Our approach aims to explore the constitution of node-link diagrams captions and generate automatically.{\colorbox{text-highlight}{TODO}} %?
