@@ -1,112 +1,16 @@
 \section{\ApproachName}
-
-% 我们的方法目的是帮助节点链接图的创作者自动生成辅助性语句，帮助节点链接图的目标观众理解节点链接图所要表达的内容。
-\ApproachName~is designed to automatically generate textual descriptions for node-link diagrams. This can facilitate the comprehension of the visualized diagram, and form a context of exploring and studying the diagram. In general, the generation process of the underlying diagram consists of three stages:
-% 为了生成能够帮助观众理解的语句，我们需要通过分析节点链接图的构建过程，来寻找观众会对节点链接图产生疑惑的原因。
-To generate such presentation-aided statements, we need to decompose the creation process of node-link diagrams to explore the reasons for the audiences' confusion.
-% 一个节点链接图的创作过程普遍会有以下X个步骤（其中第2步和第3步的顺序可以调换）[这里需要引一些文献]
-% 1. 数据预处理；一般而言，真实世界收集到的源数据常常是表格型的多属性数据，而输入到节点链接图创作的图数据，往往是在源数据的基础上进行预处理，通过在源数据上定义实体之间的关系（链接），最终获得输入到节点链接图的图数据（包含节点和链接）
-% 2. 设计可视编码；创作者还会把他想表达的数据特征编码到节点链接图上，比如利用节点的颜色来编码节点的类别等。
-% 3. 计算图布局；节点链接图需要解决的一个关键问题是如何在二维空间中放置节点。链接则往往被绘制为节点之间的连接线，其位置往往由其两个端点决定。基于布局算法产生的节点位置，节点链接图才能进行绘制。
-The creation of node-link diagrams commonly includes the following steps (the order of step 2 and step 3 can be reversed)~\cite{DBLP:journals/cgf/SpritzerBDFF15, tvcg/RomatAP21}:
-\begin{compactenum}[\textbf{Step} 1.]
-    \item \textbf{Graph wrangling}. Original data collected from the real world are rarely conforms to graph data, while node-link diagrams often employ data with specific and explicit nodes and links as input. They are usually wrangled from tabular data by defining relationships between entities~\cite{DBLP:journals/tvcg/SrinivasanPEB18, DBLP:conf/ieeevast/BigelowNML19, DBLP:journals/ivs/HeerP14, DBLP:journals/ivs/LiuNS14}.
-    \item \textbf{Layout computing}. One key step of visualizing node-link diagrams is how to place nodes in a two-dimensional space. And links are placed according to two nodes each link connected.
-    \item \textbf{Visual encoding}. To present data features of the underlying graph data, creators will encode several attributes they want to express with different visual channels. For example, the fill color of one node can be used to encode the category of it.
-\end{compactenum}
-
-% 我们提供了一个简单的usage scenario来展示该过程，从而导出我们的动机和解决方案。
-% 我们主要聚焦于无向的同构图.
-We present a simple usage scenario to demonstrate the process and then derivate our motivation and solutions.
-In this paper, we focus on undirected homogeneous graphs.
-
-
-\subsection{Usage Scenario and Motivations}
-
-% 我们用 一个 imdb的电影数据集作为示例（https://www.kaggle.com/stefanoleone992/imdb-extensive-dataset）
-% 为了表达 自2020年以来的电影之间是否存在相同的主演。我们将存在相同演员的电影用一条边进行链接，并且为这条边添加一个属性，叫做共享的相同的演员。
-% 然后，我们用颜色来表示电影的出版月，用大小编码了它的预算（budget），用共享相同演员的数量来编码边的粗细。
-% 最后，我们平均分编码节点横坐标，用评分人数编码纵坐标，生成一个节点链接图。
-% 然而，上面的描述完全没有在节点链接图中体现，观众只能看到一些图形。
-% 如果能够一些描述性的语句阐述其创作过程，作为可视化的辅助，那么观众就能对创作者的意图有所领悟。
-% 我们的方法为它生成了以下的描述：
-% ``节点之间因为 它们的actors属性拥有交集 而链接在一起。每个节点由一个circle组成。每条边由一个line组成。每个节点的circle的fill和它的date_published属性相关，r和它的budget属性相关，cx和它的avg_vote相关，cy和votes相关。每个链接的line的stroke-width和它的shared actors相关。''
-We employ the IMDb movies dataset\footnote{https://www.kaggle.com/stefanoleone992/imdb-extensive-dataset} to create a node-link diagram as a demonstration to show the creation process.
-
-\textbf{Data wrangling}. 
-We select movies published in 2019 and show whether they share same actors.
-Thus, we connect two movies with a link if the intersection of two movies' ``actors'' attributes is not null.
-We also create an attribute for the link named ``shared\_actors'' to store the intersection.
-
-\textbf{Visual encoding}.
-After creating the graph data, we begin to program a node-link diagram to visualize it.
-Movies are encoded as circles with their color showing the ``published\_data'' attribute and radius showing the ``budget''.
-We also encode the size of ``shared\_actors'' as the thickness of links.
-
-\textbf{Layout computing}.
-At last, we specify the layout. We do not choose any topology-based algorithm to generate the layout. 
-In contrast, we encode the attributes ``ave\_vote'' and ``votes'' with the two-dimension position.
-
-With such a node-link diagram, audiences can not obtain any information with only several graphics (Figure~\ref{fig:IMDbDiagram} (a)).
-If several statements about the creation process can aid the visualization, audiences can reach a higher cognition.
-Our approach generate such a description for it:
-\begin{lightgrayleftbar}\noindent
-    Nodes are connected because of an intersection between their ``actors'' attributes.
-    Each node consists of a circle, and each link consists of a line.
-    The ``fill'' (color) of the circle corresponds to the node's ``date\_published'' attribute, and the ``r'' (radius) of the circle corresponds to ``budget'' attribute.
-    The ``stroke-width'' of the line corresponds to the link's ``shared\_actors'' attributes.
-    The layout is attribute-based.
-    The abscissa of a node corresponds to the node's ``ave\_vote'' attribute.
-    The ordinate of a node corresponds to the node's ``votes'' attribute.
-\end{lightgrayleftbar}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=1\columnwidth]{firgures/IMDbDiagram}
-    \caption{ (a) A node-link diagram shows whether movies published in 2019 and whether they share same actors. (b) The underlying node-link formatted graph data.}
-    \label{fig:IMDbDiagram}
-\end{figure}
-
-% 通过这个场景，我们看到了生成文本来提升节点链接图可理解性的必要性。
-% 节点链接图的创作者有必要向其观众解释数据的生成、节点的编码、布局的目的等等。
-% 相比于创造，编写解释性的文本往往枯燥乏味，因为该过程没有新的知识产生，仅仅是复述创作代码的历程而已。
-% 一个有趣的例子是很多程序员对于编写注释往往比较抗拒。
-% 于是，我们的方法想将这个过程自动化，以消除该繁琐的过程。
-% 因为创作者已经将他的想法注入到代码中，我们只需要分析他的源码和输入的数据，进而就能够从中提取信息，然后将信息注入模板中生成描述。
-From this scenario, it is obvious that presentation-aided statements are crucial for improving the comprehensibility of node-link diagrams.
-It is necessary for creators to explain how the graph data is generated, how the attributes are encoded with visual channels, what the layout means, and so on.
-Compared to creating the diagram, it is tedious to describe it because nothing new is generated during describing.
-It is just a retelling of the process of creating the diagram.
-We aim to eliminate such a repetitive process by automatically generating serials of presentation-aided statements.
-Because creators have injected their creation intention into the code, we only need to analyze the code and the input graph data to obtain the information. At last we employ the obtained information to generate template-based statements.
-
-% 下面三个章节将会进一步对创作过程进行分析，总结节点链接图能够展示和不能够展示的信息。
-% 对于不能展示的信息，我们提出了一些抽取方式进行提取，并为他们提供了一个文本模板，以便向观众介绍。
-In the following three subsections, we will further discuss the creation process and summarize the information whether node-link diagrams are able to convey.
-We propose several methods to extract the uncommitted information and provide corresponding textual templates to inform audiences.
-
-% % 我们通过分析节点链接图创建过程中被隐藏的信息，用文本的形式显式揭露这些用户未知的信息，达到帮助理解的目的。
-% % From this scenario, we propose three aspects to understand the diagram in light of the three-step creation process:
-% % \begin{compactenum}
-% %     \item \textbf{Understanding relationship} by revealing why nodes are connected.
-% %     \item \textbf{Understanding encodings} by revealing how visual channels encode data attributes.
-% %     \item \textbf{Understanding layout} by revealing what the layout encodes.
-% % \end{compactenum}
-% % 我们的方法采用图数据和创作者的节点链接图创作代码作为输入，最后输出关于这四个understanding的辅助性解释文本。
-% % Our approach employ the node-link formatted graph data (Figure~\ref{fig:IMDbDiagram}(b)) and the code creating the diagram as input, and outputs a template-based textual statements to solve the three-undestandings.
+%! overview
 
 \subsection{Data Wrangling}
 % 从表格型数据创建图数据时，最重要的就是建立节点之间的关系。
 % 观众从节点链接图中所能获知的信息仅仅是某两个节点之间存在联系，但却不了解联系的内在含义。
 % 一些论文已经对可能建立链接的情况进行了定义，
-Several works~\cite{DBLP:journals/ivs/LiuNS14, DBLP:journals/ivs/HeerP14, DBLP:journals/tvcg/SrinivasanPEB18} about graph wrangling identify link construction as the crucial process.
-Audiences can only obtain that two nodes are connected by a link by observing the diagram, while they do not know why nodes are connected.
-The works mentioned above have proposed several conditions.
+Several techniques~\cite{DBLP:journals/ivs/LiuNS14, DBLP:journals/ivs/HeerP14, DBLP:journals/tvcg/SrinivasanPEB18} about graph wrangling identify link construction as the crucial process and propose several linking conditions.
 Ploceus~\cite{DBLP:journals/ivs/LiuNS14} and Orion~\cite{DBLP:journals/ivs/HeerP14} infer potential linking conditions by first constructing a linking graph and then searching valid linking paths. They are aimed at constructing links among multiple data tables by analyzing primary keys and foreign keys.
 Graphiti~\cite{DBLP:journals/tvcg/SrinivasanPEB18} identifies potential linking conditions of a homogeneous graph by comparing different attributes.
 % 如果多个表合并成一个表，前两者总结的条件可以被Graphiti提出的规则所覆盖
 Because multiple tables can be merged into one data table with primary keys and foreign keys, Graphiti can cover the linking conditions identifying rules proposed by Ploceus and Orion. %? 这里mayby要用一张图解释一下
-We reorganize the conditions proposed by Graphiti:
+We reorganize the conditions proposed by these techniques into four categories:
 \begin{compactenum}[\textbf{Cond.} 1.]
     \item Two nodes share a same value of a same attribute, e.g., linking two movies is published in the same year.
     \item Two nodes share at least one same common value of a same list attribute, e.g., linking two movies with one or more same actors.
@@ -124,7 +28,7 @@ The intersection of all links' conditions are regarded as the entire graph's lin
 
 % 为了能够将这些condition填充到文本模板中，我们对condition的输出进行了formalize
 At last, we formalize the condition as three aspects, and textualize the linking condition of the graph by filling templates. 
-{\color{text-highlight}One condition can be defined as:}
+One condition can be defined as:
 \begin{equation}
     \text{linking condition} := ( type, attribute, value )
 \end{equation}
@@ -137,13 +41,68 @@ Four templates corresponds to four conditions according the $type$:
     \item ``Two nodes are connected if their attributes $[{attribute}]$ are within the same bin$\{: [{value}]?\}$''.
 \end{compactenum}
 
-{\color{text-highlight}Where $[{attribute}]$ is the name of the attribute, $[{value}]$ is the value of the attribute, and $\{?\}$ means the included part is optional. For example, for Condition 2, two movies are connected because they share same actors Alice and Bob. The condition is represented as: $(\text{``Condition 2''}, \text{``actors''}, [\text{``Alice''}, \text{``Bob''}])$. Its corresponding statement is: ``Two nodes are connected if their attributes ``actors'' share an intersection: [``Alice'', ``Bob'']''.}
+Where $[{attribute}]$ is the name of the attribute, $[{value}]$ is the value of the attribute, and $\{?\}$ means the included part is optional. 
+For example, for Condition 2, two movies are connected because they share same actors Alice and Bob. 
+The condition is represented as: $(\text{``Condition 2''}, \text{``actors''}, [\text{``Alice''}, \text{``Bob''}])$. 
+Its corresponding statement is: ``Two nodes are connected if their attributes ``actors'' share an intersection: [``Alice'', ``Bob'']''. 
+And there is an implication relation between conditions.
+Some conditions are stronger than others.
+For example, the condition $(\text{``Condition 2''}, \text{``actors''}, [\text{``Alice''}, \text{``Bob''}])$ is stronger than $(\text{``Condition 2''}, \text{``actors''}, [\text{``Alice''}])$ and $(\text{``Condition 2''}, \text{``actors''}, [arbitrary\text{ }value])$.
+All the three conditions are regarded as individual conditions.
+
+If a linking condition exists on both nodes with links and nodes without any link, it is regarded as a false condition and should be filtered out.
+We describe our filtering strategy in~\ref{alg:conditions}.
+After that, conditions are sorted, so that the highest ranked condition will be regard as the most possible condition.
+First, all conditions are sorted by their frequency.
+% 相同频率的条件，如果他们的type和attribute相同，那么根据
+If two conditions with the same frequency have the same $type$ and $attribute$, they can be compared by their degree.
+More stronger conditions are ranked higher than others.
+
+
+% 一条边可能包含多个条件，不同边的条件之间可能有交集，可能没有交集。
+% 我们需要一个策略来得到一个关于节点之间如何构建出关系的结论。
+%! 解释一下算法
+% 首先，对于所有没有边的节点对，找出所有可能的构建条件。
+% 其次，对于某条边，它的构建条件和上述的构建条件之间找出差集。
+% 最后，所有边的条件的合集属于边的构建条件；其中 频率最高的将被拿出来。
+
+
+
+\begin{algorithm}[!t]
+    \renewcommand\arraystretch{1.2}
+    \caption{ Conditions filtering }
+    \label{alg:conditions}
+    \begin{algorithmic}[1]
+        \Require
+            $G=(V=\{v_1, v_2, ..., v_n\}, E=\{e_1, e_2, ..., e_n\})$: a graph;
+        \Ensure
+            $C$: conditions
+        \State Init conditions $C=\varnothing$, false conditions $FC=\varnothing$
+        \For {each node pair $(v_i, v_j)$}
+            \If {$(v_i, v_j)$ is not a link}
+                \State $C_{tmp} \gets$ all conditions that can link $(v_i, v_j)$
+                \State merge $FC$ with $C_{tmp}$
+            \EndIf
+        \EndFor
+        \For {each link $e_i$}
+            \State $C_{tmp} \gets$ all conditions that can construct link $e_i$
+            \For {each condition $c$ in $C_{tmp}$}
+                \If {$c$ in $FC$}
+                    \State remove $c$ from $C_{tmp}$
+                \EndIf
+            \EndFor
+            \State merge $C$ with $C_{tmp}$
+        \EndFor
+        \State \Return $C$
+    \end{algorithmic}
+\end{algorithm}
+
 
 \subsection{Visual Encoding}
 %! 首先说明目标是什么
 % 节点链接图，顾名思义，包含两部分：节点和链接。对其进行编码也主要聚焦于这两部分
 
-Node-link diagram basically consists of two pars: nodes and links, as its name implies.
+% Node-link diagram basically consists of two pars: nodes and links, as its name implies.
 %! 讲一些背景，svg相关的；
 %! 讲以往工作是怎么做的？
 %! 节点链接图该怎么进行分析？
