@@ -3,15 +3,15 @@
 \subsection{Node-link Diagram}
 Node-link diagrams are widely used to reveal topology and relationships between entities.
 We aim to generate captions for node-link diagrams with visual encodings, which means the underlying graphs are attributed.
-Nobre et al.~\cite{DBLP:journals/cgf/NobreMSL19} surveyed numerous multiviriate graph visualization techniques.
-And Partl et al.~\cite{DBLP:conf/biovis/PartlKLKSS12} discuss four categories of multivariate node-link diagram layouts.
+Nobre et al.~\cite{DBLP:journals/cgf/NobreMSL19} surveyed numerous multivariate graph visualization techniques.
+Moreover, Partl et al.~\cite{DBLP:conf/biovis/PartlKLKSS12} discuss four categories of multivariate node-link diagram layouts.
 Node-link diagrams can encode node attributes and link attributes within their related visual elements.
 
 % 对节点而言，最基础的编码可以将标签编码为文本，将节点的大小编码数值型属性，将节点的颜色编码类别型属性。
 % 更复杂的编码中，节点还被编码成一个嵌入的图表，
 For a node, attributes are basically encoded with its size, color, and shape.
-To encode diverse attributes, techniques usually embed complex constitution into one node~\cite{DBLP:conf/infovis/AuberCJM03}.
-For example, charts such as line charts, box plots, bar charts, and so on are usually used as nodes in the biology domain~\cite{gehlenborg2010visualization, DBLP:conf/iv/JusufiDK10}.
+To encode diverse attributes, techniques usually embed complex constitutions into one node~\cite{DBLP:conf/infovis/AuberCJM03}.
+For example, charts such as line charts, box plots and bar charts are usually used as nodes in the biology domain~\cite{gehlenborg2010visualization, DBLP:conf/iv/JusufiDK10}.
 Photos, icons, or customized glyphs are also often used to encode node attributes~\cite{DBLP:conf/chi/DunneS13}.
 Graph visualization tools such as Cytoscape~\cite{DBLP:journals/bioinformatics/FranzLHDSB16}, Gephi~\cite{DBLP:conf/icwsm/BastianHJ09}, NetV.js~\cite{HAN2021} can handle varying degrees attributes embedding in node-link diagrams.
 Positions of nodes are usually considered as the crutial part of node-link diagrams.
@@ -56,7 +56,7 @@ For example, inputs of Chart-to-Text~\cite{DBLP:conf/inlg/ObeidH20} mainly come 
 In contrast, Wu et al.~\cite{DBLP:conf/diagrams/WuCEC10} and Demir et al.~\cite{DBLP:journals/nrhm/DemirOSECMC10} recomended the underlying intention of line charts and bar charts by detecting the most significant features.
 AutoCaption~\cite{DBLP:conf/apvis/LiuXHWY20} first parses textual and visual components to a formatted information table which incoporates the underlying data.
 Then it extracts a set of pre-defined features as insights from the table.
-Several works employ the extracted insights to augment visualizations by annotation~\cite{DBLP:conf/ieeevast/Kandogan12}, overlays~\cite{DBLP:journals/tvcg/KongA12}, widgets~\cite{DBLP:journals/tvcg/SrinivasanDES19}, and so on.
+Several works employ the extracted insights to augment visualizations by annotation~\cite{DBLP:conf/ieeevast/Kandogan12, DBLP:journals/tvcg/BryanMW17}, overlays~\cite{DBLP:journals/tvcg/KongA12}, widgets~\cite{DBLP:journals/tvcg/SrinivasanDES19}, and so on.
 % Kandongan~\cite{DBLP:conf/ieeevast/Kandogan12} introduced the concept of just-in-time descriptive analytics to help users understand data in point-based visualizations (e.g., scatter plots, line charts, etc.). 
 % The fundamental is to identify clusters, outliers, and trends from visualizations.
 % Srinivasan et al. presented Voder~\cite{DBLP:journals/tvcg/SrinivasanDES19}, a system to generate data facts (descriptions of data statistics) based on a basic set of heuristics.
@@ -85,7 +85,7 @@ Methods that extract visual mappings from raster images~\cite{DBLP:journals/cgf/
 Whereas, methods that deconstruct D3 visualizations~\cite{DBLP:conf/uist/HarperA14, DBLP:journals/tvcg/HarperA18, DBLP:journals/tvcg/HoqueA20} can be applicable to more kinds of visual mappings, but they require the data binding feature of D3 so that data can be retrieved for visual elements. We proposed a {\color{red} xxx } algorithm that extends the deconstruction method to extract visual encodings from SVG-formatted node-link diagrams without D3 data binding.
 
 \subsection{Automatic Description for Visualization}
-Automatic visualization description approaches are mainly generated from the extracted information. Mittal et al.~cite{DBLP:journals/coling/MittalMCR98} developed a caption generation system with natural language generation techniques to describe mappings between data and marks.
+Automatic visualization description approaches are mainly generated from the extracted information. Mittal et al.~\cite{DBLP:journals/coling/MittalMCR98} developed a caption generation system with natural language generation techniques to describe mappings between data and marks.
 Simmilarly, iGraph-Lite~\cite{DBLP:journals/tochi/FerresLST13} generates template-based descriptions of what the chart looks like.
 Based on extracted insights, Chart-to-Text~\cite{DBLP:conf/inlg/ObeidH20} generates natural language descriptions for line charts and bar charts using the transformer model~\cite{DBLP:conf/nips/VaswaniSPUJGKP17}. 
 Similarly, AutoCaption~\cite{DBLP:conf/apvis/LiuXHWY20} fills the extracted insights into templates to generate captions about trends, maximum values, clusters, and so on. 
