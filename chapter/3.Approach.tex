@@ -102,7 +102,7 @@ More stronger conditions are ranked higher than others.
 \subsection{Visual Encoding}
 % 为了在节点链接图中展示节点、链接的属性，常常将这些属性编码为节点/链接的视觉通道。
 To visualize attributes of nodes and links in node-link diagrams, creators often encode them with visual channels on nodes and links.
-For example, in Figure~\ref{fig:VisualEncodings} (a), a node contains a categorical attribute (\textit{x}) and two numerical attributes (\textit{y} and \textit{z}), we encode two numerical attributes with two rectangles' height and encode the categorical attribute with two rectangles' fill color and the background circle's stroke color.
+For example, in Figure~\ref{fig:VisualEncodings} (a), a node contains a categorical attribute (\textit{x}) and a numerical list attribute (\textit{y} and \textit{z}), we encode the numerical list attribute with two rectangles' height and encode the categorical attribute with two rectangles' fill color and the background rounded rectangles's stroke color.
 We denote graphical elements (e.g., \texttt{<circle>}, \texttt{<rect>}, \texttt{<ellipse>}, etc.) in node-link diagrams as \textit{visual primitives} and their style attributes such as \texttt{cx}, \texttt{cy}, \texttt{width}, and \texttt{height} are denoted as \textit{visual channels}.
 Nodes and links contained in the underlying graph are denoted as \textit{data entities} and each data entity consists of several \textit{attributes}.
 
@@ -134,7 +134,7 @@ It cannot deal with SVG-format visualizations created by other tools or without 
 For node-link diagrams, we introduce a new technique to solve such limitations.
 The main idea of our technique is regarding the source code as a black box model.
 Our technique obtains mappings between data entities and visual primitives by detecting changes of the output SVG after modifying the input graph data.
-It overcomes the limitations by binding data to visual primitives and detecting visual mappings between data attributes and visual channels (Figure~\ref{fig:VisualEncoding} (b)).
+It overcomes the limitations by binding data to visual primitives and detecting visual mappings between data attributes and visual channels (Figure~\ref{fig:VisualEncodings} (b)).
 % It can bind data to visual primitives and detect visual mappings between data attributes and visual channels to overcome the limitations.
 
 
@@ -164,12 +164,12 @@ we modify attribute values of data entities and record corresponding visual prim
 Mappings between the entity and the changed primitives are hence constructed.
 However, modifying attributes deforms the attribute distribution, which may influence visual mappings, so that primitives related to other data entities may also change.
 For example, modifying attributes may expand the data range and thus changes linear mappings defined by attribute ranges.
-We prevent it by only swapping two entities rather than modifying it, such that no new data is introduced and the data distribution is preserved.
+We prevent it by only swapping attributes of two entities rather than modifying them, such that no new data is introduced and the data distribution is preserved.
 We take nodes for example.
 Each node will be swapped with all the other nodes.
 Primitives changed by each swapping correspond to two swapped nodes (Figure~\ref{fig:DataBinding} (b) and (c)).
 For example, after swapping nodes B and C in Figure~\ref{fig:DataBinding} (b), primitives 1 to 4 are changed.
-All these changed primitives correspond to nodes B and C, because only B and C are modified.
+All these changed primitives correspond to nodes B and C, because only B and C are swapped.
 After swapping one node with all the other nodes, we construct mappings between the node and primitives which are changed more than once.
 For example, after swapping nodes B with C and D in Figure~\ref{fig:DataBinding} (b) and (c), primitives 2 and 3 are changed twice, thus they correspond to node B.
 After swapping all nodes, the entire node-primitive mappings are constructed (Figure~\ref{fig:DataBinding} (d)).
@@ -177,8 +177,14 @@ Mappings between Links with their primitives are constructed in the same.
 Because swapping two nodes may influence their related links, nodes' related primitives can contain links' primitives,
 we remove links' primitives from the node-primitive mappings.
 
-Here, we only classify visual primitives into different data entities.
-
+The data binding step only classifies visual primitives into different data entities (the horizontal direction in Figure~\ref{fig:PrimitiveAligning} (a)).
+\textbf{Primitives aligning} is then performed to align different primitives according to their encoding schemes (the vertical direction in Figure~\ref{fig:PrimitiveAligning} (a)).
+Different primitives in one data entity have different encoding schemes.
+For the example in Figure~\ref{fig:VisualEncodings} (a), the left rectangle, the right rectangle, and the background rectangle are in different data schemes, so that they appear differently.
+They should be aligned to clarify their encoding schemes (Figure~\ref{fig:PrimitiveAligning} (b)).
+A visual encoding scheme can be regarded as a function that takes data attributes as input and assign values for visual primitive channels.
+Primitives correspond to different data entities can be aligned if they appear exactly the same with same attributes.
+For example, in Figure~\ref{fig:DataBinding} (b), after swapping entities B and C, They primitive 1 appears same to primitive 2 before swapping (Figure~\ref{fig:DataBinding} (a)). They can be aligned.
 
 
 \textbf{Visual encoding} is then extracted by shuffling attribute values and detecting visual channel changes.
@@ -205,6 +211,14 @@ Mappings are built between the attribute and those visual channels.
     \label{fig:DataBinding}
 \end{figure}
 
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\columnwidth]{figures/PrimitiveAligning.eps}
+    \caption{}
+    \label{fig:PrimitiveAligning}
+\end{figure}
 
 % 首先我们获取节点的所有属性(除唯一标识符id之外)，遍历这些属性，对某个属性alpha：
 % 我们通过调换两个节点（记作A和B，要求A和B的属性alpha不同）的属性alpha，记录svg数组中发生变化的项目（记作Set_{AB}）
