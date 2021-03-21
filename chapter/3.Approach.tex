@@ -156,7 +156,7 @@ It overcomes the limitations by three steps (Figure~\ref{fig:VisualEncodings}):
 (2) \textbf{Primitives aligning} aligns primitives with the same role into one role class. 
 (3) \textbf{Encoding mapping} detects visual mappings between attributes, role classes, and their visual channels.
 
-\subsubsection{Data Binding}
+\subsubsection{Data Binding} \label{sec:databinding}
 
 To detect mappings between data entities and visual primitives, 
 we modify attribute values of data entities and record corresponding visual primitive changes.
@@ -197,7 +197,7 @@ Such a judgment of role consistency between two primitives can be incidentally c
 Because we totally swap all the attributes of two entities, we can examine the consistency of primitives before and after swapping.
 For example, in Figure~\ref{fig:DataBinding} (b), after swapping entities B and C,primitive 1 appear same to primitive 2 before swapping (Figure~\ref{fig:DataBinding} (a)). Thus, primitive 1 and 2 can be aligned into the same role.
 
-\subsubsection{Encoding mapping}
+\subsubsection{Encoding mapping}\label{sec:encodingmapping}
 The previous two steps classify primitives according to two dimension: entity and role.
 Thus, primitives of each data entity and their roles are determined.
 We are able to answer \textbf{Q}\ref{qstn:composition}.
@@ -229,7 +229,7 @@ We generate different correlations for different cases:
 \begin{compactitem}
     \item The channel is categorical. The correlation is recorded and described by the channel's categories. For each category of the channel, we record value range of the attribute. % 我们记录了当视觉通道表达为这一类值的时候，属性的取值范围。
     If the value ranges of the attribute are intersected across different channel categories, we discard the correlation because it is ambiguous.
-    \item Both the channel and the attribute numerical. We perform the Mann-Kendall test~\cite{10.2307/1907187, kendall1948rank, Hussain2019pyMannKendall} to analyze numerical to numerical mappings whether they are monotonic upward or downward.
+    \item Both the channel and the attribute numerical. We perform the Mann-Kendall test~\cite{10.2307/1907187, kendall1948rank} to analyze numerical to numerical mappings whether they are monotonic upward or downward.
     \item Other types of mappings are not supported yet.
 \end{compactitem}
 
@@ -373,6 +373,13 @@ For different shapes, we describe them one by one.
 
 
 \subsection{Layout}
-Layouts of attributed graphs have been categorized into attribute-based layouts and 
-topology-based layouts.
-% We aim to detect whether our 
+Layouts of attributed graphs have been categorized into attribute-based layouts~\cite{} and topology-based layouts~\cite{} by Nobre et al.~\cite{DBLP:journals/cgf/NobreMSL19}.
+We aim to detect whether the node-link diagram follows an attribute-based layout or a topology-based layouts.
+To capture the position of each node, we compute a bounding box for each node's primitives detected in Section~\ref{sec:databinding}.
+We take the centroid of the bounding box as the position of the node.
+Pearson correlation coefficient is first computed to test whether the two dimensions of the Cartesian coordinate are correlated to any attribtue.
+If the Pearson test suggests some attributes determine the position of a node,
+% 然后我们像检验encoding和attribute的相关性一样检验坐标相关性。
+we test correlations between positions and the attributes as same to the correlation test in Section~\ref{sec:encodingmapping}.
+
+For topology-based layouts, we first perform a pre-study to test whether the euclidean distance between two nodes is influenced by their graph geodesic distance.
