@@ -31,18 +31,18 @@ The intersection of all links' conditions are regarded as the entire graph's lin
 At last, we formalize the condition as three aspects, and textualize the linking condition of the graph by filling templates. 
 One condition can be defined as:
 \begin{equation}
-    \text{linking condition} := ( type, attribute, value )
+    linking\text{ }condition := ( type, attribute, value )
 \end{equation}
 Four templates corresponds to four conditions according the $type$:
 
 \begin{compactenum}[\textbf{Cond.} 1.]
-    \item ``Two nodes are connected if their attributes $[{attribute}]$ are with a same value$\{: [{value}]?\}$''.
-    \item ``Two nodes are connected if their attributes $[{attribute}]$ share an intersection$\{: [{value}]?\}$''.
-    \item ``Two nodes are connected if their attributes $[{attribute}]$ are close, maybe with a difference less than $[{value}]$''.
-    \item ``Two nodes are connected if their attributes $[{attribute}]$ are within the same bin$\{: [{value}]?\}$''.
+    \item ``Two nodes are connected if their attributes $ \$\{ attribute \} $ are with a same value$\$\{: value ?\}$''.
+    \item ``Two nodes are connected if their attributes $ \$\{ attribute \} $ share an intersection$\$\{: value ?\}$''.
+    \item ``Two nodes are connected if their attribute $ \$\{ attribute \} $ are close, maybe with a difference less than $\$\{ value \}$''.
+    \item ``Two nodes are connected if their attribute $ \$\{ attribute \} $ are within the same $\$\{ value ?\}$ bin''.
 \end{compactenum}
 
-Where $[{attribute}]$ is the name of the attribute, $[{value}]$ is the value of the attribute, and $\{?\}$ means the included part is optional. 
+Where $ \$\{ attribute \} $ is the name of the attribute, $ \$\{ value \} $ is the value of the attribute, and $?$ means the included part is optional. 
 For example, for Condition 2, two movies are connected because they share same actors Alice and Bob. 
 The condition is represented as: $(\text{``Condition 2''}, \text{``actors''}, [\text{``Alice''}, \text{``Bob''}])$. 
 Its corresponding statement is: ``Two nodes are connected if their attributes ``actors'' share an intersection: [``Alice'', ``Bob'']''. 
@@ -100,24 +100,41 @@ More stronger conditions are ranked higher than others.
 
 
 \subsection{Visual Encoding}
+\subsubsection{Background}
 % 为了在节点链接图中展示节点、链接的属性，常常将这些属性编码为节点/链接的视觉通道。
 To visualize attributes of nodes and links in node-link diagrams, creators often encode them with visual channels on nodes and links.
-For example, in Figure~\ref{fig:VisualEncodings} (a), a node contains a categorical attribute (\textit{x}) and a numerical list attribute (\textit{y} and \textit{z}), we encode the numerical list attribute with two rectangles' height and encode the categorical attribute with two rectangles' fill color and the background rounded rectangles's stroke color.
+For the node-link diagram example in Figure~\ref{fig:VisualEncodings}, a node contains a categorical attribute (\textit{x}) and a numerical list attribute (\textit{y}), we encode the numerical list attribute with two rectangles' height and encode the categorical attribute with two rectangles' fill color and the background rounded rectangles's stroke color.
 We denote graphical elements (e.g., \texttt{<circle>}, \texttt{<rect>}, \texttt{<ellipse>}, etc.) in node-link diagrams as \textit{visual primitives} and their style attributes such as \texttt{cx}, \texttt{cy}, \texttt{width}, and \texttt{height} are denoted as \textit{visual channels}.
 Nodes and links contained in the underlying graph are denoted as \textit{data entities} and each data entity consists of several \textit{attributes}.
-
 
 \begin{figure}
     \centering
     \includegraphics[width=1\columnwidth]{figures/VisualEncodings.eps}
-    \caption{(a) A node-link diagram shows a visual encoding example. (b) The main target of our visual encoding detecting technique is to bind data entities (nodes and links) to visual primitives (SVG elements) and map data attributes to primitives' visual channels.}
+    \caption{An example shows the workflow of our visual encoding extracting technique. A node-link diagram consists of three nodes and three links (upper right corner). Node primitives are extracted and the \textbf {data binding} step binds them to different nodes. Then primitives with same role across different nodes are aligned into the same role class in the \textbf{primitives aligning} step. Mappings among different role calsses, visual channels, and attributes are detected by the \textbf{encoding mapping} step.}
     \label{fig:VisualEncodings}
 \end{figure}
 
 % 我们的工作通过分析源代码，从中提取数据实体（）是如何被编码为视觉通道的（）
-To describe visual encodings of a node-link diagram, how attributes of data entities (nodes and links) are encoded with visual channels (style attributes of SVG elements) should be determined.
+We formulate the description of visual encodings in node-link diagrams by three questions:
+\begin{compactenum}[\textbf{Q}1]
+    \item \textit{What primitives does a node/link consists of in the diagram?} e.g., a node is composed of two circles, or two rectangles. \label{qstn:composition}
+    
+    \item \textit{What attributes do primitives and their visual channels encode?} e.g., the radius of a circle encodes the degree of one node and the fill color of the circle encodes the node's type. If the shape (\texttt{tagName}) of a primitive encodes some attribute, we should classify and discuss when primitives are encoded into different shapes (e.g., when the node is encoded into a circle, the radius encodes its degree, and when the node is encoded into a rect, the width and the height encode its degree). \label{qstn:encodings}
+    
+    \item \textit{Whether there is a certern type of correlation (positive, negative, or categorical) between attributes and visual channels?} e.g., The greater the degree of the node, the greater the radius of the circle.\label{qstn:correlation}
+\end{compactenum}
+Thus, extracting mappings between entities and primitives and mappings between attributes and visual channels are necessary (Figure~\ref{fig:PrimitiveAligning} (a)).
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\columnwidth]{figures/PrimitiveAligning.eps}
+    \caption{(a) the target of our visual encoding detection technique; and (b) the effect of the data binding step and the primitives aligning step.}
+    \label{fig:PrimitiveAligning}
+\end{figure}
+
 % xxxx 等人的工作为我们提供了一个良好的思路，但他们的工作存在一些限制
-A tool proposed by Harper and Agrawala~\cite{DBLP:conf/uist/HarperA14} provides a creative perspective for detecting visual mappings.
+A tool proposed by Harper and Agrawala~\cite{DBLP:conf/uist/HarperA14} provides a creative perspective for visual encoding extraction.
 Although their tool can be extended to support simple node-link diagrams (where each data entity is encoded into only one primitive), it has several limitations:
 \begin{compactenum}
 
@@ -134,8 +151,154 @@ It cannot deal with SVG-format visualizations created by other tools or without 
 For node-link diagrams, we introduce a new technique to solve such limitations.
 The main idea of our technique is regarding the source code as a black box model.
 Our technique obtains mappings between data entities and visual primitives by detecting changes of the output SVG after modifying the input graph data.
-It overcomes the limitations by binding data to visual primitives and detecting visual mappings between data attributes and visual channels (Figure~\ref{fig:VisualEncodings} (b)).
-% It can bind data to visual primitives and detect visual mappings between data attributes and visual channels to overcome the limitations.
+It overcomes the limitations by three steps (Figure~\ref{fig:VisualEncodings}):
+(1) \textbf{Data binding} classifies all primitives into different data entities.
+(2) \textbf{Primitives aligning} aligns primitives with the same role into one role class. 
+(3) \textbf{Encoding mapping} detects visual mappings between attributes, role classes, and their visual channels.
+
+\subsubsection{Data Binding}
+
+To detect mappings between data entities and visual primitives, 
+we modify attribute values of data entities and record corresponding visual primitive changes.
+Mappings between the entity and the changed primitives are hence constructed.
+However, modifying attributes deforms the attribute distribution, which may influence visual mappings, so that primitives related to other data entities may also change.
+For example, modifying attributes may expand the data range and thus changes linear mappings defined by attribute ranges.
+We prevent it by only swapping attributes of two entities rather than modifying them, such that no new data is introduced and the data distribution is preserved.
+We take nodes for example.
+Each node will be swapped with all the other nodes.
+Primitives changed by each swapping correspond to two swapped nodes (Figure~\ref{fig:DataBinding} (b) and (c)).
+For example, after swapping nodes B and C in Figure~\ref{fig:DataBinding} (b), primitives 1 to 4 are changed.
+All these changed primitives correspond to nodes B and C, because only B and C are swapped.
+After swapping one node with all the other nodes, we construct mappings between the node and primitives which are changed more than once.
+For example, after swapping nodes B with C and D in Figure~\ref{fig:DataBinding} (b) and (c), primitives 2 and 3 are changed twice, thus they correspond to node B (Figure~\ref{fig:DataBinding} (d)).
+After swapping all nodes, the entire node-primitive mappings are constructed.
+Mappings between Links with their primitives are constructed in the same.
+Because swapping two nodes may influence their related links, nodes' related primitives can contain links' primitives,
+we remove links' primitives from the node-primitive mappings.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\columnwidth]{figures/DataBinding.eps}
+    \caption{Data binding is achieved by swapping attributes of data entities. (a) Visual mappings between original visual primitives and data entities are unknown. (b) After swapping attributes of entities B and C, the appearance of primitives 1 to 4 is changed. Thus, entities B and C correspond to primitives 1 to 4. (c) After swapping attributes of entities A and B, the appearance of primitives 2, 3, 7, and 8 is changed. Thus, entities A and B correspond to these primitives. (d) After swapping B with A and C, primitives 2 and 3 are changed twice, we can map the entity B to primitives 2 and 3.}
+    \label{fig:DataBinding}
+\end{figure}
+
+\subsubsection{Primitives aligning}
+% Different primitives are aligned according to their roles (the vertical direction in Figure~\ref{fig:PrimitiveAligning} (a)).
+The data binding step only classifies visual primitives into different data entities (the horizontal direction in Figure~\ref{fig:PrimitiveAligning} (b)).
+Different primitives in one data entity have different roles.
+For the example in Figure~\ref{fig:VisualEncodings}, although both of the two inner rectangles are affected the attribute \textit{y}, they mean differently to the entire node (the left one encodes the first item in attribute \textit{y} and the right one encodes the second).
+Whereas, the left rectangles across different nodes mean consistently to their own nodes.
+They should be aligned to clarify their roles (the vertical direction in Figure~\ref{fig:PrimitiveAligning} (b)).
+The \textit{role} can be regarded as a function that takes data attributes as input and assign values for visual primitive channels.
+Primitives within the same role should appear exactly the same when their own nodes have exactly same attributes.
+Such a judgment of role consistency between two primitives can be incidentally completed in the data binding step.
+Because we totally swap all the attributes of two entities, we can examine the consistency of primitives before and after swapping.
+For example, in Figure~\ref{fig:DataBinding} (b), after swapping entities B and C,primitive 1 appear same to primitive 2 before swapping (Figure~\ref{fig:DataBinding} (a)). Thus, primitive 1 and 2 can be aligned into the same role.
+
+\subsubsection{Encoding mapping}
+The previous two steps classify primitives according to two dimension: entity and role.
+Thus, primitives of each data entity and their roles are determined.
+We are able to answer \textbf{Q}\ref{qstn:composition}.
+% 到此为止，我们已经已经知道每个实体是由哪些不同角色的元素组成，足够回答第一个问题
+However, mappings between visual channels and data attributes are not determined.
+% 我们继续以节点为例。
+We continue to take node as for example.
+% 为了检验一个属性究竟被编码在了哪些视觉通道上，我们通过shuffle所有节点的某个属性，观察视觉通道发生的变化。
+We map one attribute to its related visual channels by first shuffling the attribute of all nodes and then observing the changes of visual channels of primitives.
+% 变化可以被定义为，某个属性引起某些元素的某些视觉通道的变化。
+One change can be defined as an \textit{attribute} causes changes in a \textit{visual channel} of a \textit{primitive}, which can be formalized as:
+\begin{equation}
+    change := \{ attribute, primitive, channel \}
+\end{equation}
+% 然后我们根据不同的primitive角色，对这些发生的变化进行合并。
+We merge those changes according to the role of primitive.
+It generates more comprehensive mappings between attributes and visual channels for different roles.
+\textbf{Q}\ref{qstn:encodings} is solved.
+
+
+To solve \textbf{Q}\ref{qstn:correlation}, we test correlations between attributes and visual channels.
+Numerical, categorical, and list attributes are supported.
+For visual channels, they are all numerical.
+However, numerical data can be used as categorical data.
+For example, numbers are usually used as labels.
+Thus, for a numerical attribute, we should compare the number of unique attribute values and the number of data entities to determine whether it is numerical or categorical.
+We set up a parameter $\alpha$, where the number of unique attribute values is less than $\alpha \%$ of the number of data entities, it is regarded as categorical.
+We generate different correlations for different cases:
+\begin{compactitem}
+    \item The channel is categorical. The correlation is recorded and described by the channel's categories. For each category of the channel, we record value range of the attribute. % 我们记录了当视觉通道表达为这一类值的时候，属性的取值范围。
+    If the value ranges of the attribute are intersected across different channel categories, we discard the correlation because it is ambiguous.
+    \item Both the channel and the attribute numerical. We perform the Mann-Kendall test~\cite{10.2307/1907187, kendall1948rank, Hussain2019pyMannKendall} to analyze numerical to numerical mappings whether they are monotonic upward or downward.
+    \item Other types of mappings are not supported yet.
+\end{compactitem}
+
+
+\subsubsection {Template-based Textualization}
+Nodes are described at first, descriptions of links are same to nodes.
+% 首先，我们需要描述数据实体被可视化为哪些视觉元素
+We answer \textbf{Q}\ref{qstn:composition} with the primitives that compose a node.
+Because the shape (\texttt{tagName}) of primitives may encode some attribtues, we first describe the number of primitives rather than describe the shape of primitives directly:
+\textit{``A node consists of \$\{N\} different primitives''}. 
+
+Then, different primitives in one node are categorized and discussed. 
+For each primitive, there are several visual channels encoding attributes.
+If its shape (\texttt{tagName}) encodes nothing, we describe its shape first: \textit{``The \$\{i\}th primitive is a \$\{\texttt{<tagName>}\}''}.
+Then its visual channels are described respectively.
+One channel may encode more than one attribute.
+We describe them one by one with the template to solve \textbf{Q}\ref{qstn:encodings} and \textbf{Q}\ref{qstn:correlation}:
+\textit{``Its \$\{channel\} encodes the attribute \$\{attribute\}''}.
+When their correlation is monotonic, we will describe that:
+\textit{``The greater \$\{attribute\} is, the greater/smaller its \$\{channel\} is''}.
+When their correlation is categorical, we will describe them by the attribute's categories:
+\textit{``When the attribute \$\{attribute\} is \$\{attribute\_category\}, its \$\{channel\} is \$\{ channel\_category \}''}.
+If descriptions of two attributes within one channel are same, they can be merged.
+
+And if the shape (\texttt{tagName}) of a primitive encodes some attributes, it is more complex.
+We first describe its alternative shapes: 
+``For the \$\{i\}th primitive, its \texttt{tagName} is varying among multiple shapes: \$\{ tagName1, tagName2, tagName3, ... \}''.
+We describe the shape and its related attributes as categorical correlations.
+For different shapes, we describe them one by one.
+
+
+% \begin{algorithm}[!t]
+%     \renewcommand\arraystretch{1.2}
+%     \caption{ Encoding Textualization }
+%     \label{alg:encoding}
+%     \begin{algorithmic}[1]
+%         \Require
+%             $G=(V=\{v_1, v_2, ..., v_n\}, E=\{e_1, e_2, ..., e_n\})$: a graph;
+%         \State Init role groups $RG=\varnothing$
+%         \For {each primitive role $role$}
+%             \State $sm\_role \gets $ the role with same encoding to $role$ in $RG$
+%             \If {$sm\_role$ is not $\varnothing$}
+%                 \State describe: $r$ has the same encodings with $sr$
+%             \Else
+%                 \State add $role$ into $RG$ 
+%                 \If {$role$ is related to }
+%                 \For {each visual channel $chan$ within $role$}
+%                     \For {each attribute $attr$ that affects $chan$}
+%                         \State describe: $chan$ encodes $attr$
+%                         \State $corr \gets$ correlation between $attr$ and $chan$
+%                         \If {$corr$ is monotonic upward}
+%                             \State describe: the larger $attr$ is, the larger $chan$ is
+%                         \ElsIf{$corr$ is monotonic downward}
+%                             \State describe: the larger $attr$ is, the smaller $chan$ is
+%                         \ElsIf{$corr$ is categorical}
+%                             \For {each category $cate$ of $chan$}
+%                                 \State $attr\_rg \gets $ the range of $attr$ with $cate$
+%                                 \State describe: when $attr$ is $attr\_rg$, $chan$ is $cate$
+%                             \EndFor
+%                         \EndIf
+%                     \EndFor
+%                 \EndFor
+%             \EndIf
+%             \State add $r$ into $RG$
+%         \EndFor
+%         \State \Return $C$
+%     \end{algorithmic}
+% \end{algorithm}
+
 
 
 % 在开始介绍算法之前，我们先列出我们对于通用情况的几点假设
@@ -158,67 +321,6 @@ It overcomes the limitations by binding data to visual primitives and detecting 
 % We regard the output SVG as a tree and use the Depth-First Search algorithm to generate a primitives list. 
 
 % 我们首先交换任意节点对的属性。
-\textbf{Data binding} is first achieved.
-To detect mappings between data entities and visual primitives, 
-we modify attribute values of data entities and record corresponding visual primitive changes.
-Mappings between the entity and the changed primitives are hence constructed.
-However, modifying attributes deforms the attribute distribution, which may influence visual mappings, so that primitives related to other data entities may also change.
-For example, modifying attributes may expand the data range and thus changes linear mappings defined by attribute ranges.
-We prevent it by only swapping attributes of two entities rather than modifying them, such that no new data is introduced and the data distribution is preserved.
-We take nodes for example.
-Each node will be swapped with all the other nodes.
-Primitives changed by each swapping correspond to two swapped nodes (Figure~\ref{fig:DataBinding} (b) and (c)).
-For example, after swapping nodes B and C in Figure~\ref{fig:DataBinding} (b), primitives 1 to 4 are changed.
-All these changed primitives correspond to nodes B and C, because only B and C are swapped.
-After swapping one node with all the other nodes, we construct mappings between the node and primitives which are changed more than once.
-For example, after swapping nodes B with C and D in Figure~\ref{fig:DataBinding} (b) and (c), primitives 2 and 3 are changed twice, thus they correspond to node B.
-After swapping all nodes, the entire node-primitive mappings are constructed (Figure~\ref{fig:DataBinding} (d)).
-Mappings between Links with their primitives are constructed in the same.
-Because swapping two nodes may influence their related links, nodes' related primitives can contain links' primitives,
-we remove links' primitives from the node-primitive mappings.
-
-The data binding step only classifies visual primitives into different data entities (the horizontal direction in Figure~\ref{fig:PrimitiveAligning} (a)).
-\textbf{Primitives aligning} is then performed to align different primitives according to their encoding schemes (the vertical direction in Figure~\ref{fig:PrimitiveAligning} (a)).
-Different primitives in one data entity have different encoding schemes.
-For the example in Figure~\ref{fig:VisualEncodings} (a), the left rectangle, the right rectangle, and the background rectangle are in different data schemes, so that they appear differently.
-They should be aligned to clarify their encoding schemes (Figure~\ref{fig:PrimitiveAligning} (b)).
-A visual encoding scheme can be regarded as a function that takes data attributes as input and assign values for visual primitive channels.
-Primitives correspond to different data entities can be aligned if they appear exactly the same with same attributes.
-For example, in Figure~\ref{fig:DataBinding} (b), after swapping entities B and C, They primitive 1 appears same to primitive 2 before swapping (Figure~\ref{fig:DataBinding} (a)). They can be aligned.
-
-
-\textbf{Visual encoding} is then extracted by shuffling attribute values and detecting visual channel changes.
-% 我们继续以节点为例。
-We continue to take node as for example.
-% 为了检验一个属性究竟被编码在了哪些视觉通道上，我们通过shuffle所有节点的某个属性，观察视觉通道发生的变化。
-We map one attribute to its related visual channels by first shuffling the attribute of all nodes and then observing the changes of visual channels.
-% 发生变化的视觉通道就和该属性相关，于是他们之间的映射关系就被构建好了。
-Mappings are built between the attribute and those visual channels.
-% 我们抽选了一些常用于编码信息的通道：比如....
-% tagName是最特殊的一类，它直接能切换不同的primitives种类。
-% 比如一个节点可能根据某个类别型属性被编码为圆形或者矩形。
-% 而且，一个属性可能在该primitive表现为不同形状时，编码了不同的通道。
-% 比如节点的某个数值型属性会用来表示size，在圆形的时候就是r，在矩形的时候就是width和height。
-% 我们在描述的时候就应该将它们当做同一种primitives，因为他们的编码方案是一致的。
-% 也就是说，我们应该根据编码方案对primitives进行分类~\ref{...}。
-% 然而，我们难以
-
-
-\begin{figure}
-    \centering
-    \includegraphics[width=1\columnwidth]{figures/DataBinding.eps}
-    \caption{Data binding is achieved by swapping attributes of data entities. (a) Visual mappings between original visual primitives and data entities are unknown. (b) After swapping attributes of entities B and C, the appearance of primitives 1 to 4 is changed. Thus, entities B and C correspond to primitives 1 to 4. (c) After swapping attributes of entities A and B, the appearance of primitives 2, 3, 7, and 8 is changed. Thus, entities A and B correspond to these primitives. Primitives 2 and 3 are changed twice, we can map the entity B to primitives 2 and 3. (d) After swapping all nodes, the entire node-primitive mappings are constructed.}
-    \label{fig:DataBinding}
-\end{figure}
-
-
-
-\begin{figure}
-    \centering
-    \includegraphics[width=1\columnwidth]{figures/PrimitiveAligning.eps}
-    \caption{}
-    \label{fig:PrimitiveAligning}
-\end{figure}
 
 % 首先我们获取节点的所有属性(除唯一标识符id之外)，遍历这些属性，对某个属性alpha：
 % 我们通过调换两个节点（记作A和B，要求A和B的属性alpha不同）的属性alpha，记录svg数组中发生变化的项目（记作Set_{AB}）
@@ -271,7 +373,6 @@ Mappings are built between the attribute and those visual channels.
 
 
 \subsection{Layout}
-
-\subsection{Interview \& Iterative Design}
-
-\subsection{Understanding Visual Clutter}
+Layouts of attributed graphs have been categorized into attribute-based layouts and 
+topology-based layouts.
+% We aim to detect whether our 
