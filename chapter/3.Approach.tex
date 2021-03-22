@@ -239,7 +239,7 @@ Nodes are described at first, descriptions of links are same to nodes.
 % 首先，我们需要描述数据实体被可视化为哪些视觉元素
 We answer \textbf{Q}\ref{qstn:composition} with the primitives that compose a node.
 Because the shape (\texttt{tagName}) of primitives may encode some attribtues, we first describe the number of primitives rather than describe the shape of primitives directly:
-\textit{``A node consists of \$\{N\} different primitives''}. 
+\textit{``Each node consists of \$\{N\} different primitives''}. 
 
 Then, different primitives in one node are categorized and discussed. 
 For each primitive, there are several visual channels encoding attributes.
@@ -257,8 +257,8 @@ If descriptions of two attributes within one channel are same, they can be merge
 And if the shape (\texttt{tagName}) of a primitive encodes some attributes, it is more complex.
 We first describe its alternative shapes: 
 ``For the \$\{i\}th primitive, its \texttt{tagName} is varying among multiple shapes: \$\{ tagName1, tagName2, tagName3, ... \}''.
-We describe the shape and its related attributes as categorical correlations.
-For different shapes, we describe them one by one.
+And then we describe the common channels shared by different shapes as same as describing the primitive without encoding any attribute on \texttt{tagName}.
+When the primitive is encoded as a certain type, we describe its encodings: ``When it turns to \$\{tagName1\}, its \$\{channel\} encodes the attribute \$\{attribute\}...''
 
 
 % \begin{algorithm}[!t]
@@ -383,3 +383,12 @@ If the Pearson test suggests some attributes determine the position of a node,
 we test correlations between positions and the attributes as same to the correlation test in Section~\ref{sec:encodingmapping}.
 
 For topology-based layouts, we first perform a pre-study to test whether the euclidean distance between two nodes is influenced by their graph geodesic distance.
+% 找N个不同的数据集（跨不同领域），找几种不同种类的拓扑based的layout；检验他们的pearson值，p值等等；比较它们在随机布局下的结果；
+We prepared ? different graph datasets from the Network Repository~\cite{}.
+The number of their nodes varies from ?? to ?? and the number of their links varies from ?? to ??.
+They are collected from diverse areas such as ????.
+We layout them with ? different kinds of topology-based layouts:...
+
+{\color{text-highlight}TO DO}
+
+The result suggests that the topology-based layout algorithms within our pre-study generate layouts where the euclidean distances between two nodes is ???...
