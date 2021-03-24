@@ -81,18 +81,18 @@ More stronger conditions are ranked higher than others.
         \State Init conditions $C=\varnothing$, false conditions $FC=\varnothing$
         \For {each node pair $(v_i, v_j)$}
             \If {$(v_i, v_j)$ is not a link}
-                \State $C_{tmp} \gets$ all conditions that can link $(v_i, v_j)$
-                \State merge $FC$ with $C_{tmp}$
+                \State $C_{ij} \gets$ all conditions that can link $(v_i, v_j)$
+                \State merge $FC$ with $C_{ij}$
             \EndIf
         \EndFor
-        \For {each link $e_i$}
-            \State $C_{tmp} \gets$ all conditions that can construct link $e_i$
-            \For {each condition $c$ in $C_{tmp}$}
+        \For {each link $e_k=(v_i, v_j)$}
+            \State $C_{ij} \gets$ all conditions that can construct link $e_i$
+            \For {each condition $c$ in $C_{ij}$}
                 \If {$c$ in $FC$}
-                    \State remove $c$ from $C_{tmp}$
+                    \State remove $c$ from $C_{ij}$
                 \EndIf
             \EndFor
-            \State merge $C$ with $C_{tmp}$
+            \State merge $C$ with $C_{ij}$
         \EndFor
         \State \Return $C$
     \end{algorithmic}
@@ -372,7 +372,7 @@ When the primitive is encoded as a certain type, we describe its encodings: ``Wh
 % 虽然xxx等人的方法没有假设源代码的存在，但实际上，运行环境下，想要获取到svg元素的__data__属性，必定有运行中的JavaScript程序在背后支持，所以该工作也隐含了javascript的源码存在的假设。
 
 
-\subsection{Layout}
+\subsection{Layout Condition}
 Layouts of attributed graphs have been categorized into attribute-based layouts~\cite{} and topology-based layouts~\cite{} by Nobre et al.~\cite{DBLP:journals/cgf/NobreMSL19}.
 We aim to detect whether the node-link diagram follows an attribute-based layout or a topology-based layouts.
 To capture the position of each node, we compute a bounding box for each node's primitives detected in Section~\ref{sec:databinding}.
@@ -382,7 +382,8 @@ If the Pearson test suggests some attributes determine the position of a node,
 % 然后我们像检验encoding和attribute的相关性一样检验坐标相关性。
 we test correlations between positions and the attributes as same to the correlation test in Section~\ref{sec:encodingmapping}.
 
-For topology-based layouts, we first perform a pre-study to test whether the euclidean distance between two nodes is influenced by their graph geodesic distance.
+For topology-based layouts, we assume that the euclidean distance between two nodes is influenced by their graph geodesic distance.
+Thus we first perform a pre-study to validate our hypothesis.
 % 找N个不同的数据集（跨不同领域），找几种不同种类的拓扑based的layout；检验他们的pearson值，p值等等；比较它们在随机布局下的结果；
 We prepared ? different graph datasets from the Network Repository~\cite{}.
 The number of their nodes varies from ?? to ?? and the number of their links varies from ?? to ??.
