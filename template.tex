@@ -46,12 +46,17 @@
 % \usepackage[xcolor=dvipdf]{changes}
 \usepackage[xcolor=dvipdf, final]{changes}
 \usepackage{ulem}
+\usepackage{color,soul}
+\definecolor{mygreen}{rgb}{0.17, 0.55, 0.05}
+\definecolor{myred}{rgb}{0.85, 0.17, 0.05}
+\definecolor{text-highlight}{rgb}{0.25, 0.62, 0.29}
+\sethlcolor{text-highlight}
 
 \usepackage{CJKutf8} %! FOR CHINESE
 
-\definecolor{mygreen}{rgb}{0.17, 0.55, 0.05}
-\definecolor{myred}{rgb}{0.85, 0.17, 0.05}
-\definecolor{text-highlight}{rgb}{0.14, 0.52, 0.84}
+\usepackage{dcolumn}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+
 \definechangesauthor[name=JiachengPan, color=mygreen]{pan}
 \definechangesauthor[name=XiaodongZhao, color=red]{zhao}
 \definechangesauthor[name=Jian Chen, color=blue]{jc}
@@ -106,12 +111,13 @@
  \CCScat{K.7.m}{The Computing Profession}{Miscellaneous}{Ethics}
 }
 
-\teaser{
-  \centering
-  \includegraphics[width=\linewidth]{CypressView}
-  \caption{In the Clouds: Vancouver from Cypress Mountain. Note that the teaser may not be wider than the abstract block.}
-  \label{fig:teaser}
-}
+% \teaser{
+%   \centering
+% %   \includegraphics[width=\linewidth]{CypressView}
+%   \includegraphics[width=1\linewidth]{figures/teaser.eps}
+%   \caption{In the Clouds: Vancouver from Cypress Mountain. Note that the teaser may not be wider than the abstract block.}
+%   \label{fig:teaser}
+% }
 
 \vgtcinsertpkg
 

@@ -85,11 +85,12 @@ Methods that extract visual mappings from raster images~\cite{DBLP:journals/cgf/
 Whereas methods that deconstruct D3 visualizations~\cite{DBLP:conf/uist/HarperA14, DBLP:journals/tvcg/HarperA18, DBLP:journals/tvcg/HoqueA20} can be applied to more kinds of visual mappings, but they require the data binding feature of D3 so that data can be retrieved for visual elements. We proposed a {\color{red} xxx } algorithm that extends the deconstruction method to extract visual encodings from SVG-formatted node-link diagrams without D3 data binding.
 
 \subsection{Automatic Description for Visualization}
-Automatic visualization description approaches are mainly generated from the extracted information. Mittal et al.~\cite{DBLP:journals/coling/MittalMCR98} developed a caption generation system with natural language generation techniques to describe mappings between data and marks.
+Automatic visualization description approaches are mainly generated from the extracted information. 
+Mittal et al.~\cite{DBLP:journals/coling/MittalMCR98} developed a caption generation system with natural language generation techniques to describe mappings between data and marks.
 Similarly, iGraph-Lite~\cite{DBLP:journals/tochi/FerresLST13} generates template-based descriptions of what the chart looks like.
+More approaches pay attention to generating descriptions of extracted insights.
 Based on extracted insights, Chart-to-Text~\cite{DBLP:conf/inlg/ObeidH20} generates natural language descriptions for line charts and bar charts using the transformer model~\cite{DBLP:conf/nips/VaswaniSPUJGKP17}. 
 Similarly, AutoCaption~\cite{DBLP:conf/apvis/LiuXHWY20} fills the extracted insights into templates to generate captions about trends, maximum values, clusters, et cetera. 
-
 % 一些工作通过回答问题的方式来提取insight.
 Several approaches generate descriptions by answering questions about visualizations.~\cite{DBLP:conf/cvpr/KaflePCK18, DBLP:conf/chi/KimHA20, DBLP:conf/eccv/KembhaviSKSHF16}.
 Kembhavi et al.~\cite{DBLP:conf/eccv/KembhaviSKSHF16} provide a solution to the question answering problem. 
