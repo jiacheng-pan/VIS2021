@@ -34,21 +34,32 @@ We reorganize the conditions proposed by these techniques into four categories:
     \item Two nodes share significantly close value of a same attribute where the significance is defined by the normalized difference.
     \item Two nodes share two values in the same bin of a same attribute where the bins are defined as quartiles.
 \end{compactenum}
-Hear, we regard sharing same topics of textual attributes as same as sharing same values of list attributes (Condition 2), because topics are often presented as a list attribute.
-
-% 我们尝试从它们的反方向进行思考，也就是，当我们获取到了所有的链接的时候，推测这些链接是如何被构建的
+Hear, we regard sharing same topics of textual attributes as same as sharing same values of list attributes (Condition 2), because topics are often presented as a list attribute. % 我们尝试从它们的反方向进行思考，也就是，当我们获取到了所有的链接的时候，推测这些链接是如何被构建的
 Those works infer the potential linking conditions before all links are constructed. 
 Whereas, our method runs in the opposite direction where all links have been constructed already.
-% 针对某一条链接，可能有不止一种构建条件，我们取所有链接的构建条件的交集作为整个graph的构建条件。
-We traverse all links to detect potential conditions for each link.
-The intersection of all links' conditions are regarded as the entire graph's linking condition.
 
 % 为了能够将这些condition填充到文本模板中，我们对condition的输出进行了formalize
-At last, we formalize the condition as three aspects, and textualize the linking condition of the graph by filling templates. 
+We formalize the condition as three aspects to facilitate the comparison, sorting and filtering.
 One condition can be defined as:
 \begin{equation}
-    linking\text{ }condition := ( type, attribute, value )
+    linking\text{ }condition := ( \$type, \$attribute, \$value )
 \end{equation}
+Where \texttt{\$type} is the condition type \texttt{\$attribute} is the name of the attribute, \texttt{\$value} is the value of the attribute.
+
+We first detect linking conditions held on node pairs without any connection.
+These conditions are regarded as false condition because no link is constructed for these nodes and should be filtered out.
+We describe our filtering strategy in~\ref{alg:conditions}.
+After that, conditions are sorted, so that the highest ranked condition will be regard as the most possible condition.
+First, all conditions are sorted by their frequency.
+% 相同频率的条件，如果他们的type和attribute相同，那么根据
+If two conditions with the same frequency have the same $type$ and $attribute$, they can be compared by their degree.
+Some conditions are stronger than others.
+For example, the condition (``C2'', ``actors'', [``Alice'', ``Bob'']) is stronger than (``C2'', ``actors'', [``Alice'']) and (``C2'', ``actors'', [arbitrary value]).
+Because the first condition is implied by the latter two conditions.
+All the three conditions are regarded as individual conditions.
+More stronger conditions are ranked higher than others.
+
+We textualize the linking condition of the graph by filling templates. 
 Four templates corresponds to four conditions according the $type$:
 \begin{compactenum}[\textbf{C}1]
     \item \textit{``Two nodes are connected if their attributes} \texttt{\$attribute} \textit{are with a same value\$\{: }\texttt{\$value} \textit{?\}''}.
@@ -56,33 +67,10 @@ Four templates corresponds to four conditions according the $type$:
     \item \textit{``Two nodes are connected if their attribute} \texttt{\$attribute} \textit{are close, maybe with a difference less than } \texttt{\$value}\textit{''}.
     \item \textit{``Two nodes are connected if their attribute} \texttt{\$attribute} \textit{are within the same \$\{}\texttt{\$value}\textit{ ?\} bin''}.
 \end{compactenum}
-
-Where \texttt{\$attribute} is the name of the attribute, \texttt{\$value} is the value of the attribute, and \$\{?\} means the included part is optional. 
+Where \$\{?\} means the included part is optional. 
 For example, for Condition 2, two movies are connected because they share same actors Alice and Bob. 
 The condition is represented as: (``C2'', ``actors'', [``Alice'', ``Bob'']). 
 Its corresponding statement is: \textit{``Two nodes are connected if their attributes actors share an intersection: [``Alice'', ``Bob'']''}. 
-And there is an implication relation between conditions.
-Some conditions are stronger than others.
-For example, the condition (``C2'', ``actors'', [``Alice'', ``Bob'']) is stronger than (``C2'', ``actors'', [``Alice'']) and (``C2'', ``actors'', [arbitrary value]).
-All the three conditions are regarded as individual conditions.
-
-If a linking condition exists on both nodes with links and nodes without any link, it is regarded as a false condition and should be filtered out.
-We describe our filtering strategy in~\ref{alg:conditions}.
-After that, conditions are sorted, so that the highest ranked condition will be regard as the most possible condition.
-First, all conditions are sorted by their frequency.
-% 相同频率的条件，如果他们的type和attribute相同，那么根据
-If two conditions with the same frequency have the same $type$ and $attribute$, they can be compared by their degree.
-More stronger conditions are ranked higher than others.
-
-
-% 一条边可能包含多个条件，不同边的条件之间可能有交集，可能没有交集。
-% 我们需要一个策略来得到一个关于节点之间如何构建出关系的结论。
-%! 解释一下算法
-% 首先，对于所有没有边的节点对，找出所有可能的构建条件。
-% 其次，对于某条边，它的构建条件和上述的构建条件之间找出差集。
-% 最后，所有边的条件的合集属于边的构建条件；其中 频率最高的将被拿出来。
-
-
 
 \begin{algorithm}[!t]
     \renewcommand\arraystretch{1.2}
