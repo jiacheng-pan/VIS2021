@@ -2,7 +2,7 @@
 % 我们提出了xxx，通过抽取信息并填充模板的方式来描述节点链接图，它大概分为三个步骤~\REf{}：1. xxx; xxx
 We introduce \ApproachName, which describes node-link diagrams by extracting information and filling templates.
 Figure~\ref{fig:workflow} shows the pipeline our our approach with several example descriptions to demonstrate the generated results.
-\ApproachName consists of three steps:
+\ApproachName~consists of three steps:
 \begin{compactenum}
 \item \textbf{Interpreting linking conditions} to describe how relationships between nodes are constructed.
 \item \textbf{Interpreting visual encodings} by extracting visual mappings among data entities, attributes, and visual channels.
@@ -59,11 +59,11 @@ Four templates corresponds to four conditions according the $type$:
 
 Where \texttt{\$attribute} is the name of the attribute, \texttt{\$value} is the value of the attribute, and \$\{?\} means the included part is optional. 
 For example, for Condition 2, two movies are connected because they share same actors Alice and Bob. 
-The condition is represented as: (``Condition 2'', ``actors'', [``Alice'', ``Bob'']). 
+The condition is represented as: (``C2'', ``actors'', [``Alice'', ``Bob'']). 
 Its corresponding statement is: \textit{``Two nodes are connected if their attributes actors share an intersection: [``Alice'', ``Bob'']''}. 
 And there is an implication relation between conditions.
 Some conditions are stronger than others.
-For example, the condition (``Condition 2'', ``actors'', [``Alice'', ``Bob'']) is stronger than (``Condition 2'', ``actors'', [``Alice'']) and (``Condition 2'', ``actors'', [arbitrary value]).
+For example, the condition (``C2'', ``actors'', [``Alice'', ``Bob'']) is stronger than (``C2'', ``actors'', [``Alice'']) and (``C2'', ``actors'', [arbitrary value]).
 All the three conditions are regarded as individual conditions.
 
 If a linking condition exists on both nodes with links and nodes without any link, it is regarded as a false condition and should be filtered out.
@@ -253,25 +253,25 @@ We generate different correlations for different cases:
 \subsubsection {Template-based Textualization}
 Nodes are described at first, followed by descriptions of links. 
 % 为了标记模板中用于填充信息的部分，我们对这些位置进行了高亮。
-To mark the placeholders of templates that are used to fill in the information, we highlight these vacancies.
+To highlight the placeholders of templates that are used to fill in the information, we assign the \$ sign at the beginning of words that fill into these placeholders.
 
 % 首先，我们需要描述数据实体被可视化为哪些视觉元素
 We answer \textbf{Q\ref{qstn:composition}} with the primitives that compose a node.
 Because the shape (\texttt{tagName}) of primitives may encode some attributes, we first describe the number of primitives:
-\textit{``Each node consists of \textbf{\color{white}\hl{ 4 }} different primitives''}. 
+\textit{``Each \texttt{\$node} consists of \texttt{\$4} different primitives''}. 
 Then, primitives of different roles are categorized and discussed. 
 For each primitive, there are several visual channels encoding attributes.
-We describe its shape first: \textit{``The \textbf{\color{white}\hl{ first }} primitive is a {\color{text-highlight}\texttt{<rect>}}''}.
-If the shape is used to encode some attribute, the template turns to: \textit{``For the \textbf{\color{text-highlight}second} primitive, its \texttt{tagName} is varying among multiple shapes: \textbf{\color{text-highlight}\texttt{<rect>}, \texttt{<ellipse>}, and \texttt{<circle>}}''}.
+We describe its shape first: \textit{``The \texttt{\$first} primitive is a \texttt{\$<rect>}''}.
+If the shape is used to encode some attribute, the template turns to: \textit{``For the \texttt{\$second} primitive, its \texttt{\$tagName} is varying among multiple shapes: \texttt{\$<rect>}, \texttt{\$<ellipse>}, and \texttt{\$<circle>}''}.
 
 For the case where the shape encodes nothing, we describe visual channel correlations one by one.
-We first declare which attribute is encoded by which channel: \textit{``Its \textbf{\color{text-highlight}fill} encodes the attribute \textbf{\color{text-highlight}group}''} (to solve \textbf{Q\ref{qstn:encodings}}).
+We first declare which attribute is encoded by which channel: \textit{``Its \texttt{\$fill} encodes the attribute \texttt{\$group}''} (to solve \textbf{Q\ref{qstn:encodings}}).
 We describe their correlation to solve \textbf{Q\ref{qstn:correlation}}.
-If the correlation is categorical-to-categorical, we describe different categories respectively: \textit{``When the value of the attribute \textbf{\color{text-highlight}group} is \textbf{\color{text-highlight}2}, its \textbf{\color{text-highlight}fill} turns to \textbf{\color{text-highlight}darkorange(\#ff7f0e)}.''} (To describe a color, we find the most similar color from a pre-defined set of colors with 146 different names).
-If the correlation is numerical-to-numerical, we describe whether the channel will increase or decrease with the increase of the attribute value: \textit{``The greater the attribute \textbf{\color{text-highlight}value} is, the \textbf{\color{text-highlight}greater} its \textbf{\color{text-highlight}stroke-width} is.''}.
+If the correlation is categorical-to-categorical, we describe different categories respectively: \textit{``When the value of the attribute \texttt{\$group} is \texttt{\$2}, its \texttt{\$fill} turns to \texttt{\$darkorange (\#ff7f0e)}.''} (To describe a color, we find the most similar color from a pre-defined set of colors with 146 different names).
+If the correlation is numerical-to-numerical, we describe whether the channel will increase or decrease with the increase of the attribute value: \textit{``The greater the attribute \texttt{\$value} is, the \texttt{\$greater} its \texttt{\$stroke-width} is.''}.
 
-And if the shape (\texttt{tagName}) of a primitive encodes some attributes, we first describe common channels shared by different shapes (e.g., fill, stroke, stroke-width, etc.): \textit{``The \textbf{\color{text-highlight}fill} of all these shapes encodes the attribute \textbf{\color{text-highlight}group}''}.
-Different shapes have different visual channels, we describe them separately: \textit{``When it turns to \textbf{\color{text-highlight}\texttt{<circle>}}, its \textbf{\color{text-highlight}r} encodes the attribute \textbf{\color{text-highlight}degree}''}.
+And if the shape (\texttt{\$tagName}) of a primitive encodes some attributes, we first describe common channels shared by different shapes (e.g., fill, stroke, stroke-width, etc.): \textit{``The \texttt{\$fill} of all these shapes encodes the attribute \texttt{\$group}''}.
+Different shapes have different visual channels, we describe them separately: \textit{``When it turns to \texttt{\$<ircle>}, its \texttt{\$r} encodes the attribute \texttt{\$degree}''}.
 
 Examples of generated descriptions are referred in Figure~\ref{}.
 
@@ -289,7 +289,7 @@ We take the centroid of the bounding box as the position of the node.
 The attribute-base category of layouts are defined as algorithms that mapping node attributes to the two dimensions (x and y) of the Cartesian coordinate. 
 For each attribute of the node, we test whether it relates to the layout.
 The test is similar to the correlation test in Section~\ref{sec:encodingmapping}.
-Descriptions are also template-based: \textit{``The \textbf{\color{text-highlight}x}-coordinate encodes the attributes \textbf{\color{text-highlight}votes}''}.
+Descriptions are also template-based: \textit{``The \texttt{\$x}-coordinate encodes the attributes \texttt{\$votes}''}.
 If the test does not suggest any attribute as the impact factor, we begin to test whether it is topology-based.
 For topology-based layouts, we assume that the euclidean distance between two nodes is influenced by their graph geodesic distance.
 The Pearson correlation coefficient can also be used to test the correlation.
@@ -304,19 +304,21 @@ We layout them with 5 different kinds of topology-based layouts: FM$^3$~\cite{ha
 }, Pivot MDS (PMDS)~\cite{DBLP:conf/gd/BrandesP06}, and Radial Tree layout (R.T.)~\cite{DBLP:conf/infovis/Jankun-KellyM03}.
 % 我们还检验了随机布局是否也符合我们的假设
 We also test whether the random layout conforms to our assumption.
-We highlight cells where Pearson correlation coefficient is smaller than $0.5$ in Table~\ref{tab:pearson-correlation} and where $p$-value is larger than $0.05$ in Table~\ref{tab:pearson-pvalue}.
+We highlight cells where Pearson correlation coefficient is smaller than $0.5$ in Table~\ref{tab:pearson-correlation}.
+$p$-values are all zero for the five layouts in all 15 datasets.
 They suggest there is no correlation between the euclidean distance and the graph geodesic distance.
+However, nine of 15 datasets with the random layout also produce $p$-values less than $0.05$, which suggests they are significant.
 
 % 这些基于拓扑的布局产生的节点位置，能够使节点间的欧式距离反应它们的拓扑距离。
 Two tables suggest in most cases, the Euclidean distance between two nodes reflects their graph geodesic distance with topology-based layouts.
 % 在大部分情况下，使用pearson 相关系数>0.5且p-value<0.05来检验是否该布局为拓扑布局是可行的。
-Thus, it is feasible to check whether the layout is a topological layout with both two conditions established (the Pearson correlation coefficient$>0.5$ and $p$-value$<0.05$).
+Thus, it is feasible to check whether the layout is a topological layout with the first condition established (the Pearson correlation coefficient$>0.5$).
 
 If the layout is topology-based, we only describe: \textit{``The layout is a topology-based layout, which means the greater the graph geodesic distance between two nodes is, the greater the euclidean distance between them is''}.
 When the layout does not conform to the two categories, we describe that: \textit{``The layout is neither an attribute-based layout nor a topology-based layout.''}.
 
 \begin{table}[ht]
-\caption{\label{tab:pearson-correlation}Pearson correlation value(TODO).}
+\caption{\label{tab:pearson-correlation}Pearson correlation coefficients that test whether the euclidean distance between two nodes is related to their graph geodesic distance. 15 graphs and 6 different layouts are employed.}
 
 \setlength{\tabcolsep}{1.5mm}{
 
@@ -342,29 +344,29 @@ visbrazil     & 0.937                 & 0.828          & 0.941 & 0.958 & 0.758  
 \end{tabular}}
 \end{table}
 
-\begin{table}[ht]
-\caption{\label{tab:pearson-pvalue}Pearson p-value(TODO).}
+% \begin{table}[ht]
+% \caption{\label{tab:pearson-pvalue}Pearson p-value(TODO).}
 
-\setlength{\tabcolsep}{1.9mm}{
+% \setlength{\tabcolsep}{1.9mm}{
 
-\begin{tabular}{lllllll}
-\hline
-Dataset       & FM$^3$ & F.R. & S.M. & PMDS & R.T. & Random         \\ \hline
-dwt\_72       & 0                     & 0    & 0    & 0    & 0    & \textbf{0.842} \\
-lesmis        & 0                     & 0    & 0    & 0    & 0    & 0.021          \\
-bcsstk09      & 0                     & 0    & 0    & 0    & 0    & 0              \\
-cage8         & 0                     & 0    & 0    & 0    & 0    & 0.027          \\
-can\_96       & 0                     & 0    & 0    & 0    & 0    & \textbf{0.203} \\
-dwt\_1005     & 0                     & 0    & 0    & 0    & 0    & 0              \\
-dwt\_419      & 0                     & 0    & 0    & 0    & 0    & \textbf{0.111} \\
-grid17        & 0                     & 0    & 0    & 0    & 0    & \textbf{0.060} \\
-jazz          & 0                     & 0    & 0    & 0    & 0    & \textbf{0.421} \\
-mesh3e1       & 0                     & 0    & 0    & 0    & 0    & \textbf{0.604} \\
-netscience    & 0                     & 0    & 0    & 0    & 0    & 0              \\
-price\_1000   & 0                     & 0    & 0    & 0    & 0    & 0              \\
-rajat11       & 0                     & 0    & 0    & 0    & 0    & 0              \\
-soc-wiki-Vote & 0                     & 0    & 0    & 0    & 0    & 0              \\
-visbrazil     & 0                     & 0    & 0    & 0    & 0    & 0.025          \\ \hline
-\end{tabular}}
+% \begin{tabular}{lllllll}
+% \hline
+% Dataset       & FM$^3$ & F.R. & S.M. & PMDS & R.T. & Random         \\ \hline
+% dwt\_72       & 0                     & 0    & 0    & 0    & 0    & \textbf{0.842} \\
+% lesmis        & 0                     & 0    & 0    & 0    & 0    & 0.021          \\
+% bcsstk09      & 0                     & 0    & 0    & 0    & 0    & 0              \\
+% cage8         & 0                     & 0    & 0    & 0    & 0    & 0.027          \\
+% can\_96       & 0                     & 0    & 0    & 0    & 0    & \textbf{0.203} \\
+% dwt\_1005     & 0                     & 0    & 0    & 0    & 0    & 0              \\
+% dwt\_419      & 0                     & 0    & 0    & 0    & 0    & \textbf{0.111} \\
+% grid17        & 0                     & 0    & 0    & 0    & 0    & \textbf{0.060} \\
+% jazz          & 0                     & 0    & 0    & 0    & 0    & \textbf{0.421} \\
+% mesh3e1       & 0                     & 0    & 0    & 0    & 0    & \textbf{0.604} \\
+% netscience    & 0                     & 0    & 0    & 0    & 0    & 0              \\
+% price\_1000   & 0                     & 0    & 0    & 0    & 0    & 0              \\
+% rajat11       & 0                     & 0    & 0    & 0    & 0    & 0              \\
+% soc-wiki-Vote & 0                     & 0    & 0    & 0    & 0    & 0              \\
+% visbrazil     & 0                     & 0    & 0    & 0    & 0    & 0.025          \\ \hline
+% \end{tabular}}
 
-\end{table}
+% \end{table}
