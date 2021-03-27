@@ -42,7 +42,7 @@ Whereas, our method runs in the opposite direction where all links have been con
 We formalize the condition as three aspects to facilitate the comparison, sorting and filtering.
 One condition can be defined as:
 \begin{equation}
-    linking\text{ }condition := ( \$type, \$attribute, \$value )
+    linking\text{ }condition := ( \texttt{\$type}, \texttt{\$attribute}, \texttt{\$value} )
 \end{equation}
 Where \texttt{\$type} is the condition type \texttt{\$attribute} is the name of the attribute, \texttt{\$value} is the value of the attribute.
 
@@ -54,7 +54,7 @@ First, all conditions are sorted by their frequency.
 % 相同频率的条件，如果他们的type和attribute相同，那么根据
 If two conditions with the same frequency have the same $type$ and $attribute$, they can be compared by their degree.
 Some conditions are stronger than others.
-For example, the condition (``C2'', ``actors'', [``Alice'', ``Bob'']) is stronger than (``C2'', ``actors'', [``Alice'']) and (``C2'', ``actors'', [arbitrary value]).
+For example, the condition (\texttt{"C2"}, \texttt{"actors"}, \texttt{["Alice", "Bob"]}) is stronger than (\texttt{"C2"}, \texttt{actors}, \texttt{["Alice"]}) and (\texttt{"C2"}, \texttt{"actors"}, \texttt{[arbitrary value]}).
 Because the first condition is implied by the latter two conditions.
 All the three conditions are regarded as individual conditions.
 More stronger conditions are ranked higher than others.
@@ -63,14 +63,14 @@ We textualize the linking condition of the graph by filling templates.
 Four templates corresponds to four conditions according the $type$:
 \begin{compactenum}[\textbf{C}1]
     \item \textit{``Two nodes are connected if their attributes} \texttt{\$attribute} \textit{are with a same value\$\{: }\texttt{\$value} \textit{?\}''}.
-    \item \textit{``Two nodes are connected if their attributes} \texttt{\$attribute} \textit{share an intersection\$\{: }\texttt{\$value} \textit{?\}''}.
-    \item \textit{``Two nodes are connected if their attribute} \texttt{\$attribute} \textit{are close, maybe with a difference less than } \texttt{\$value}\textit{''}.
+    \item \textit{``Two nodes are connected if their attributes} \texttt{\$attribute} \textit{have common values\$\{: }\texttt{\$value} \textit{?\}''}.
+    \item \textit{``Two nodes are connected if their attribute} \texttt{\$attribute} \textit{are close (with a difference less than } \texttt{\$value}\textit{)''}.
     \item \textit{``Two nodes are connected if their attribute} \texttt{\$attribute} \textit{are within the same \$\{}\texttt{\$value}\textit{ ?\} bin''}.
 \end{compactenum}
 Where \$\{?\} means the included part is optional. 
 For example, for Condition 2, two movies are connected because they share same actors Alice and Bob. 
-The condition is represented as: (``C2'', ``actors'', [``Alice'', ``Bob'']). 
-Its corresponding statement is: \textit{``Two nodes are connected if their attributes actors share an intersection: [``Alice'', ``Bob'']''}. 
+The condition is represented as: (\texttt{"C2"}, \texttt{"actors"}, \texttt{["Alice", "Bob"]}). 
+Its corresponding statement is: \textit{``Two nodes are connected if their attributes actors have common values: \texttt{["Alice", "Bob"]}''}. 
 
 \begin{algorithm}[!t]
     \renewcommand\arraystretch{1.2}
@@ -110,7 +110,7 @@ For the node-link diagram example in Figure~\ref{fig:VisualEncodings}, a node co
 We denote graphical elements (e.g., \texttt{<circle>}, \texttt{<rect>}, \texttt{<ellipse>}, etc.) in node-link diagrams as \textit{visual primitives} and their style attributes such as \texttt{cx}, \texttt{cy}, \texttt{width}, and \texttt{height} are denoted as \textit{visual channels}.
 Nodes and links contained in the underlying graph are denoted as \textit{data entities} and each data entity consists of several \textit{attributes}.
 
-\begin{figure}
+\begin{figure}[ht]
     \centering
     \includegraphics[width=1\columnwidth]{figures/VisualEncodings.eps}
     \caption{An example shows the workflow of our visual encoding extracting technique. A node-link diagram consists of three nodes and three links (upper right corner). Node primitives are extracted and the \textbf {data binding} step binds them to different nodes. Then primitives with same role across different nodes are aligned into the same role class in the \textbf{primitives aligning} step. Mappings among different role calsses, visual channels, and attributes are detected by the \textbf{encoding mapping} step.}
@@ -129,7 +129,7 @@ We formulate the problem of describing visual encodings in node-link diagrams by
 Thus, extracting mappings between entities and primitives and correlations between attributes and visual channels are necessary (Figure~\ref{fig:PrimitiveAligning} (a)).
 
 
-\begin{figure}
+\begin{figure}[ht]
     \centering
     \includegraphics[width=1\columnwidth]{figures/PrimitiveAligning.eps}
     \caption{(a) the target of our visual encoding detection technique; and (b) the effect of the data binding step and the primitives aligning step.}
@@ -233,7 +233,7 @@ We generate different correlations for different cases:
 \begin{compactitem}
     \item The channel is categorical. The correlation is recorded and described by the channel's categories. For each category of the channel, we record value range of the attribute. % 我们记录了当视觉通道表达为这一类值的时候，属性的取值范围。
     If the value ranges of the attribute are intersected across different channel categories, we discard the correlation because it is ambiguous.
-    \item Both the channel and the attribute numerical. We compute the Pearson's Correlation Coefficient and test whether the correlation is positive, negative, or uncorrelated with the generated p-value of the significance test. We take the attribute as the impact factor of the layout when the absolute value of the coefficient are larger than $0.5$ and the $p$-value of the significance test is less than $0.05$. 
+    \item Both the channel and the attribute numerical. We compute the Pearson's Correlation Coefficient and test whether the correlation is positive, negative, or uncorrelated with the generated p-value of the significance test. We take the attribute as the impact factor of the layout when the absolute value of the coefficient are larger than $\theta$ and the $p$-value of the significance test is less than $\alpha$. We set $\theta = 0.6$ and $\alpha = 0.05$ in default, they can be adjusted on demand.
     Both two parameters can be adjusted freely.
 \end{compactitem}
 
@@ -255,13 +255,13 @@ If the shape is used to encode some attribute, the template turns to: \textit{``
 For the case where the shape encodes nothing, we describe visual channel correlations one by one.
 We first declare which attribute is encoded by which channel: \textit{``Its \texttt{\$fill} encodes the attribute \texttt{\$group}''} (to solve \textbf{Q\ref{qstn:encodings}}).
 We describe their correlation to solve \textbf{Q\ref{qstn:correlation}}.
-If the correlation is categorical-to-categorical, we describe different categories respectively: \textit{``When the value of the attribute \texttt{\$group} is \texttt{\$2}, its \texttt{\$fill} turns to \texttt{\$darkorange (\#ff7f0e)}.''} (To describe a color, we find the most similar color from a pre-defined set of colors with 146 different names).
+If the correlation is categorical-to-categorical, we describe different categories separately: \textit{``When the value of the attribute \texttt{\$group} is \texttt{\$2}, its \texttt{\$fill} turns to \texttt{\$darkorange (\#ff7f0e)}.''} (To describe a color, we find the most similar color from a pre-defined set of colors with 146 different names).
 If the correlation is numerical-to-numerical, we describe whether the channel will increase or decrease with the increase of the attribute value: \textit{``The greater the attribute \texttt{\$value} is, the \texttt{\$greater} its \texttt{\$stroke-width} is.''}.
 
 And if the shape (\texttt{\$tagName}) of a primitive encodes some attributes, we first describe common channels shared by different shapes (e.g., fill, stroke, stroke-width, etc.): \textit{``The \texttt{\$fill} of all these shapes encodes the attribute \texttt{\$group}''}.
 Different shapes have different visual channels, we describe them separately: \textit{``When it turns to \texttt{\$<ircle>}, its \texttt{\$r} encodes the attribute \texttt{\$degree}''}.
 
-Examples of generated descriptions are referred in Figure~\ref{}.
+Examples of generated descriptions are referred in Figure~\ref{fig:teaser}.
 
 \subsection{Interpreting Layout Meanings}
 Layouts of attributed graphs have been categorized into attribute-based layouts~\cite{} and topology-based layouts~\cite{} by Nobre et al.~\cite{DBLP:journals/cgf/NobreMSL19}.
@@ -281,7 +281,7 @@ Descriptions are also template-based: \textit{``The \texttt{\$x}-coordinate enco
 If the test does not suggest any attribute as the impact factor, we begin to test whether it is topology-based.
 For topology-based layouts, we assume that the euclidean distance between two nodes is influenced by their graph geodesic distance.
 The Pearson correlation coefficient can also be used to test the correlation.
-We assume that with the conditions that the Pearson correlation coefficient is larger than $0.5$ and $p$-value is smaller to $0.05$, we can infer the layout is a topology-based layout.
+We assume that with the conditions that the Pearson correlation coefficient is larger than $\theta$ and $p$-value is smaller to $\alpha$, we can infer the layout is a topology-based layout.
 
 Thus we first perform a pre-study to validate our hypothesis.
 % 找N个不同的数据集（跨不同领域），找几种不同种类的拓扑based的layout；检验他们的pearson值，p值等等；比较它们在随机布局下的结果；
@@ -292,21 +292,21 @@ We layout them with 5 different kinds of topology-based layouts: FM$^3$~\cite{ha
 }, Pivot MDS (PMDS)~\cite{DBLP:conf/gd/BrandesP06}, and Radial Tree layout (R.T.)~\cite{DBLP:conf/infovis/Jankun-KellyM03}.
 % 我们还检验了随机布局是否也符合我们的假设
 We also test whether the random layout conforms to our assumption.
-We highlight cells where Pearson correlation coefficient is smaller than $0.5$ in Table~\ref{tab:pearson-correlation}.
+We highlight cells where Pearson correlation coefficient is smaller than $\theta$ in Table~\ref{tab:pearson-correlation}.
 $p$-values are all zero for the five layouts in all 15 datasets.
 They suggest there is no correlation between the euclidean distance and the graph geodesic distance.
-However, nine of 15 datasets with the random layout also produce $p$-values less than $0.05$, which suggests they are significant.
+However, nine of 15 datasets with the random layout also produce $p$-values less than $\alpha$, which suggests they are significant.
 
 % 这些基于拓扑的布局产生的节点位置，能够使节点间的欧式距离反应它们的拓扑距离。
 Two tables suggest in most cases, the Euclidean distance between two nodes reflects their graph geodesic distance with topology-based layouts.
-% 在大部分情况下，使用pearson 相关系数>0.5且p-value<0.05来检验是否该布局为拓扑布局是可行的。
-Thus, it is feasible to check whether the layout is a topological layout with the first condition established (the Pearson correlation coefficient$>0.5$).
+% 在大部分情况下，使用pearson 相关系数>0.6且p-value<0.05来检验是否该布局为拓扑布局是可行的。
+Thus, it is feasible to check whether the layout is a topological layout with the first condition established (the Pearson correlation coefficient$>0.6$).
 
 If the layout is topology-based, we only describe: \textit{``The layout is a topology-based layout, which means the greater the graph geodesic distance between two nodes is, the greater the euclidean distance between them is''}.
 When the layout does not conform to the two categories, we describe that: \textit{``The layout is neither an attribute-based layout nor a topology-based layout.''}.
 
 \begin{table}[ht]
-\caption{\label{tab:pearson-correlation}Pearson correlation coefficients that test whether the euclidean distance between two nodes is related to their graph geodesic distance. 15 graphs and 6 different layouts are employed.}
+\caption{\label{tab:pearson-correlation}Pearson correlation coefficients that test whether the euclidean distance between two nodes is related to their graph geodesic distance. 15 graphs and 6 different layouts are employed. Cells with coefficients less than $\theta$ are highlighted.}
 
 \setlength{\tabcolsep}{1.5mm}{
 
@@ -315,7 +315,7 @@ When the layout does not conform to the two categories, we describe that: \texti
 \hline
 Dataset       & FM$^3$ & F.R.           & S.M.  & PMDS  & R.T.           & Random          \\ \hline
 dwt\_72       & 0.894                 & 0.552          & 0.94  & 0.897 & 0.714          & \textbf{-0.003} \\
-lesmis        & 0.804                 & 0.728          & 0.815 & 0.779 & 0.504          & \textbf{-0.03}  \\
+lesmis        & 0.804                 & 0.728          & 0.815 & 0.779 & \textbf{0.504} & \textbf{-0.03}  \\
 bcsstk09      & 0.967                 & 0.610          & 0.971 & 0.947 & 0.754          & \textbf{-0.008} \\
 cage8         & 0.658                 & 0.678          & 0.725 & 0.701 & \textbf{0.307} & \textbf{-0.002} \\
 can\_96       & 0.835                 & 0.824          & 0.855 & 0.869 & \textbf{0.426} & \textbf{0.013}  \\
