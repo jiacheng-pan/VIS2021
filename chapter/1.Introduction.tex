@@ -49,42 +49,47 @@ Generating such constituent-based descriptions requires decomposing the creation
 % 1. 数据预处理；一般而言，真实世界收集到的源数据常常是表格型的多属性数据，而输入到节点链接图创作的图数据，往往是在源数据的基础上进行预处理，通过在源数据上定义实体之间的关系（链接），最终获得输入到节点链接图的图数据（包含节点和链接）
 % 2. 设计可视编码；创作者还会把他想表达的数据特征编码到节点链接图上，比如利用节点的颜色来编码节点的类别等。
 % 3. 计算图布局；节点链接图需要解决的一个关键问题是如何在二维空间中放置节点。链接则往往被绘制为节点之间的连接线，其位置往往由其两个端点决定。基于布局算法产生的节点位置，节点链接图才能进行绘制。
-The creation of node-link diagrams commonly includes the following steps (the order of step 2 and step 3 can be reversed)~\cite{DBLP:journals/cgf/SpritzerBDFF15, tvcg/RomatAP21}:
+% 创建节点链接图的一般步骤被归纳为以下三步：
+The general steps of creating a node-link diagram are summarized into three steps~\cite{DBLP:journals/cgf/SpritzerBDFF15, tvcg/RomatAP21}:
 \textbf{1) Graph wrangling} transforms the original data from tabular format to graph format by defining relationships between entities~\cite{DBLP:journals/tvcg/SrinivasanPEB18, DBLP:conf/ieeevast/BigelowNML19, DBLP:journals/ivs/HeerP14, DBLP:journals/ivs/LiuNS14}.
+% 用描述告知观众实体之间的联系是如何构建的 很关键
+It is crucial to inform audiences how those relationships are constructed to form links.
 % % 虽然Graphiti~\cite{DBLP:journals/tvcg/SrinivasanPEB18}从用户的demonstration中推测构建链接的条件，但它并不能直接被用于推测已经所有边已经构建完毕的图数据。
 % Although Graphiti~\cite{DBLP:journals/tvcg/SrinivasanPEB18} is designed to infer linking conditions from user demonstrations, it can not be employed directly to infer linking conditions in a graph with all links constructed.
 % % 需要一个新的方法，能够处理多条边之间的条件的逻辑关系，来得出完备的结论。
 % A new pipeline is needed to deal with logical relationships among multiple linking conditions to obtain a complete conclusion.
-\textbf{2) Visual mapping} encodes node/link attributes with different visual channels to show data features. 
+\textbf{2) Visual encoding} encodes node/link attributes with different visual channels to show data features. 
 \textbf{3) Layout computing} positions nodes in a two-dimensional space to reveal attribute-based or topology-based patterns~\cite{DBLP:journals/cgf/NobreMSL19}.
 
-Describing a node-link diagram by extracting information from the three steps is challenging.
-\textbf{1)} 
-% 用描述告知观众实体之间的联系是如何构建的 很关键
-It is crucial to inform audiences how those relationships are constructed to form links.
+% 三个步骤都包含了关键信息需要创建者向用户进行解释。
+% 我们的方法旨在抽取这些信息生成相关描述来帮助用户克服对这三个步骤的理解障碍。
+% 通过抽取信息的方式来生成描述会遇到以下挑战：
+All three steps contain key informations that needs to be explained to audiences.
+We aim to extract these informations and generate relavent descriptions to help users overcome the obstacles of understanding these three steps.
+Several challenges are encountered:
+
+\noindent \textbf{1)} 
 Describing how relationships are constructed needs to extract information about linking conditions.
 % 虽然Graphiti~\cite{DBLP:journals/tvcg/SrinivasanPEB18}从用户的demonstration中推测构建链接的条件，但它并不能直接被用于推测已经所有边已经构建完毕的图数据。
 Although Graphiti~\cite{DBLP:journals/tvcg/SrinivasanPEB18} is designed to infer linking conditions from user demonstrations, it is designed to infer linking conditions of a user defined link and can not be employed directly to infer linking conditions in a graph with all links constructed.
 % 需要一个新的方法，能够处理多条边之间的条件的逻辑关系，来得出完备的结论。
 A new pipeline is needed to deal with logical relationships among multiple linking conditions to obtain a complete conclusion.
-\textbf{2)} % 从可视化结果中提取 visual mapping 的工作也有很多，但他们大多为了处理一些基础图表，缺少对于节点链接图的支持，又或者需要强有力的先验假设（比如需要d3将数据绑定到可视化元素上），使得工作难以拓展到更多领域。我们的方法将对已有方法进行补充，使他们能够适用于更广的范围，能够良好支持节点链接图中的视觉映射的抽取。
+
+\noindent \textbf{2)} % 从可视化结果中提取 visual mapping 的工作也有很多，但他们大多为了处理一些基础图表，缺少对于节点链接图的支持，又或者需要强有力的先验假设（比如需要d3将数据绑定到可视化元素上），使得工作难以拓展到更多领域。我们的方法将对已有方法进行补充，使他们能够适用于更广的范围，能够良好支持节点链接图中的视觉映射的抽取。
 Numerous techniques are proposed to extract visual mappings from visualization~\cite{DBLP:conf/uist/HarperA14, DBLP:journals/tvcg/HoqueA20, DBLP:journals/corr/abs-2103-00741},  they mainly aim at basic charts such as line charts, bar charts, and so on.
 They rarely support node-link diagrams or are not robust enough to deal with complex conditions (e.g., a node is visualized as a line chart~\cite{DBLP:journals/bmcbi/JunkerKS06}).
-\textbf{3)} Describing layouts should determine meanings of layouts.
+
+\noindent \textbf{3)} Describing a layout should determine the meaning of the layout.
 % 虽然已经有很多布局相关的工作，但几乎没有工作能够推测某种布局结果的意义。
 Although numerous layout algorithms are proposed~\cite{hachul2004drawing, DBLP:journals/spe/FruchtermanR91, DBLP:conf/gd/GansnerKN04, DBLP:conf/gd/BrandesP06, DBLP:journals/tvcg/ZhuCHHLZ21}, none of them can be used to infer the meaning of a specific layout.
 
 % 我们提出了xxxx，已解决上述挑战。
 We introduce~\textit{\ApproachName}, an automatic description generator for node-link diagrams.
-% xxxx 检验了创作者创作可视化的过程，从图数据，可视化构建源码中，提取解决上述挑战的关键信息。
-It extracts key information from the creation process of node-link diagrams to solve challenges mentioned above.
-% 最终将提取的信息注入到一些预定义的模板中生成文字描述形成标题。
-And we fill the information into several pre-defined templates to generate textual descriptions.
-We propose {\color{red}?} case studies to demonstrate our results
+It aims to extract key information from the three-steps creation process of node-link diagrams to solve challenges mentioned above.
+\ApproachName~first checks the linking conditions between all pairs of nodes, and selects potential conditions to explain the process of \textbf{graph wrangling}.
+Then it continuously modifies the source data and checks changes of the visualization result to find encoding schemes for the explanation of the \textbf{visual encoding} step.
+And \ApproachName~interprets the meaning of the \textbf{layout computing} step by examining the influence factors of node positions to classifying the layout category.
+We fill these informations into several pre-defined templates to generate textual descriptions.
+Four case studies are proposed to demonstrate our results.
 % 我们通过xxx对该方法的有效性进行了验证。
-{\color{red} And we evaluate ?? of our technique with a user study.}
-% 我们的贡献可以被归纳为：
-Our contributions can be concluded as:
-\colorbox{text-highlight}{TO DO}
-
-%? 重要：需要提及我们的方法是template-based，重点不在于NLG，而是在于问题的formulation和信息的提取。
+{\color{red} And we evaluate and discuss ?? of our technique with a user study.}

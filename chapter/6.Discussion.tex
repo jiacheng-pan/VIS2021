@@ -1,0 +1,29 @@
+\section{Discussion}
+
+
+\subsection{Failure Cases and Limitations}
+\textbf{Failure Cases}.
+We observed several failure cases during the development of our technique.
+Our technique assumes the consistency of the diagram.
+It is not able to deal with complex cases where different parts of the graph are dealt differently.
+For example, a part of nodes are connected if they have common values on one attribute (condition 2) while the other connected nodes are because of the closeness of another numerical attribute (condition 3).
+Similarly, \ApproachName~cannot deal with node-link diagrams where different nodes have different encoding schemes and where different areas of the diagram are positioned by different layouts.
+For example, our visual encoding extraction technique in Section~\ref{sec:visualencodings} is not able to deal with nodes visualized by different numbers of primitives.
+Such failure cases are rare in common situations and can be mitigated by add classification strategies to distinguish different parts with diverse schemes.
+For example, we can detect potential priori conditions for different schemes.
+A set of data entities with the same linking condition or the same encoding scheme may have commonalities in some attributes.
+
+\textbf{Scalability}.
+\ApproachName~consists of three parts:
+\textbf{interpreting linking conditions} need to tranverse all pairs of nodes to find potential conditions.
+Thus, its time complexity is $O(N^2)$, where $N$ is the number of nodes.
+\textbf{Interpreting visual encodings} swaps all pairs of nodes and links, and then traverse and compare all primitives to obtain their differences.
+The number of primitives are linear to the number of data entities.
+Its time complexity is $O(N^3 + M^3)$.
+Time of detecting visual mappings between attributes and channels can be ignored compares to $O(N^3 + M^3)$.
+\textbf{Interpreting layout meanings} requires the computation of two distance matrices.
+Finding the shortest paths of all node pairs is $O(N^3)$.
+The most time consuming part is interpreting visual encodings.
+It needs to generate a new SVG element for each swapping and compute visual channels for each primitive.
+We plan to implement our algorithm in the server side to improve its performance.
+The generation of SVG elements and the computation of visual channels can be accelerated.

@@ -9,6 +9,7 @@ Figure~\ref{fig:workflow} shows the pipeline our our approach with several examp
 \item \textbf{Interpreting layout meanings} by detecting which kinds of layout is employed.
 \end{compactenum}
 
+{\color{red} TO DO}
 
 \begin{figure}
     \centering
@@ -16,6 +17,7 @@ Figure~\ref{fig:workflow} shows the pipeline our our approach with several examp
     \caption{Caption}
     \label{fig:workflow}
 \end{figure}
+
 
 \subsection{Interpreting Linking Conditions}
 % 从表格型数据创建图数据时，最重要的就是建立节点之间的关系。
@@ -102,7 +104,7 @@ Its corresponding statement is: \textit{``Two nodes are connected if their attri
 \end{algorithm}
 
 
-\subsection{Interpreting Visual Encodings}
+\subsection{Interpreting Visual Encodings}\label{sec:visualencodings}
 \subsubsection{Background}
 % 为了在节点链接图中展示节点、链接的属性，常常将这些属性编码为节点/链接的视觉通道。
 To visualize attributes of nodes and links in node-link diagrams, creators often encode them with visual channels on nodes and links.
@@ -358,3 +360,20 @@ visbrazil     & 0.937                 & 0.828          & 0.941 & 0.958 & 0.758  
 % \end{tabular}}
 
 % \end{table}
+
+\subsection{Interactive Descriptions}
+Descriptions can be enhanced by interactions.
+They are generated with corresponding primitives.
+We bind highlight interactions to descriptions to reach higher comprehension.
+Primitives will be highlight when audiences hover on their corresponding descriptions.
+We develop an interactive interface to support generating interactive descriptions (Figure~\ref{fig:interface}).
+Creators can write visualization code in the Code Editor and input the graph data in the Data Editor.
+\ApproachName~generates the visualization results and its corresponding interactive descriptions.
+
+
+\begin{figure*}[ht]
+    \centering
+    \includegraphics[width=2\columnwidth]{figures/interface.eps}
+    \caption{Caption}
+    \label{fig:interface}
+\end{figure*}
