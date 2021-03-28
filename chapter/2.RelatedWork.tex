@@ -1,8 +1,8 @@
 \section{Related Work}\label{sec:relatedwork}
 %! related work 的目的，是给审稿人看你的文章到底做了什么，到底哪些工作是跟你类似的，需要在这里跟他们撇清关系。
-\subsection{Node-link Diagram}
+\subsection{Attributed Node-link Diagram}
 Node-link diagrams are widely used to reveal topology and relationships between entities.
-We aim to generate captions for node-link diagrams with visual encodings, which means the underlying graphs are attributed.
+We aim to generate descriptions for node-link diagrams with visual encodings, which means the underlying graphs are attributed.
 Nobre et al.~\cite{DBLP:journals/cgf/NobreMSL19} surveyed numerous multivariate graph visualization techniques.
 Moreover, Partl et al.~\cite{DBLP:conf/biovis/PartlKLKSS12} discuss four categories of multivariate node-link diagram layouts.
 Node-link diagrams can encode node attributes and link attributes within their related visual elements.
@@ -27,7 +27,7 @@ Compared to nodes, links have less space for attributes encoding.
 
 % 这些工作为我们的工作提供了很多很优秀的案例，我们的工作将会围绕这些案例进行展开，为带有不同编码方案的节点链接图生成相关描述作为标题。
 These techniques provide numerous cases for our approach.
-We aim to generate relevant descriptions as captions for node-link diagrams with diverse encoding schemes.
+We aim to generate relevant descriptions for node-link diagrams with diverse encoding schemes.
 
 \subsection{Information Extraction of Visualization}
 % ! Data
@@ -100,4 +100,7 @@ To support bar chart question answering, a dataset called DVQA~\cite{DBLP:conf/c
 An end-to-end neural network and a dynamic local dictionary are designed to indicate the ability of the dataset.
 More recently, an automatic question answering pipeline~\cite{DBLP:conf/chi/KimHA20} about bar charts and line charts is proposed to answering natural language questions. It extends Sempre~\cite{DBLP:conf/acl/PasupatL15, DBLP:conf/emnlp/ZhangPL17} to answer questions about charts with Vega-Lite~\cite{DBLP:journals/tvcg/SatyanarayanMWH17} format and give visual explanations.
 
-None of these approaches is designed to generate descriptions for node-link diagrams. Our approach aims to explore the constitution of node-link diagrams captions and generate them automatically.{\colorbox{text-highlight}{TO DO}} %?
+None of these approaches is designed to generate descriptions for node-link diagrams. 
+We propose an approach named \ApproachName~to generate descriptions for node-link diagrams automatically.
+It utilizes three information extraction pipelines to detect crucial informations from the source code and data,
+and generates template-based descriptions.
