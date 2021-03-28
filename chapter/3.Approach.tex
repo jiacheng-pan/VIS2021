@@ -261,7 +261,7 @@ If the correlation is categorical-to-categorical, we describe different categori
 If the correlation is numerical-to-numerical, we describe whether the channel will increase or decrease with the increase of the attribute value: \textit{``The greater the attribute \texttt{\$value} is, the \texttt{\$greater} its \texttt{\$stroke-width} is.''}.
 
 And if the shape (\texttt{\$tagName}) of a primitive encodes some attributes, we first describe common channels shared by different shapes (e.g., fill, stroke, stroke-width, etc.): \textit{``The \texttt{\$fill} of all these shapes encodes the attribute \texttt{\$group}''}.
-Different shapes have different visual channels, we describe them separately: \textit{``When it turns to \texttt{\$<ircle>}, its \texttt{\$r} encodes the attribute \texttt{\$degree}''}.
+Different shapes have different visual channels, we describe them separately: \textit{``When it turns to \texttt{\$<circle>}, its \texttt{\$r} encodes the attribute \texttt{\$degree}''}.
 
 Examples of generated descriptions are referred in Figure~\ref{fig:teaser}.
 
@@ -364,9 +364,9 @@ visbrazil     & 0.937                 & 0.828          & 0.941 & 0.958 & 0.758  
 \subsection{Interactive Descriptions}
 Descriptions can be enhanced by interactions.
 They are generated with corresponding primitives.
-We bind highlight interactions to descriptions to reach higher comprehension.
-Primitives will be highlight when audiences hover on their corresponding descriptions.
-We develop an interactive interface to support generating interactive descriptions (Figure~\ref{fig:interface}).
+For example, descriptions about nodes correspond to nodes related primitives.
+When audiences hover on one sentence of description, we highlight related primitives to help user capture the target of the description.
+We develop an interactive interface to support generating interactive descriptions (Figure~\ref{fig:interface}) with \ApproachName.
 Creators can write visualization code in the Code Editor and input the graph data in the Data Editor.
 \ApproachName~generates the visualization results and its corresponding interactive descriptions.
 
