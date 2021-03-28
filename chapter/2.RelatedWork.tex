@@ -34,7 +34,7 @@ We aim to generate relevant descriptions as captions for node-link diagrams with
 % 第1类工作聚焦于从各种可视化结果还原潜在数据。这些工作很多以ocr的方法读取图表中的文本信息，结合坐标轴等辅助的component，对基本图表中蕴含的数据进行还原。
 Numerous methods are proposed to interpret visualizations by retrieving data from raster images.
 Methods that deal with multi-types of charts usually provide a classification algorithm to classify charts in the beginning~\cite{DBLP:conf/icip/GaoZB12, DBLP:conf/chi/JungKSHLKS17, DBLP:conf/eccv/SiegelHLDF16, DBLP:journals/vlc/DaiWNZ18}.
-Then, Optical Character Recognition (OCR) is employed to detect textual information from captains, labels, and axes~\cite{DBLP:conf/icip/ZhouT00, DBLP:conf/doceng/HuangT07, DBLP:conf/grec/HuangTL03}.
+Then, Optical Character Recognition (OCR) is employed to detect textual information from captions, labels, and axes~\cite{DBLP:conf/icip/ZhouT00, DBLP:conf/doceng/HuangT07, DBLP:conf/grec/HuangTL03}.
 Data can be retrieved in the combination of OCR techniques and graphics detection techniques.
 % xxxx 对光栅图进行了分类，从而不需要控制输入的图片为某一个特定类型。
 % ChartSense~\cite{DBLP:conf/chi/JungKSHLKS17}, FigureSeer~\cite{DBLP:conf/eccv/SiegelHLDF16}, and Chart decoder~\cite{DBLP:journals/vlc/DaiWNZ18} improve such classification and data extraction with deep learning methods. And more types of charts such as area charts, radar charts, etc. are supported in ChartSense and Chart decoder. 
@@ -82,7 +82,7 @@ They enhanced the tool to identify textual information and employed it to genera
 % 这些方法或是只适用于检测基础的可视化图表如bar chart/line chart/area chart等，或是只适用于对d3等具有数据绑定的svg进行编码提取。
 % 我们提出了对节点链接图进行信息提取的方法，该方法从多个角度出发，适用于通用的svg场景，而不需要数据绑定的前提。
 Methods that extract visual mappings from raster images~\cite{DBLP:journals/cgf/PocoH17, DBLP:journals/tvcg/PocoMH18, DBLP:conf/sibgrapi/MayhuaNHP18, DBLP:journals/corr/abs-2103-00741} can be more capable to common cases, but they are primarily designed for basic charts or only can detect several pre-defined visual mapping types.
-Whereas methods that deconstruct D3 visualizations~\cite{DBLP:conf/uist/HarperA14, DBLP:journals/tvcg/HarperA18, DBLP:journals/tvcg/HoqueA20} can be applied to more kinds of visual mappings, but they require the data binding feature of D3 so that data can be retrieved for visual elements. We proposed a {\color{red} xxx } algorithm that extends the deconstruction method to extract visual encodings from SVG-formatted node-link diagrams without D3 data binding.
+Whereas methods that deconstruct D3 visualizations~\cite{DBLP:conf/uist/HarperA14, DBLP:journals/tvcg/HarperA18, DBLP:journals/tvcg/HoqueA20} can be applied to more kinds of visual mappings, but they require the data binding feature of D3 so that data can be retrieved for visual elements. We proposed a method that supports extracting visual encodings from SVG-formatted node-link diagrams without D3 data binding.
 
 \subsection{Automatic Description for Visualization}
 Automatic visualization description approaches are mainly generated from the extracted information. 
