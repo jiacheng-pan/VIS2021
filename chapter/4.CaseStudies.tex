@@ -55,7 +55,7 @@ our technique will detect it and generate descriptions as: \textit{``Its \texttt
 \end{figure*}
 
 \subsection{Case 2: Nodes with Different Shapes}
-Shapes (\texttt{tagName}s) of primitives are often used to encode categorical attributes.
+Shapes (\texttt{tagName}s) of elements are often used to encode categorical attributes.
 This case demonstrates what descriptions will be generated with \ApproachName~where the shape of a node is used to encode a categorical attribute (Figure~\ref{fig:BasicCases.eps} (b) and (d)).
 
 \textbf{1) Graph Wrangling}. 
@@ -73,7 +73,7 @@ The color encodes their main genre (the first genre in their genre attribute \te
 The x and y coordinates encode the publish year (\texttt{"year"}) and the \texttt{"duration"} separately.
 
 \textbf{Results}.
-Different from the former case, nodes are visualized with two different primitives: \texttt{<circle>} and \texttt{<rect>}.
+Different from the former case, nodes are visualized with two different elements: \texttt{<circle>} and \texttt{<rect>}.
 Their visual channels have differences.
 Thus, \ApproachName~describes them separatly:
 \textit{``Its \texttt{tagName} encodes the attribute country.
@@ -92,7 +92,7 @@ The greater the \texttt{duration} is, the greater the \texttt{y}-coordinate is.'
 
 \subsection{Case 3: Line Charts Embeded on Nodes}
 With the IMDb movie dataset, we introduce another case which focuses on actors (Figure~\ref{fig:NodeLineChartsCase} (b) and (f)).
-This case focuses on demonstrating more complex situations where each node consists of multiple primitives.
+This case focuses on demonstrating more complex situations where each node consists of multiple elements.
 
 \textbf{1) Graph Wrangling}. We first select movies in the dataset that are only released in China from 2016 to 2021.
 Their actors who have acted in more than five movies are regarded as nodes.
@@ -109,11 +109,11 @@ The width of the link's \texttt{<line>} encodes its attribute \texttt{"number\_o
 
 \textbf{3) Layout Computing}. We utilize the layout to show two attributes (\texttt{"avg\_vote"} and \texttt{"votes"}) of each node. The x-coordinate encodes the attribute \texttt{"votes"} and the y-coordinate encodes the \texttt{"avg\_vote"}.
 
-Different with Section~\ref{sec:imdb_movies}, in this case, each node consists of several primitives.
-We bind primitives to different entities and distinguish their roles.
-We interpret the meaning of the line chart by describing its primitives.
-As described in the Visual Encodings part in Figure~\ref{fig:NodeLineChartsCase} (b), it contains five primitives.
-The first four primitives are \texttt{<line>}s.
+Different with Section~\ref{sec:imdb_movies}, in this case, each node consists of several elements.
+We bind elements to different entities and distinguish their roles.
+We interpret the meaning of the line chart by describing its elements.
+As described in the Visual Encodings part in Figure~\ref{fig:NodeLineChartsCase} (b), it contains five elements.
+The first four elements are \texttt{<line>}s.
 % 它们组合在一起编码了每个演员每年出演电影数量的趋势，
 They are composed together to encode the trend of the actors activeness, namely the number of movies they acted in each year.
 Descriptions like \textit{``encode the trend of the actors activeness''} are domain-knowledge based,
@@ -121,12 +121,12 @@ Descriptions like \textit{``encode the trend of the actors activeness''} are dom
 our technique aims to generate fine-grained descriptions to help audiences to form complex cognitions.
 % 于是我们的方法对它们的y值分别进行了描述：
 It describes them separately: 
-\textit{``The first primitive is a \texttt{<line>}. 
+\textit{``The first element is a \texttt{<line>}. 
 Its \texttt{y1} encodes the attribute \texttt{"number\_of\_movies\_by\_year[2019]"}. 
 The greater the \texttt{"number\_of\_movies\_by\_year[2019]"} is, the greater its \texttt{y1} is. 
 Its \texttt{y2} encodes the attribute \texttt{"number\_of\_movies\_by\_year[2020]"}.
 The greater the \texttt{"number\_of\_movies\_by\_year[2020]"} is, the greater its \texttt{y2} is.''}
-Then the description are repeated with different primitives and attribtues.
+Then the description are repeated with different elements and attribtues.
 Such descriptions are fine-grained and can be composed to face complex tasks in the future.
 
 
@@ -156,7 +156,7 @@ Their colors are only used to distinguish them rather than encode attribute valu
 The force-directed layout is emplpoyed.
 
 As expected, four \texttt{<rect>}s are discussed separately (the Visual Encodings part in Figure~\ref{fig:LinkBarsCase} (b)):
-\textit{``The first primitive is a \texttt{<rect>}. Its \texttt{width} encodes the attribute \texttt{"budget\_diff"}. The greater the attribute \texttt{"budget\_diff"} is, the greater its \texttt{width} is.
+\textit{``The first element is a \texttt{<rect>}. Its \texttt{width} encodes the attribute \texttt{"budget\_diff"}. The greater the attribute \texttt{"budget\_diff"} is, the greater its \texttt{width} is.
 ''}
 Descriptions for the other three \texttt{<rect>}s are similar.
 Although we only compute a force-directed layout for the graph, our technique suggests that both the attribute-based layout and the topology-based layout are detected (Figure~\ref{fig:LinkBarsCase} (b)).
