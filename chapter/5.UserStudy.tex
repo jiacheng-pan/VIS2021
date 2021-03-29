@@ -1,7 +1,34 @@
-\section{User Study}
-1. 针对两个case 找一个expert帮忙写一些描述，定义相关交互，我们帮助它生成相应的交互式描述；
-2. 自动生成交互式描述；让expert做一些评价。
-3. 各找12个人观看描述；回答五分量表；(readability (e.g., is it easy to read and follow the logic?),
-utility (e.g., does it help you understand this visual design?), aesthetics
-(e.g., does it look pretty and pleasant?) and attractiveness (e.g., does it
-attract your interest?).) 在expert的描述上挖一些空，让被试填入；
+\section{Evaluation}
+We demonstrate the utility of \ApproachName~by evaluating the quality of the generated descriptions.
+\ApproachName~is tailored for generating descriptions of the creation process of node-link diagrams.
+To the best of our knowledge, there is no other application can be utilized to achieve the same goal.
+We believe a qualitative study is more meaningful to show the utility of \ApproachName.
+
+\subsection{Study Design}
+Case 2 and Case 4 were selected as evaluation datasets,
+because they have different types of linking conditions, visual encodings, and layouts.
+An expert familiar with the node-link diagram creation was invited to generate a quiz questionnaire which would be used to examine whether participants understood node-link diagrams in two cases.
+We first explained how the two node-link diagrams are created.
+After that we asked him to describe node-link diagrams regarding the three-steps creation process.
+He removed crucial information about the descriptions to generate a cloze test for each case.
+Two cloze tests contains 13 vacancies and 10 vacancies respectively.
+
+% 验证生成的句子的质量
+% 李克特量表，对于四个角度以及对节点连接图的理解程度
+We recruited 12 participants in the study ({\color{red}x} males and {\color{red}x} females; aging from {\color{red}x} to {\color{red}x}).
+All participants are students or researchers in computer science.
+{\color{red}x} of them major in visualization.
+We first introduce our interactive interface to the participants.
+They are asked to read the generated descriptions interactively.
+The source code and data are hidden from them.
+After reading, participants are asked to finish the cloze test to check their understanding of node-link diagrams.
+The expert was asked to mark cloze tests finished by participants with a full mark of five.
+Participants also accomplished a questionnaire to rate the quality of the descriptions with the 5-point Likert scale regarding readability, utility, aesthetics, and attractiveness.
+
+
+% 1. 针对两个case 找一个expert帮忙写一些描述，在这个描述上挖一些空，准备一些模糊的备选项，作为quiz；
+% 2. 自动生成交互式描述；
+% 3. 各找12个人观看描述；回答五分量表；(readability (e.g., is it easy to read and follow the logic?),
+% utility (e.g., does it help you understand this visual design?), aesthetics
+% (e.g., does it look pretty and pleasant?) and attractiveness (e.g., does it
+% attract your interest?).) 让被试填入。
