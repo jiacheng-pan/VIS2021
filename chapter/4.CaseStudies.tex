@@ -10,14 +10,14 @@ This case is aimed to show a basic example.
 % 我们挑选了数据集中2019年在中国上映的电影。
 \textbf{1) Graph Wrangling}. We select movies in the dataset which is published in 2019 and is released in China.
 % 我们保留了其中标题、发布日期、演员、类别、
-We preserve seven attributes for movies: \texttt{"title"}, the publish date (\texttt{"date\_published"}), \texttt{"actors"}, \texttt{"genre"}, \texttt{"director"}, \texttt{"writer"}, and \texttt{"country"}.
+We preserve seven attributes for movies: \texttt{"title"}, the publication date (\texttt{"date\_published"}), \texttt{"actors"}, \texttt{"genre"}, \texttt{"director"}, \texttt{"writer"}, and \texttt{"country"}.
 Two movies are connected if they share at least one same actor.
 We generate an attribute, \texttt{"shared\_actors"}, for each link. 
 It records the number of shared actors.
 We totally obtain 49 nodes and 99 links.
 \textbf{2) Visual Encodings}. 
 Nodes are visualized as \texttt{<circle>}s and links are visualized as \texttt{<line>}s (Figure~\ref{fig:NodeLineChartsCase} (a)).
-The fill colors of \texttt{<circle>}s encode their publish seasons (e.g., when \texttt{"date\_published"} is \texttt{01}, \texttt{02}, or \texttt{03}, it means the publish season is spring, we fill the node with \texttt{"steelblue"}).
+The fill colors of \texttt{<circle>}s encode their publication seasons (e.g., when \texttt{"date\_published"} is \texttt{01}, \texttt{02}, or \texttt{03}, it means the publication season is spring, we fill the node with \texttt{"steelblue"}).
 The width of \texttt{<line>}s encode the \texttt{"shared\_actors"}.
 \textbf{3) Layout Computing}. 
 We pre-compute a layout with a spring layout algorithm~\cite{DBLP:journals/spe/FruchtermanR91}.
@@ -26,15 +26,15 @@ We pre-compute a layout with a spring layout algorithm~\cite{DBLP:journals/spe/F
 The descriptions are generated for the created node-link diagram (Figure~\ref{fig:NodeLineChartsCase} (e)).
 They can be separated into three parts:
 
-\textbf{1) Interpreting Linking Conditions.} Several conditions (e.g. (\texttt{"C2"}, \texttt{"country"}, \texttt{"China"}), (\texttt{"C1"}, \texttt{"year"}, \texttt{"2019"}), etc.) are detected but only the condition (\texttt{"C2"}, \texttt{"actors"}, \texttt{"[arbitrary value]"}) is preserved because other conditions also are held on unconnected node pairs.
+\textbf{1) Interpreting Linking Conditions.} Several conditions (e.g. (\texttt{"C2"}, \texttt{"country"}, \texttt{"China"}), (\texttt{"C1"}, \texttt{"year"}, \texttt{"2019"}), et cetera) are detected but only the condition (\texttt{"C2"}, \texttt{"actors"}, \texttt{"[arbitrary value]"}) is preserved because other conditions also are held on unconnected node pairs.
 Thus \ApproachName~describes the linking condition as \textit{``Two nodes are connected if their attributes {\texttt{actors}} have common values''}.
 
 \textbf{2) Interpreting Visual Encodings.} All visual encodings are detected by \ApproachName~as expected.
-Whereas, our technique does not detect that the color of each node encodes the publish season because ``season'' is an abstract concept that are not under our consideration.
+Whereas, our technique does not detect that the color of each node encodes the publication season because ``season'' is an abstract concept that are not under our consideration.
 However, it generates the mapping of different color categories: 
 \textit{``When the value of the attribute {\texttt{date\_published[month]}} is {\texttt{04}}, {\texttt{06}}, or {\texttt{05}}, 
 its {\texttt{fill}} turns to {\texttt{darkorange (\#ff7f0e)}}.$\ldots$''}, 
-where \texttt{"date\_published[month]"} means the \texttt{"month"} field of the attribute publish date (\texttt{"date\_published"}).
+where \texttt{"date\_published[month]"} means the \texttt{"month"} field of the attribute publication date (\texttt{"date\_published"}).
 Such descriptions are repeated generated to describe four different \texttt{fill} colors.
 Such that audience can obtain that the fill color encodes the ``season''.
 
@@ -43,7 +43,7 @@ Detection of the specific type of the layout is not supported in our technique.
 Thus, \ApproachName~only describes the meaning of the topology-based layout in Figure~\ref{fig:NodeLineChartsCase} (e) (Layout Meanings): \textit{``the greater the graph geodesic distance between two nodes is, the greater the euclidean distance between them is''}.
 
 Such descriptions can also facilitate code debugging. 
-For example, if the creator negligently encodes the \texttt{fill} color with its publish date,
+For example, if the creator negligently encodes the \texttt{fill} color with its publication date,
 our technique will detect it and generate descriptions as: \textit{``Its \texttt{fill} encodes the attribute \texttt{date\_published[day]}''}.
 
 \begin{figure*}[ht]
@@ -70,7 +70,7 @@ The size encodes the number of votes (\texttt{"votes"}) they have received.
 The color encodes their main genre (the first genre in their genre attribute \texttt{"genre"}).
 
 \textbf{3) Layout Computing}.
-The x and y coordinates encode the publish year (\texttt{"year"}) and the \texttt{"duration"} separately.
+The x and y coordinates encode the publication year (\texttt{"year"}) and the \texttt{"duration"} separately.
 
 \textbf{Results}.
 Different from the former case, nodes are visualized with two different elements: \texttt{<circle>} and \texttt{<rect>}.

@@ -6,7 +6,7 @@ Figure~\ref{fig:workflow} shows the pipeline our our approach with several examp
 \begin{compactenum}
 \item \textbf{Interpreting linking conditions} to describe how relationships between nodes are constructed.
 \item \textbf{Interpreting visual encodings} by extracting visual mappings among data entities, attributes, and visual channels.
-\item \textbf{Interpreting layout meanings} by detecting which kinds of layout is employed.
+\item \textbf{Interpreting layout intention} by detecting which kinds of layout is employed.
 \end{compactenum}
 
 {\color{red} TO DO}
@@ -14,7 +14,7 @@ Figure~\ref{fig:workflow} shows the pipeline our our approach with several examp
 \begin{figure}
     \centering
     \includegraphics[width=1\columnwidth]{figures/workflow.eps}
-    \caption{Caption}
+    \caption{The pipeline of \textit{\ApproachName}. It follows the three-steps creation process of node-link diagrams to interpret linking conditions, visual encodings, and layout intention.}
     \label{fig:workflow}
 \end{figure}
 
@@ -109,7 +109,7 @@ Its corresponding statement is: \textit{``Two nodes are connected if their attri
 % 为了在节点链接图中展示节点、链接的属性，常常将这些属性编码为节点/链接的视觉通道。
 To visualize attributes of nodes and links in node-link diagrams, creators often encode them with visual channels on nodes and links.
 For the node-link diagram example in Figure~\ref{fig:VisualEncodings}, a node contains a categorical attribute (\textit{x}) and a numerical list attribute (\textit{y}), we encode the numerical list attribute with two rectangles' height and encode the categorical attribute with two rectangles' fill color and the background rounded rectangle's stroke color.
-We denote graphical elements (e.g., \texttt{<circle>}, \texttt{<rect>}, \texttt{<ellipse>}, etc.) in node-link diagrams as \textit{visual elements} and their style attributes such as \texttt{cx}, \texttt{cy}, \texttt{width}, and \texttt{height} are denoted as \textit{visual channels}.
+We denote graphical elements (e.g., \texttt{<circle>}, \texttt{<rect>}, \texttt{<ellipse>}, et cetera) in node-link diagrams as \textit{visual elements} and their style attributes such as \texttt{cx}, \texttt{cy}, \texttt{width}, and \texttt{height} are denoted as \textit{visual channels}.
 Nodes and links contained in the underlying graph are denoted as \textit{data entities} and each data entity consists of several \textit{attributes}.
 
 \begin{figure}[ht]
@@ -260,12 +260,12 @@ We describe their correlation to solve \textbf{Q\ref{qstn:correlation}}.
 If the correlation is categorical-to-categorical, we describe different categories separately: \textit{``When the value of the attribute \texttt{\$group} is \texttt{\$2}, its \texttt{\$fill} turns to \texttt{\$darkorange (\#ff7f0e)}.''} (To describe a color, we find the most similar color from a pre-defined set of colors with 146 different names).
 If the correlation is numerical-to-numerical, we describe whether the channel will increase or decrease with the increase of the attribute value: \textit{``The greater the attribute \texttt{\$value} is, the \texttt{\$greater} its \texttt{\$stroke-width} is.''}.
 
-And if the shape (\texttt{\$tagName}) of a element encodes some attributes, we first describe common channels shared by different shapes (e.g., fill, stroke, stroke-width, etc.): \textit{``The \texttt{\$fill} of all these shapes encodes the attribute \texttt{\$group}''}.
+And if the shape (\texttt{\$tagName}) of a element encodes some attributes, we first describe common channels shared by different shapes (e.g., fill, stroke, stroke-width, et cetera): \textit{``The \texttt{\$fill} of all these shapes encodes the attribute \texttt{\$group}''}.
 Different shapes have different visual channels, we describe them separately: \textit{``When it turns to \texttt{\$<circle>}, its \texttt{\$r} encodes the attribute \texttt{\$degree}''}.
 
 Examples of generated descriptions are referred in Figure~\ref{fig:BasicCases},~\ref{fig:NodeLineChartsCase},~\ref{fig:LinkBarsCase}.
 
-\subsection{Interpreting Layout Meanings}
+\subsection{Interpreting Layout Intention}
 Layouts of attributed graphs have been categorized into attribute-based layouts~\cite{} and topology-based layouts~\cite{} by Nobre et al.~\cite{DBLP:journals/cgf/NobreMSL19}.
 Our technique focus on describing whether the layout is an attribute-based layout or a topology-based layout.
 The core is to determine the type of the layout.
@@ -289,8 +289,8 @@ Thus we first perform a pre-study to validate our hypothesis.
 % 找N个不同的数据集（跨不同领域），找几种不同种类的拓扑based的layout；检验他们的pearson值，p值等等；比较它们在随机布局下的结果；
 We prepare 15 different graph datasets from~\cite{DBLP:journals/tvcg/ZhuCHHLZ21}.
 The number of their nodes varies from 72 to 1083 and the number of their links varies from 75 to 8677.
-They are collected from diverse areas such as literature, music, research, social media, etc..
-We layout them with 5 different kinds of topology-based layouts: FM$^3$~\cite{hachul2004drawing}, Fruchterman-Reingold spring layout (F.R.)~\cite{DBLP:journals/spe/FruchtermanR91}, Stress Majorization (S.M.)~\cite{DBLP:conf/gd/GansnerKN04
+They are collected from diverse areas such as literature, music, research, social media, et cetera.
+We layout them using 5 different kinds of topology-based layouts with default parameters: FM$^3$~\cite{hachul2004drawing}, Fruchterman-Reingold spring layout (F.R.)~\cite{DBLP:journals/spe/FruchtermanR91}, Stress Majorization (S.M.)~\cite{DBLP:conf/gd/GansnerKN04
 }, Pivot MDS (PMDS)~\cite{DBLP:conf/gd/BrandesP06}, and Radial Tree layout (R.T.)~\cite{DBLP:conf/infovis/Jankun-KellyM03}.
 % 我们还检验了随机布局是否也符合我们的假设
 We also test whether the random layout conforms to our assumption.
