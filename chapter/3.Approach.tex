@@ -1,15 +1,14 @@
 \section{\ApproachName}
 % 我们提出了xxx，通过抽取信息并填充模板的方式来描述节点链接图，它大概分为三个步骤~\REf{}：1. xxx; xxx
 We introduce \ApproachName, which describes node-link diagrams by extracting information and filling templates.
-Figure~\ref{fig:workflow} shows the pipeline our our approach with several example descriptions to demonstrate the generated results.
-\ApproachName~consists of three steps:
-\begin{compactenum}
-\item \textbf{Interpreting linking conditions} to describe how relationships between nodes are constructed.
-\item \textbf{Interpreting visual encodings} by extracting visual mappings among data entities, attributes, and visual channels.
-\item \textbf{Interpreting layout intention} by detecting which kinds of layout is employed.
-\end{compactenum}
+\ApproachName~consists of three steps (Figure~\ref{fig:workflow}), which interpret:
+\textbf{1) linking conditions} to describe how nodes relationships are constructed by finding, filtering and sorting conditions;
+\textbf{2) visual encodings} by extracting visual mappings among data entities, attributes, and visual channels; and
+\textbf{3) layout intention} by identifying different kinds of layouts and their impact factors.
 
-{\color{red} TO DO}
+Based on \ApproachName, we implement an interactive interface where creators can input the source code and data to generate node-link diagrams and descriptions.
+We bind the highlight interaction to the descriptions to enhance the comprehension of audiences.
+When audiences hover on different descriptions, relevant parts of the diagram will be highlighted.
 
 \begin{figure}
     \centering
@@ -48,8 +47,8 @@ One condition can be defined as:
 \end{equation}
 Where \texttt{\$type} is the condition type \texttt{\$attribute} is the name of the attribute, \texttt{\$value} is the value of the attribute.
 
-We first detect linking conditions held on node pairs without any connection.
-These conditions are regarded as false condition because no link is constructed for these nodes and should be filtered out.
+We first detect linking conditions held on node pairs without any connections.
+These conditions are regarded as false condition because no links are constructed for these nodes and should be filtered out.
 We describe our filtering strategy in~\ref{alg:conditions}.
 After that, conditions are sorted, so that the highest ranked condition will be regard as the most possible condition.
 First, all conditions are sorted by their frequency.
