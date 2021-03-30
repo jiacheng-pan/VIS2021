@@ -2,18 +2,18 @@
 % 我们提出了xxx，通过抽取信息并填充模板的方式来描述节点链接图，它大概分为三个步骤~\REf{}：1. xxx; xxx
 We introduce \ApproachName, which describes node-link diagrams by extracting information and filling templates.
 \ApproachName~consists of three steps (Figure~\ref{fig:workflow}), which interpret:
-\textbf{1) linking conditions} to describe how nodes relationships are constructed by finding, filtering and sorting conditions;
-\textbf{2) visual encodings} by extracting visual mappings among data entities, attributes, and visual channels; and
-\textbf{3) layout intention} by identifying different kinds of layouts and their impact factors.
+\textbf{1) linking conditions} to describe how nodes relationships are constructed by finding, filtering, and sorting conditions;
+\textbf{2) visual encodings} by extracting visual mappings among data entities, attributes, visual elements, and visual channels; and
+\textbf{3) layout intention} by identifying different kinds of layouts and their affecting factors.
 
 Based on \ApproachName, we implement an interactive interface where creators can input the source code and data to generate node-link diagrams and descriptions.
-We bind the highlight interaction to the descriptions to enhance the comprehension of audiences.
+We augment the generated descriptions by highlight interactions to enhance the comprehensibility.
 When audiences hover on different descriptions, relevant parts of the diagram will be highlighted.
 
 \begin{figure}
     \centering
     \includegraphics[width=1\columnwidth]{figures/workflow.eps}
-    \caption{The pipeline of \textit{\ApproachName}. It follows the three-steps creation process of node-link diagrams to interpret linking conditions, visual encodings, and layout intention.}
+    \caption{The pipeline of \textit{\ApproachName} follows the three-step creation process of node-link diagrams to interpret linking conditions, visual encodings, and layout intention.}
     \label{fig:workflow}
 \end{figure}
 
@@ -24,64 +24,71 @@ When audiences hover on different descriptions, relevant parts of the diagram wi
 % 一些论文已经对可能建立链接的情况进行了定义，
 Several techniques~\cite{DBLP:journals/ivs/LiuNS14, DBLP:journals/ivs/HeerP14, DBLP:journals/tvcg/SrinivasanPEB18} about graph wrangling identify link construction as the crucial process and propose several linking conditions.
 Thus our technique describes linking conditions to interpret the graph wrangling step.
-Ploceus~\cite{DBLP:journals/ivs/LiuNS14} and Orion~\cite{DBLP:journals/ivs/HeerP14} infer potential linking conditions by first constructing a linking graph and then searching valid linking paths. They are aimed at constructing links among multiple data tables by analyzing primary keys and foreign keys.
+Ploceus~\cite{DBLP:journals/ivs/LiuNS14} and Orion~\cite{DBLP:journals/ivs/HeerP14} infer potential linking conditions by constructing a linking graph and searching valid linking paths. They construct links among multiple data tables by analyzing primary keys and foreign keys.
+Graphiti
 Graphiti~\cite{DBLP:journals/tvcg/SrinivasanPEB18} identifies potential linking conditions of a homogeneous graph by comparing different attributes.
 % 如果多个表合并成一个表，前两者总结的条件可以被Graphiti提出的规则所覆盖
-Because multiple tables can be merged into one data table with primary keys and foreign keys, Graphiti can cover the linking conditions identifying rules proposed by Ploceus and Orion. %? 这里mayby要用一张图解释一下
-We reorganize the conditions proposed by these techniques into four categories:
-\begin{compactenum}[\textbf{C}1]
-    \item Two nodes share a same value of a same attribute, e.g., linking two movies is published in the same year.
-    \item Two nodes share at least one same common value of a same list attribute, e.g., linking two movies with one or more same actors.
-    \item Two nodes share significantly close value of a same attribute where the significance is defined by the normalized difference.
-    \item Two nodes share two values in the same bin of a same attribute where the bins are defined as quartiles.
-\end{compactenum}
-Hear, we regard sharing same topics of textual attributes as same as sharing same values of list attributes (Condition 2), because topics are often presented as a list attribute. % 我们尝试从它们的反方向进行思考，也就是，当我们获取到了所有的链接的时候，推测这些链接是如何被构建的
-Those works infer the potential linking conditions before all links are constructed. 
+Because multiple tables can be merged into one data table with primary keys and foreign keys, Graphiti can cover the linking conditions by identifying Ploceus and Orion's rules.
+Those works infer the potential linking conditions where only a few of links are are constructed. 
+% 我们尝试从它们的反方向进行思考，也就是，当我们获取到了所有的链接的时候，推测这些链接是如何被构建的
 Whereas, our method runs in the opposite direction where all links have been constructed already.
+
+\textbf{Finding Conditions}. We first construct conditions between all pairs of nodes. Conditions summarized by Graphiti can be organized into four categories:
+\begin{compactenum}[\textbf{C1}]
+    % 两个节点的某个属性值相同
+    \item Values of an attribute of two nodes are the same, e.g., linking two movies published in the same year.
+    % 两个节点的某个属性拥有超过一个共同的值
+    \item Two nodes have at least one common value of a list attribute, e.g., linking two movies with one or more same actors.
+    % 两个节点的某个属性值非常接近
+    \item Values of an attribute of the two nodes are significantly close where the significance is defined by the normalized difference.
+    \item Values of an attribute of two nodes are in the same bin where the bins are separated by quartiles.
+\end{compactenum}
 
 % 为了能够将这些condition填充到文本模板中，我们对condition的输出进行了formalize
 We formalize the condition as three aspects to facilitate the comparison, sorting and filtering.
 One condition can be defined as:
 \begin{equation}
-    linking\text{ }condition := ( \texttt{\$type}, \texttt{\$attribute}, \texttt{\$value} )
+    linking\text{ }condition := ( @type, @attribute, @value )
 \end{equation}
-Where \texttt{\$type} is the condition type \texttt{\$attribute} is the name of the attribute, \texttt{\$value} is the value of the attribute.
+Where $@type$ is the condition type, $@attribute$ is the name of the attribute, $@value$ is the value of the attribute.
 
+\textbf{Filtering Conditions}.
 We first detect linking conditions held on node pairs without any connections.
 These conditions are regarded as false condition because no links are constructed for these nodes and should be filtered out.
-We describe our filtering strategy in~\ref{alg:conditions}.
+We describe our filtering strategy in Algorithm~\ref{alg:conditions}.
+
+\textbf{Sorting Conditions}.
 After that, conditions are sorted, so that the highest ranked condition will be regard as the most possible condition.
-First, all conditions are sorted by their frequency.
-% 相同频率的条件，如果他们的type和attribute相同，那么根据
-If two conditions with the same frequency have the same $type$ and $attribute$, they can be compared by their degree.
+First, all conditions are sorted by their degrees.
 Some conditions are stronger than others.
-For example, the condition (\texttt{"C2"}, \texttt{"actors"}, \texttt{["Alice", "Bob"]}) is stronger than (\texttt{"C2"}, \texttt{actors}, \texttt{["Alice"]}) and (\texttt{"C2"}, \texttt{"actors"}, \texttt{[arbitrary value]}).
-Because the first condition is implied by the latter two conditions.
-All the three conditions are regarded as individual conditions.
 More stronger conditions are ranked higher than others.
+For example, the condition $(@type=C2, @attribute=actors, @value=[Alice, Bob])$ is stronger than $(@type=C2, @attribute=actors, @value=[Alice])$ and $(@type=C2, @attribute=actors, @value=@arbitrary\text{ }value)$, where $(@value=@arbitrary\text{ }value)$ means the condition does not assume the $actors$ attribute should equal to a certain value.
+Because the first condition is implied by the latter two conditions,
+it is stronger than the others.
 
 We textualize the linking condition of the graph by filling templates. 
 Four templates corresponds to four conditions according the $type$:
 \begin{compactenum}[\textbf{C}1]
-    \item \textit{``Two nodes are connected if their attributes} \texttt{\$attribute} \textit{are with a same value\$\{: }\texttt{\$value} \textit{?\}''}.
-    \item \textit{``Two nodes are connected if their attributes} \texttt{\$attribute} \textit{have common values\$\{: }\texttt{\$value} \textit{?\}''}.
-    \item \textit{``Two nodes are connected if their attribute} \texttt{\$attribute} \textit{are close (with a difference less than } \texttt{\$value}\textit{)''}.
-    \item \textit{``Two nodes are connected if their attribute} \texttt{\$attribute} \textit{are within the same \$\{}\texttt{\$value}\textit{ ?\} bin''}.
+    \item \textit{``Two nodes are connected if the values of the attribute $@attribute$ are the same\$\{ ($@value$)?\}''}.
+    \item \textit{``Two nodes are connected if the values of the attribute $@attribute$ have common values\$\{ ($@value$)?\}}''.
+    \item \textit{``Two nodes are connected if the values of the attribute $@attribute$ are close (with a difference less than $@value$)''}.
+    \item \textit{``Two nodes are connected if the values of the attribute $@attribute$ are within the same \$\{$@value$ ?\}bin''}.
 \end{compactenum}
 Where \$\{?\} means the included part is optional. 
-For example, for Condition 2, two movies are connected because they share same actors Alice and Bob. 
-The condition is represented as: (\texttt{"C2"}, \texttt{"actors"}, \texttt{["Alice", "Bob"]}). 
-Its corresponding statement is: \textit{``Two nodes are connected if their attributes actors have common values: \texttt{["Alice", "Bob"]}''}. 
+For example, for Condition \textbf{C2}, two movies are connected because they share same actors Alice and Bob. 
+The condition is represented as: $(@type=C2, @attribute=actors, @value=[Alice, Bob])$. 
+Its corresponding description is: \textit{``Two nodes are connected if the values of the attribute actors have common values ([Alice, Bob])''}. 
+For the condition $(@type=C2, @attribute=actors, @value=@arbitrary\text{ }value)$, contents in the parentheses are omitted.
 
 \begin{algorithm}[!t]
     \renewcommand\arraystretch{1.2}
-    \caption{ Conditions filtering }
+    \caption{ Filtering Conditions }
     \label{alg:conditions}
     \begin{algorithmic}[1]
         \Require
             $G=(V=\{v_1, v_2, ..., v_n\}, E=\{e_1, e_2, ..., e_n\})$: a graph;
         \Ensure
-            $C$: conditions
+            $C$: the potential condition set
         \State Init conditions $C=\varnothing$, false conditions $FC=\varnothing$
         \For {each node pair $(v_i, v_j)$}
             \If {$(v_i, v_j)$ is not a link}
@@ -98,6 +105,11 @@ Its corresponding statement is: \textit{``Two nodes are connected if their attri
             \EndFor
             \State merge $C$ with $C_{ij}$
         \EndFor
+        \For {each condition $c$ in the condition set $C$}
+            \If {the frequency of $c$ is less than $|E|$}
+                \State remove $c$ from $C$
+            \EndIf
+        \EndFor
         \State \Return $C$
     \end{algorithmic}
 \end{algorithm}
@@ -106,7 +118,7 @@ Its corresponding statement is: \textit{``Two nodes are connected if their attri
 \subsection{Interpreting Visual Encodings}\label{sec:visualencodings}
 \subsubsection{Background}
 % 为了在节点链接图中展示节点、链接的属性，常常将这些属性编码为节点/链接的视觉通道。
-To visualize attributes of nodes and links in node-link diagrams, creators often encode them with visual channels on nodes and links.
+Creators often encode attributes of nodes and links with visual channels to reveal attribute-based patterns.
 For the node-link diagram example in Figure~\ref{fig:VisualEncodings}, a node contains a categorical attribute (\textit{x}) and a numerical list attribute (\textit{y}), we encode the numerical list attribute with two rectangles' height and encode the categorical attribute with two rectangles' fill color and the background rounded rectangle's stroke color.
 We denote graphical elements (e.g., \texttt{<circle>}, \texttt{<rect>}, \texttt{<ellipse>}, et cetera) in node-link diagrams as \textit{visual elements} and their style attributes such as \texttt{cx}, \texttt{cy}, \texttt{width}, and \texttt{height} are denoted as \textit{visual channels}.
 Nodes and links contained in the underlying graph are denoted as \textit{data entities} and each data entity consists of several \textit{attributes}.
@@ -257,7 +269,7 @@ For the case where the shape encodes nothing, we describe visual channel correla
 We first declare which attribute is encoded by which channel: \textit{``Its \texttt{\$fill} encodes the attribute \texttt{\$group}''} (to solve \textbf{Q\ref{qstn:encodings}}).
 We describe their correlation to solve \textbf{Q\ref{qstn:correlation}}.
 If the correlation is categorical-to-categorical, we describe different categories separately: \textit{``When the value of the attribute \texttt{\$group} is \texttt{\$2}, its \texttt{\$fill} turns to \texttt{\$darkorange (\#ff7f0e)}.''} (To describe a color, we find the most similar color from a pre-defined set of colors with 146 different names).
-If the correlation is numerical-to-numerical, we describe whether the channel will increase or decrease with the increase of the attribute value: \textit{``The greater the attribute \texttt{\$value} is, the \texttt{\$greater} its \texttt{\$stroke-width} is.''}.
+If the correlation is numerical-to-numerical, we describe whether the channel will increase or decrease with the increase of the attribute value: \textit{``The greater the attribute @value is, the \texttt{\$greater} its \texttt{\$stroke-width} is.''}.
 
 And if the shape (\texttt{\$tagName}) of a element encodes some attributes, we first describe common channels shared by different shapes (e.g., fill, stroke, stroke-width, et cetera): \textit{``The \texttt{\$fill} of all these shapes encodes the attribute \texttt{\$group}''}.
 Different shapes have different visual channels, we describe them separately: \textit{``When it turns to \texttt{\$<circle>}, its \texttt{\$r} encodes the attribute \texttt{\$degree}''}.
@@ -373,6 +385,6 @@ Creators can write visualization code in the Code Editor and input the graph dat
 \begin{figure}[ht]
     \centering
     \includegraphics[width=1\columnwidth]{figures/interface.eps}
-    \caption{Caption}
+    \caption{The interface consists of four parts: (a) the node-link diagram view, (b) the descriptions view that shows the descriptions generated by \ApproachName, (c) the code editor view where creators can edit their visualization creation code, and (d) the data editor where creators input the graph data.}
     \label{fig:interface}
 \end{figure}

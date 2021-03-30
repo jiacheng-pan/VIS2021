@@ -15,12 +15,12 @@ For example, a part of nodes are connected if they have common values on one att
 Similarly, \ApproachName~cannot deal with node-link diagrams where different nodes have different encoding schemes and where different areas of the diagram are positioned by different layouts.
 For example, our visual encoding extraction technique in Section~\ref{sec:visualencodings} is not able to deal with nodes visualized by different numbers of elements.
 Such failure cases are rare in common situations and can be mitigated by add classification strategies to distinguish different parts with diverse schemes.
-For example, we can detect potential priori conditions for different schemes.
+For example, we can detect potential priory conditions for different schemes.
 A set of data entities with the same linking condition or the same encoding scheme may have commonalities in some attributes.
 
 \textbf{Scalability}.
 \ApproachName~consists of three parts:
-\textbf{interpreting linking conditions} need to tranverse all pairs of nodes to find potential conditions.
+\textbf{interpreting linking conditions} need to traverse all pairs of nodes to find potential conditions.
 Thus, its time complexity is $O(N^2)$, where $N$ is the number of nodes.
 \textbf{Interpreting visual encodings} swaps all pairs of nodes and links, and then traverse and compare all elements to obtain their differences.
 The number of elements are linear to the number of data entities.
