@@ -1,5 +1,14 @@
 \firstsection{Introduction}
 \maketitle
+% 修改想法：从reverse-engineering的角度出发来重新讲整个故事会更容易。
+% ! [1][background and problem] The wide-using of node-link diagrams, 很多创作者使用svg来创作节点链接图，但如果节点链接图的创作者仅仅向受众传达节点链接图本身，而不交代编码信息，无法向受众良好的传达想要表达的意义；
+% ! [2][motivation] 创作者可以添加一些附加的components，比如legends、文本描述 或者 tooltips 来辅助受众理解他创作的节点链接图。其中最关键的步骤则是收集创作者创建节点链接图用到的编码方案。虽然创作者对于他创作的节点链接图心知肚明，但仍需要将他所用到的编码重新手动汇总，以进一步使用这些信息来生成附加组件。我们的方法想要减少创作者手动汇总编码信息的劳动，并且提供了一些能够帮助用户理解可视化编码的附加组件，创作者也可以利用提取到的编码信息来生成自定义的附加组件。自动提取编码信息，还能重新审视自己的可视化算法是否存在编码错误的bug。
+% ! [3][challenges] 根据xxx等人的调研[x, x, x]，很多工作将节点和链接上的属性分别编码在它们对应的可视化图形上。提取这些编码依赖于检查可视化图形和节点、链接的对应关系，以及图形通道和节点、链接的对应关系。因为节点链接图存在很多视觉遮挡，直接作用于pixel picture的工具很难提取其中包含的编码。而应用在svg上的工具，比如xx，则依赖于作者将数据源绑定在graphics上，并且其无法区分节点和链接，难以应用在节点链接图上。因为我们的方法服务于可视化创作者，他可以直接在开发可视化的过程中使用我们的工具，从而我们聚焦于从可视化算法中提取编码信息，这也使得编码的提取成为可能，因为可视化算法中包含了编码信息。
+
+
+
+
+
 Node-link diagrams are widely used to depict relations among data entities and associated attributes. 
 % These attributes are mapped to visual channels (e.g., the shape, size, and color of a node encode three different attributes in Figure~\ref{fig:BasicCases} (b)) to reveal attribute-based patterns. 
 Various visual channels (e.g., position, shape, size, and color) are employed to encode attributes.
