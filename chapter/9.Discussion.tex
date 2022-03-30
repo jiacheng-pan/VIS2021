@@ -1,0 +1,33 @@
+\section{Discussion}
+
+\noindent {\bf Significance--using textual descriptions.}
+\ApproachName~makes it possible for end-users to understand complicated node-link diagrams. Unlike traditional design only express information with simple representations, such as legends, our approach can provide more detailed and concise descriptions. We also found that interactive descriptions can ease users' understating compared with static ones. Moreover, it indicates opportunities for future visualization design and analytics, benefiting not only normal users but also experts. The generated description can help developers debug, modify and re-generate their node-link diagrams quickly, and help designers optimize visual representation logically.
+
+
+\noindent {\bf Generalizability--extending to other visualization and scenarios.}
+\ApproachName~can be applied to other visualization types because different types of visualization are somewhat related and similar. For instance, scatterplots can be viewed as graphs without any link. Thus, our approach can summarize their visual encodings. Moreover, the overall idea of deconstruction visualization can be extended to more scenarios. For instance, we can explain the scatterplot-based dimension reduction algorithm depicting the mainly correlated feature.
+
+\noindent {\bf Comprehensibility--augmenting the design of descriptions}. 
+Although our interactive description is practical, some users suggest exploring more information representation and interaction approaches, such as tooltip. One possible optimization is to balance the comprehensiveness and conciseness of the description. We propose three methods to reach this goal. First, Integrate different types of information and thus reduce the repetitive descriptions. Second, hybrid icons and emojis into descriptions to make them more pleasant and concise. Third, apply the shortest distance principle to the placement of the description. In this case, relevant descriptions can be placed near the target visual element, helping users understand the mapping.
+
+
+\noindent {\bf Scalability-generating large-scale descriptions}.
+\ApproachName~has three modules. We analyze the time's complexity of each, respectively. Link conditions searching modules (M1) must traverse all pairs of nodes to find potential conditions. Its time complexity is $O(N^2)$, where $N$ is the number of nodes.
+Visual encodings summarizing (M2) need to swap all pairs of nodes and links, and then traverse and compare all elements to obtain their differences.
+The number of elements is linear in the number of data entities, so time complexity is $O(N^3 + M^3)$, where $M$ is the number of links.
+Detecting visual mappings between attributes and visual channels requires shuffling values of attributes and observing changes in visual channels.
+Thus its time complexity is $O(N \times (K_{An} + K_{Cn}) + M \times  (K_{Al} + K_{Cl}))$, where $K_{An}$ and $K_{Al}$ are numbers of attributes on nodes and links, and $K_{Cn}$ and $K_{Cl}$ are numbers of visual channels on nodes and links.
+Layout type Identifying M3 requires the computation of two distance matrices.
+Finding the shortest paths of all node pairs is $O(N^3)$.
+The most time-consuming part is interpreting visual encodings, because a new SVG element must be generated for each swap, and visual channels for each element must be computed.
+By implementing our algorithm on the server-side,
+the generation of SVG elements and the computation of visual channels can be accelerated.
+Besides, for larger-scale node-link diagrams, sampling techniques can be employed for acceleration.
+
+\noindent {\bf Limitations and future work.}
+There are several limitations for~\ApproachName.
+First, our approach builds upon one assumption that the diagram is consistent. If different parts of the graph are handled differently, for example, nodes are encoded by different encoding schemes,~\ApproachName~cannot extract all these features according to our expectations. 
+However, these cases are infrequent and can be mitigated by adding classification strategies to distinguish different parts with disparate schemes.
+Second, our approach is designed for web-based visualization. The web environment enables us to ignore the collection of data and visualization programs because network traffic investigation tools can easily capture them. And the SVG-based node-link diagrams make~\ApproachName~possible to deconstruct the visualization results.
+Collecting data and programs and deconstructing non-SVG-based visualization are not considered yet.
+Third, the types of link conditions and layouts are limited. We focus on specific types according to some existing research currently~\cite{DBLP:journals/tvcg/SrinivasanPEB18, DBLP:conf/ieeevast/BigelowNML19, DBLP:journals/cgf/NobreMSL19}, but we can explore more kinds of link conditions and layout types in the future.

@@ -1,100 +1,50 @@
 \firstsection{Introduction}
 \maketitle
 
-% 修改想法：从reverse-engineering的角度出发来重新讲整个故事会更容易。
-% ! [1][background and problem] 
-% The wide-using of node-link diagrams, 随着网页可视化工具的普及以及svg的可调试性，越来越多的开发者尝试在svg上创作节点链接图。
-% 利用在节点和链接上的编码组合，创作者可以可视化多属性网络图。
-% 对编码相关的信息进行收集，能够方便后续的很多工作，比如通过legends显式地展示编码方案，又或者是用编码方案对代码进行注释等等。
-% % 但如果节点链接图的创作者仅仅向受众传达节点链接图本身，而不交代编码信息，无法向受众良好的传达想要表达的意义；
-% ! [2][motivation] 
-% 虽然创作者对于他创作的节点链接图心知肚明，但仍需要将他所用到的编码重新手动汇总，我们的方法可以帮助他直接从他创作的代码中提取信息。
-% 我们提供了一个代码辅助工具，自动抽取节点链接图创作者创作的可视化算法中的编码信息，减少创作者手动汇总的劳动。
-% 创作者也可以利用提取到的编码信息来生成自定义的附加组件，自动提取的编码信息，还能帮助他重新审视自己的可视化算法是否存在编码错误的bug。
-% ! [3][challenges] 
-% 根据xxx等人的调研[x, x, x]，很多工作将节点和链接上的属性分别编码在它们对应的可视化图形上。
-% 提取这些编码依赖于检查可视化图形和数据实体的对应关系，以及图形通道和实体属性的对应关系。
-% 因为节点链接图存在很多视觉遮挡，直接作用于pixel picture的工具很难提取其中包含的编码。
-% 而应用在svg上的工具，比如xx，无法区分节点和链接，难以应用在节点链接图上。
-% 我们的工具帮助创作者收集其所用到的可视化编码。
-% 该工具能够一能够帮助可视化创作者节省从代码中重新收集编码信息的工作，二能够避免可视化创作者手动编写编码信息而产生错误。
-% 其主要贡献包含以下X点：
-% ! [4][contributions]
-% 1. 一个从可视化算法中提取节点链接图的算法；
-% 2. 一些以该算法提取的可视化信息为基础的制作的辅助阅读节点链接图的插件示例
-% 3. 一项evaluation
+Node-link diagrams, the most popular visualization for graph data exploring, depict relations among data entities and associated attributes. 
+In addition to basic elements (e.g., nodes and links), numerous visual features and channels (e.g., position, shape, size, and color) can be employed to demonstrate and illustrate various data attributes~\cite{DBLP:conf/infovis/AuberCJM03, tvcg/RomatAP21, DBLP:conf/infovis/Jankun-KellyM03, DBLP:conf/iv/SchoffelSE16}.
+Visually, encoding too many attributes may require users to exert heavy cognitive effort in recognizing patterns and perceiving data information (e.g., Figure~\ref{fig:teaser}a and Figure~\ref{fig:Movie-Year-Nolan}a).
+As an alternative mean, leveraging natural language-based explanations for a visualization can effectively enhance the comprehensibility of the visualization~\cite{DBLP:conf/chi/KimHA20, DBLP:conf/eccv/KembhaviSKSHF16, DBLP:conf/cvpr/KaflePCK18, DBLP:journals/coling/MittalMCR98, DBLP:journals/tochi/FerresLST13}.
+
+
+Hence, our main objective is to automatically generate a group of textual descriptions for a multi-attribute node-link diagram.
+Note that, natural language-based descriptions such as captions and legends have been generated for a better understanding of basic charts (e.g., bar charts and line charts)~\cite{DBLP:conf/apvis/LiuXHWY20, DBLP:conf/nips/VaswaniSPUJGKP17, DBLP:conf/inlg/ObeidH20}. 
+% To some extent, generating a summarized description for a statistical chart has been popular for characterizing the visualization's meaning. However, 
+Unlike charts, node-link diagrams have much more complicated characteristics which: 1) emphasize entities and relationships rather than focusing only on individual data points, 2) use more complex encoding for bundles of nodes and links, and 3)  highlight local and global graph structures with layouts. This is a missed opportunity, as knowledge of these unique characteristics prevents other methods from being transferred and applied and requires a new generation method.
 
 
 
-%********************* VERSION BEFORE 2021/04/01 *********************%
-\iffalse
-Node-link diagrams are widely used to depict relations among data entities and associated attributes. 
-% These attributes are mapped to visual channels (e.g., the shape, size, and color of a node encode three different attributes in Figure~\ref{fig:BasicCases} (b)) to reveal attribute-based patterns. 
-Various visual channels (e.g., position, shape, size, and color) are employed to encode attributes.
-However, excessive number of attributes will lead to a heavy cognitive load 
-% for human observers to interpret and visually extract 
-to perceive information and identify patterns effectively, which brings more impact on novice users with low visualization literacy.
-%It is also often that a non-professional user has a low ability of reading visual forms, especially when there are a large amount of visual elements. 
-Our idea in this work is to automatically generate descriptions for a multi-attribute node-link 
-diagram to enhance the mental understandings to the underlying diagram. 
-% diagrams from the perspective of demonstrating the creating process of a node-link diagram, which facilitates humans' comprehension for the rich information in the diagram.
+To explore the requirements of explaining node-link diagrams, we invited three experts and 12 end-users to explore how to enhance the comprehensibility of node-link diagrams. In conclusion, we identified eight requirements and formulated the goal of~\ApproachName~ to automatically extract relevant information and generate interactive descriptions of node-link diagrams.
+
+Based on these findings, we contribute~\ApproachName, an automatic description generation approach for node-link diagrams in the format of Scalable Vector Graphics (SVG), which is widely used with the popularity of different SVG-based visualization libraries~\cite{DBLP:journals/tvcg/BostockOH11, sievert2017plotly, DBLP:journals/vi/WangBLDFPC21}. Based on SVG rather than the existing visualization library (e.g., D3 and Vega-Lite), our extraction approach is more adaptable to various node-link diagrams than prior works. In essence, it extracts three types of diagram information from the underlying graph and associated visualization program: 1) meanings of data entities, 2) visual encodings, and 3) layout types. Because of the variability of graph data and visualization programs, it is difficult to mention its salient features. Our solution for inferring this information is to correlate the visualization results (SVG representations) and the inputs (the programs and the data). For each type of feature, we designed an end-to-end scheme, which inferred the visualization process by leveraging the relation between the input and the output.
+
+Generating natural language-based descriptions takes a template-based scheme: sentences are hierarchically created within the predefined templates and logic. Linkages between visual elements and their corresponding descriptions are kept for on-the-fly visual exploration. This scheme leverages the readability and uncertainty of natural language, benefiting users to search and understand required information quickly. We also provided an interactive version of the description to help users map the information between graphs and descriptions.
+To verify the utility and effectiveness of our descriptions, we conducted three case studies and an in-lab user study. Then we concluded several interesting findings and lessons, which provide insights for descriptions design in the future.
+The contributions of~\ApproachName~can be summarized as follows:
+\begin{compactenum}
+\item We conducted a pilot study to identify the requirements of generated interpretations for node-link diagrams.
+\item We presented an efficient approach to extract three types of information and generate textual descriptions to improve the comprehensibility of node-link diagrams.
+\item We conducted three case studies and a user study to verify the effectiveness of our approach. We report
+quantitative and qualitative findings, based on which we discuss recommendations for future work on enhancing the comprehensibility of node-link diagrams.
+\end{compactenum}
 
 
-Generating a summarized description for 
-% a visualization facilitates its audience to understand its underlying meaning. 
-a statistical chart has been popular for its capability of characterizing the meaning of the visualization. 
-Existing works 
-% for automatic description generation 
-classes 
-can be categorized into two areas~\cite{DBLP:conf/inlg/ObeidH20}: one describes constituents and visual encodings of a  visualization~\cite{DBLP:journals/coling/MittalMCR98, DBLP:journals/tochi/FerresLST13}, and the other describes high-level insights conveyed by the visualization~\cite{DBLP:conf/apvis/LiuXHWY20, DBLP:conf/inlg/ObeidH20}. By analogizing with the taxonomy of visualization annotation techniques~\cite{DBLP:conf/chi/HullmanDA13}, descriptions generated by 
-% the above two 
-both 
-categories 
-% of techniques 
-can also be referred to \textit{observational descriptions} and \textit{additive descriptions}. 
-% However, techniques for automatically generating descriptions for node-link diagrams have not been explored yet due to the limitations of the above techniques.
-However, these approaches are not applicable for node-link diagrams:
-
-\textbf{Observational techniques} assume that constituents (e.g., axes, bars, and legends) of basic charts are well-defined. 
-For example, 
-% Mittal et al.~\cite{DBLP:journals/coling/MittalMCR98} require 
-pre-defined visual mapping relationships 
-are demanded~\cite{DBLP:journals/coling/MittalMCR98} 
-to generate captions.
-In other approaches, textual information of axes and legends is needed~\cite{DBLP:conf/icip/ZhouT00, DBLP:conf/doceng/HuangT07, DBLP:conf/grec/HuangTL03}.
-% and other techniques rely on the textual information of axes and legends~\cite{DBLP:conf/icip/ZhouT00, DBLP:conf/doceng/HuangT07, DBLP:conf/grec/HuangTL03}.
-% However, textual information in dense node-link diagrams is always hidden to avoid visual clutter. 
-This scheme can not be used for dense node-link diagrams since the textual annotations of the nodes and edges need to be hidden to avoid visual clutter.
-% Additionally, the complexity of analytical tasks has put forward the challenge of creating more informative diagrams (often achieved by integrating complex glyphs into a node-link diagram to encode the associated attributes), e.g., nesting basic charts into nodes~\cite{gehlenborg2010visualization, DBLP:conf/iv/JusufiDK10} and customizing shapes of links~\cite{DBLP:conf/iv/SchoffelSE16, DBLP:journals/tvcg/NielsenJBJ09}. This further increases the difficulty of interpreting a node-link diagram.
-In addition, customized visual encodings in node-link diagrams, such as nesting basic charts into nodes~\cite{gehlenborg2010visualization, DBLP:conf/iv/JusufiDK10} and utilizing alternative shapes for links~\cite{DBLP:conf/iv/SchoffelSE16, DBLP:journals/tvcg/NielsenJBJ09}, make the description of multi-attribute node-link diagrams more challenging. 
-
-\textbf{Additive techniques} generate descriptions from the underlying tabular data based on pre-defined or restricted insights~\cite{DBLP:journals/pvldb/DemiralpHPP17, DBLP:journals/tvcg/WangSZCXMZ20, DBLP:conf/apvis/LiuXHWY20, DBLP:conf/chi/KimHA20}. However, insights in a node-link diagram depend on the topological structure 
-% and
-, and thus
-can be more flexible.
 
 
-In this paper, we make the very first attempt to generate observational descriptions of node-link diagrams.
-% (the first category) considering the remaining technical difficulties for additive descriptions (the second category). 
-We contribute~\textit{\ApproachName}, an automatic description generator for node-link diagrams in the format of Scalable Vector Graphics (SVG). 
-It extracts key information of a diagram from the underlying graph and the source code by following the creating process of node-link diagrams~\cite{DBLP:journals/cgf/SpritzerBDFF15, tvcg/RomatAP21}:
-\textbf{1) graph wrangling} transforms the original tabular data into a graph format by defining relationships (links) between entities (nodes);
-\textbf{2) visual encoding} maps node/link attributes to visual channels;
-\textbf{3) layout computing} positions nodes in a two-dimensional space to reveal attribute-based or topology-based patterns~\cite{DBLP:journals/cgf/NobreMSL19}.
-Particularly, \ApproachName~
-% first checks the links between all nodes, and 
-selects potential links to interpret the \textbf{graph wrangling} process.
-Then it obtains \textbf{visual encodings} by continuous data modifications and identifying their effects on the visualization result.
-% Ultimately, 
-\ApproachName~interprets the \textbf{layout computing} step by examining the factors that influence node positions.
-% The extracted information is fed into pre-defined templates to generate textual descriptions. Particularly, we implement an interface to display textual descriptions and support interactive highlight of the text contents by hovering on the corresponding area of the diagram.
-A pre-defined template is used to create textual descriptions based on extracted information. 
-We design and implement a visual interface to support interactive specification, exploration and modulation of descriptions.
-The usability and effectiveness of \ApproachName~are demonstrated by four case studies and a user study.
-The contributions of this paper are twofold:
 
-\noindent \textbf{1)} An automatic description generation approach interprets the creating process of a node-link diagram by template-based descriptions.
 
-\noindent \textbf{2)} A visual encoding extraction method retrieves visual encoding schemes from the underlying graph and the code creating diagrams.
-\fi
-%********************* ************************* *********************%
+
+
+
+
+
+
+
+
+% Node-link diagrams, the most popular visualization for graph data exploring, depict relations among data entities and associated attributes. 
+% % Geared at presenting and encoding various data attributes for easy-understanding, researchers designed and implemented
+% In addition to basic elements (e.g., nodes and links), numerous visual features and channels (e.g., position, shape, size, and color) can be employed to demonstrate and illustrate various data attributes~\cite{DBLP:conf/infovis/AuberCJM03, tvcg/RomatAP21, DBLP:conf/infovis/Jankun-KellyM03, DBLP:conf/iv/SchoffelSE16}.
+% % However, with the rise of data complexity and the granularity dimension of visual information, the visual elements are increasing dramatically for node-based attributes presentation. The excessive usage of 
+% Visually, encoding too many attributes may require users to exert heavy cognitive effort in recognizing patterns and perceiving data information (e.g., Figure~\ref{fig:teaser}a and Figure~\ref{fig:Movie-Year-Nolan}a).
+% % effectively, negatively impacting novice users with low visualization literacy. In this case, 
+% As an alternative mean, leveraging natural language-based explanations for a visualization can effectively enhance the comprehensibility of the visualization~\cite{DBLP:conf/chi/KimHA20, DBLP:conf/eccv/KembhaviSKSHF16, DBLP:conf/cvpr/KaflePCK18, DBLP:journals/coling/MittalMCR98, DBLP:journals/tochi/FerresLST13}.

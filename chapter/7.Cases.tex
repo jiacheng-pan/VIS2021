@@ -1,0 +1,63 @@
+\section{Case Studies} \label{sec:casestudy}
+
+To show the usage scenarios and usability of our~\ApproachName, we designed and conducted three case studies with different link conditions, layout types, and flexible visual encodings.
+Based on the IMDb dataset~\cite{IMDb-extensive-dataset} as others did~\cite{DBLP:conf/ieeevast/BigelowNML19, DBLP:journals/ivs/LiuNS14, DBLP:journals/tkde/HerschelNST12}, we generated three graphs and designed their corresponding node-link diagrams. Table~\ref{tab:case-graph} shows their detailed information.
+
+\begin{table*}[t]
+\normalsize
+\centering
+\caption{The proposed graphs used in case studies. }\label{tab:case-graph}
+\includegraphics[width=2\columnwidth]{figures/case-graphs.eps}
+\vspace{-10pt}
+\end{table*}
+
+
+\subsection{Case 1: Usage Scenario}
+This case shows a basic usage scenario. 
+Three kinds of information following E1-3 are generated: link conditions, visual encodings, and the layout type.
+
+\noindent \textbf{Link Conditions}.~\ApproachName~recognizes the link condition ($type$=C2, $attribute$=actors, $value$=arbitrary) and thus generates a description in Figure~\ref{fig:Movie-Actor-Jean-Pierre}b line 1.
+
+\noindent \textbf{Visual Encodings}. Nodes are visualized with two different shapes: circles and rectangles.
+To distinguish the encoding scheme in different shapes,~\ApproachName~describes them separately.
+First, the ``country'' attribute encoded on the shape is narrated (Figure~\ref{fig:Movie-Actor-Jean-Pierre}c, line 3, 4, and 6).
+Details of the two shapes are described in line 5, and 7-8.
+
+\noindent \textbf{Layout Type}.
+The layout is attribute-based.~\ApproachName~detects the encoding attributes on two coordinates (year and duration) and generates descriptions in Figure~\ref{fig:Movie-Actor-Jean-Pierre}c, line 17-21.
+
+\noindent \textbf{The Hover-then-highlight Interaction}.
+The interaction enables users to obtain the targets of descriptions. For instance, hovering line 11 in Figure~\ref{fig:Movie-Actor-Jean-Pierre}c highlights the corresponding elements in Figure~\ref{fig:Movie-Actor-Jean-Pierre}b. So that users can clarify that the description target is the steelblue nodes.
+
+
+\begin{figure}[tp]
+    \centering
+    \includegraphics[width=1\columnwidth]{figures/Movie-Year-Nolan.eps}
+    \setlength{\abovecaptionskip}{-5pt}
+    \setlength{\belowcaptionskip}{-10pt}
+    \caption{Case 2: Glyph Design on Link. (a) is the node-link diagram based on the Movie-C.N. graph (11 nodes and 16 links). (b) Several nodes are highlighted when the user hovers on one of their related descriptions in (c).}\label{fig:Movie-Year-Nolan}
+\end{figure}
+
+\subsection{Case 2: Glyph Design on Links}
+Case 2 (Figure~\ref{fig:Movie-Year-Nolan}) is designed to demonstrate~\ApproachName's ability of dealing with different link conditions and complex visual encodings on links. The design of the node-link diagram follows~\cite{DBLP:conf/iv/SchoffelSE16}. Links are encoded with several bars to display link attributes. It is hard to distinguish the roles of different visual elements in encoding attributes. Our~\ApproachName~gives an amazing performance in analyzing of such visual design.
+
+\noindent \textbf{Link Conditions}. 
+First,~\ApproachName~detects the link condition of the node-link diagram ($type$=C3, $attribute$=year, $value$=5) and describes it in Figure~\ref{fig:Movie-Year-Nolan}c, line 1.
+
+\noindent \textbf{Visual Encodings}. 
+Although each link has nine visual elements, only four rectangles encode attributes.
+Thus, our descriptions only narrate the four rectangles with attributes encoded in Figure~\ref{fig:Movie-Year-Nolan}c, line 7-18.
+End-users can focus on the informative visual elements and ignore the others without visual encodings.
+
+\noindent \textbf{Layout Type}.~\ApproachName~detects the force-directed layout. We directly utilize the template to describe it (Figure~\ref{fig:Movie-Year-Nolan}c, line 19).
+
+\noindent \textbf{The Hover-then-highlight Interaction}.
+When hovering over certain visual elements, their correlated descriptions will be highlighted with a gray background. For example, in Figure~\ref{fig:Movie-Year-Nolan}(b and c), hovering the red rectangular on a link toggles descriptions in line 1 and 6-9.
+
+\subsection{Case 3: Bar Charts Nested on Nodes}
+In this case, we demonstrate~\ApproachName's ability to explain a complex node-link diagram with nested charts on nodes. It follows the design of~\cite{DBLP:journals/bmcbi/JunkerKS06}, where each node nests a chart (Figure~\ref{fig:teaser}). This case is used to illustrate visual encodings, and thus we do not discuss other descriptions here.
+
+\noindent \textbf{Visual Encodings}
+In each node, five <rect> (rectangle) elements are composed together to encode the actors' activeness, namely the number of movies they acted in each year.
+To help end-users understand such an encoding scheme, our~\ApproachName~generates fine-grained descriptions to narrate each rectangle's encoding scheme (Figure~\ref{fig:teaser}d visual encodings).
+One benefit of such descriptions is that users can understand the information encoded on each rectangle (numbers of movies the actor acted in from 2016 to 2020) rather than only an abstract description such as \textit{``encoding the actor's activeness''}.
